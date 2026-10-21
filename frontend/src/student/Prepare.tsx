@@ -71,6 +71,8 @@ export function Prepare() {
   );
 
   const micOk = micState === "ok" && peak > -50;
+  // This viva relies on the browser's own speech recognition (no server recogniser configured): Chrome or Edge only.
+  const needsBrowserStt = data.session.settings?.stt_engine === "browser" && !BrowserSTT.available();
   const ready = agree && micState === "ok" && heard === "yes";
   const resumed = data.session.started && data.session.status === "live";
 
@@ -126,9 +128,10 @@ export function Prepare() {
             </div>
           </div>
         </section>
+        {needsBrowserStt && <p className="banner bad" role="alert">This viva uses your browser's speech recognition, which works in Google Chrome and Microsoft Edge. Please open this page in Chrome or Edge to take the viva.</p>}
         {err && <p className="banner bad" role="alert">{err}</p>}
         <div className="row">
-          <button className="btn" disabled={!(ready || (data.session.consented && micState === "ok" && heard === "yes")) || busy} onClick={start}>
+          <button className="btn" disabled={needsBrowserStt || !(ready || (data.session.consented && micState === "ok" && heard === "yes")) || busy} onClick={start}>
             {resumed ? "Continue my viva" : "Start my viva"}
           </button>
           {!ready && <span className="sub">{!agree && !data.session.consented ? "Tick the consent box. " : ""}{micState !== "ok" ? "Check your microphone. " : ""}{heard !== "yes" ? "Confirm you can hear the sample." : ""}</span>}

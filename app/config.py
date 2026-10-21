@@ -39,7 +39,9 @@ _load_dotenv()
 
 
 def env(name: str, default: str = "") -> str:
-    return os.environ.get(name, default).strip()
+    """An environment value, or the default when it is unset or blank (hosting dashboards often create blank values)."""
+    value = (os.environ.get(name) or "").strip()
+    return value or default
 
 
 def env_bool(name: str, default: bool = False) -> bool:

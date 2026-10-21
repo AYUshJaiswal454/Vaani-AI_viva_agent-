@@ -15,7 +15,8 @@ COPY requirements.txt requirements-dev.txt ./
 RUN pip install -r requirements-dev.txt
 
 COPY scripts ./scripts
-RUN if [ "$DOWNLOAD_MODELS" = "1" ]; then python scripts/download_models.py --whisper "$WHISPER_MODEL" --dir /app/models; fi
+RUN if [ "$DOWNLOAD_MODELS" = "1" ]; then python scripts/download_models.py --whisper "$WHISPER_MODEL" --dir /app/models; \
+    else python scripts/download_models.py --vad-only --dir /app/models; fi
 COPY app ./app
 COPY samples ./samples
 COPY tests ./tests

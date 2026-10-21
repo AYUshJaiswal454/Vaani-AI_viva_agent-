@@ -44,12 +44,16 @@ def main() -> None:
     ap.add_argument("--whisper", default="base.en", choices=WHISPER)
     ap.add_argument("--dir", default=os.environ.get("MODELS_DIR", str(ROOT / "models")))
     ap.add_argument("--keep-fp32", action="store_true", help="also keep the larger float32 files")
+    ap.add_argument("--vad-only", action="store_true", help="only the voice detector (0.6 MB), e.g. with a hosted recogniser")
     args = ap.parse_args()
     out = Path(args.dir)
     out.mkdir(parents=True, exist_ok=True)
     vad = out / "silero_vad.onnx"
     if not vad.exists():
         fetch(f"{RELEASE}/silero_vad.onnx", vad)
+    if args.vad_only:
+        print(f"ready: {vad}")
+        return
     target = out / f"sherpa-onnx-whisper-{args.whisper}"
     if (target / f"{args.whisper}-encoder.int8.onnx").exists():
         print(f"whisper {args.whisper} already present in {target}")

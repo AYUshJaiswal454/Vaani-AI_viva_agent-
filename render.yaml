@@ -1,8 +1,13 @@
-# Render Blueprint: New > Blueprint > pick this repository. One web service from the Dockerfile.
-# The free plan (512 MB, a fraction of a CPU, no disk) cannot run the local Whisper model, so this blueprint uses the
-# student's browser for speech recognition (Chrome/Edge) and voice; add GROQ_API_KEY and set STT_ENGINE=groq for
-# server-side recognition, or use a paid plan (2 GB+) with STT_ENGINE=whisper-onnx and a disk at /data.
-# Without a disk, data (the demo data and samples are reloaded on every start) resets when the service restarts.
+# Render Blueprint: New > Blueprint > pick this repository. One web service built from the Dockerfile.
+#
+# The free plan (512 MB, a small share of a CPU, no disk) cannot run the local Whisper model, so the image is built
+# without it (DOWNLOAD_MODELS=0). Speech recognition is then chosen automatically:
+#   * add GROQ_API_KEY (free key from console.groq.com) -> Groq Whisper large-v3-turbo on the server, plus the AI
+#     scorer and AI-worded follow-ups with Groq's open models (recommended);
+#   * no key -> the student's browser recognises speech (Chrome or Edge), and the rule-based scorer marks.
+# Without a disk, data resets when the service restarts or sleeps (after 15 idle minutes); the demo faculty,
+# question banks and the five sample vivas are loaded again on every start. For real use pick a paid plan with a disk
+# mounted at /data, or run docker compose on a college server.
 services:
   - type: web
     name: vaani
@@ -13,19 +18,15 @@ services:
     autoDeploy: true
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: DOWNLOAD_MODELS          # build arg: keep the image small on the free plan
+      - key: DOWNLOAD_MODELS          # build argument: leave Whisper out of the image on the free plan
         value: "0"
       - key: SEED_DEMO
         value: "true"
-      - key: STT_ENGINE
+      - key: TTS_ENGINE               # the examiner speaks with the browser's voice (no server CPU)
         value: browser
-      - key: TTS_ENGINE
-        value: browser
-      - key: LLM_PROVIDER             # empty = rule scorer, or groq/openai automatically when a key is added
-        value: ""
-      - key: GROQ_API_KEY
+      - key: GROQ_API_KEY             # optional but recommended; paste your key in the Render dashboard
         sync: false
-      - key: OPENAI_API_KEY
+      - key: ADMIN_PASSWORD           # the administrator account (admin@vaani.local); set your own
         sync: false
       - key: SECRET_KEY
         generateValue: true
