@@ -1,0 +1,25 @@
+{
+  "_about": "Reference marks for the scripted personas, set from how each persona is designed to answer (see tests/personas.py) and the rubric anchors (app/data/rubric_default.json). They are a synthetic ground truth for regression testing, not faculty marks: use Calibration in the app (or scripts/eval_scoring.py --from-db) to compare against real faculty marking.",
+  "personas": {
+    "strong":         {"conceptual": 4,   "depth": 5,   "problem_solving": 5,   "practical": 5, "communication": 5,
+                       "why": "Covers about 80% of key points with reasons and examples; answers follow-ups; structured applied answer with verification; detailed project with own role and decisions."},
+    "indian_english": {"conceptual": 4,   "depth": 5,   "problem_solving": 5,   "practical": 5, "communication": 4.5,
+                       "why": "Exactly the strong persona's content in Indian-English grammar; only clarity may differ slightly."},
+    "hinglish":       {"conceptual": 4,   "depth": 4.5, "problem_solving": 4.5, "practical": 4, "communication": 4,
+                       "why": "About 70% of key points in Hindi-English code-mixed sentences with 'kyunki/isliye' reasoning; concrete project (React, Firebase) with own role."},
+    "average":        {"conceptual": 2.5, "depth": 2.5, "problem_solving": 2.5, "practical": 3, "communication": 3,
+                       "why": "Covers about half the key points, sometimes unsure; basic project with own part but no design reasons."},
+    "rambler":        {"conceptual": 2.5, "depth": 1,   "problem_solving": 2,   "practical": 2, "communication": 1.5,
+                       "why": "Half the key points buried in long filler; cut at 90 s, so few follow-ups; hard to follow."},
+    "injector":       {"conceptual": 2,   "depth": 1.5, "problem_solving": 2,   "practical": 1, "communication": 2,
+                       "why": "Every other answer is an attempt to manipulate the examiner; the rest cover about half the key points."},
+    "silent":         {"conceptual": 1,   "depth": 0.5, "problem_solving": 1,   "practical": 3, "communication": 2,
+                       "why": "Silent on every other question; otherwise one key point; reasonable basic project description."},
+    "offtopic":       {"conceptual": 1,   "depth": 0.5, "problem_solving": 1,   "practical": 1, "communication": 1.5,
+                       "why": "Two thirds of answers are unrelated (cricket, canteen); occasionally one key point."},
+    "weak":           {"conceptual": 1,   "depth": 0.5, "problem_solving": 1,   "practical": 1, "communication": 2,
+                       "why": "Mostly vague statements, misconceptions or 'I don't know'; vague group project."},
+    "idk":            {"conceptual": 0,   "depth": 0,   "problem_solving": 0,   "practical": 1, "communication": 1,
+                       "why": "Says 'I don't know' to every technical question; one-line project."}
+  }
+}

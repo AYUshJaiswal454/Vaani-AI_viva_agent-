@@ -1,0 +1,17 @@
+# Vaani runtime dependencies (Python 3.11+). Install: pip install -r requirements.txt
+starlette>=0.47
+uvicorn>=0.30
+wsproto>=1.2              # WebSocket implementation used by uvicorn (--ws wsproto)
+pydantic>=2.7
+python-multipart>=0.0.9   # question-bank uploads
+httpx>=0.27               # hosted speech / LLM providers
+PyJWT>=2.8
+cryptography>=42          # recordings are encrypted at rest
+numpy>=1.26
+onnxruntime>=1.18         # built-in Whisper speech recogniser and Silero voice-activity detection
+psutil>=5.9               # system page + load-test resource monitor
+# Optional:
+# scipy>=1.11             # higher-quality resampling of uploaded audio (a numpy fallback is built in)
+# psycopg[binary]>=3.1    # PostgreSQL instead of SQLite (set DATABASE_URL=postgresql://...)
+# faster-whisper>=1.0     # STT_ENGINE=faster-whisper (CTranslate2; fastest local option, GPU capable)
+# piper-tts>=1.2          # TTS_ENGINE=piper (offline neural voices)

@@ -1,0 +1,35 @@
+# Render Blueprint: New > Blueprint > pick this repository. One web service from the Dockerfile.
+# The free plan (512 MB, a fraction of a CPU, no disk) cannot run the local Whisper model, so this blueprint uses the
+# student's browser for speech recognition (Chrome/Edge) and voice; add GROQ_API_KEY and set STT_ENGINE=groq for
+# server-side recognition, or use a paid plan (2 GB+) with STT_ENGINE=whisper-onnx and a disk at /data.
+# Without a disk, data (the demo data and samples are reloaded on every start) resets when the service restarts.
+services:
+  - type: web
+    name: vaani
+    runtime: docker
+    plan: free
+    region: singapore
+    healthCheckPath: /api/health
+    autoDeploy: true
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DOWNLOAD_MODELS          # build arg: keep the image small on the free plan
+        value: "0"
+      - key: SEED_DEMO
+        value: "true"
+      - key: STT_ENGINE
+        value: browser
+      - key: TTS_ENGINE
+        value: browser
+      - key: LLM_PROVIDER             # empty = rule scorer, or groq/openai automatically when a key is added
+        value: ""
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: TRUST_PROXY
+        value: "true"
+      - key: WORKER_CONCURRENCY
+        value: "1"

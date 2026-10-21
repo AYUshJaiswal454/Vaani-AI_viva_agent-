@@ -1,0 +1,338 @@
+{
+ "generated": "2026-10-21 09:49",
+ "reference": "synthetic persona reference marks (tests/fixtures/reference_marks.json)",
+ "rule_scorer": {
+  "n": 14,
+  "mae_total": 3.75,
+  "max_gap": 8.5,
+  "within_10": 1.0,
+  "pearson": 0.991
+ },
+ "rows": [
+  {
+   "persona": "strong",
+   "seed": 1,
+   "duration_s": 725.5,
+   "reference_total": 94.0,
+   "rule_total": 94.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 4,
+    "depth": 5,
+    "problem_solving": 5,
+    "practical": 5,
+    "communication": 5
+   },
+   "reference_dims": {
+    "conceptual": 4,
+    "depth": 5,
+    "problem_solving": 5,
+    "practical": 5,
+    "communication": 5
+   }
+  },
+  {
+   "persona": "strong",
+   "seed": 2,
+   "duration_s": 710.3,
+   "reference_total": 94.0,
+   "rule_total": 94.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 4,
+    "depth": 5,
+    "problem_solving": 5,
+    "practical": 5,
+    "communication": 5
+   },
+   "reference_dims": {
+    "conceptual": 4,
+    "depth": 5,
+    "problem_solving": 5,
+    "practical": 5,
+    "communication": 5
+   }
+  },
+  {
+   "persona": "indian_english",
+   "seed": 1,
+   "duration_s": 783.7,
+   "reference_total": 93.0,
+   "rule_total": 91.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 4,
+    "depth": 5,
+    "problem_solving": 5,
+    "practical": 4,
+    "communication": 5
+   },
+   "reference_dims": {
+    "conceptual": 4,
+    "depth": 5,
+    "problem_solving": 5,
+    "practical": 5,
+    "communication": 4.5
+   }
+  },
+  {
+   "persona": "hinglish",
+   "seed": 1,
+   "duration_s": 644.3,
+   "reference_total": 84.5,
+   "rule_total": 91.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 4,
+    "depth": 5,
+    "problem_solving": 5,
+    "practical": 4,
+    "communication": 5
+   },
+   "reference_dims": {
+    "conceptual": 4,
+    "depth": 4.5,
+    "problem_solving": 4.5,
+    "practical": 4,
+    "communication": 4
+   }
+  },
+  {
+   "persona": "average",
+   "seed": 1,
+   "duration_s": 528.6,
+   "reference_total": 52.5,
+   "rule_total": 56.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 3,
+    "depth": 3,
+    "problem_solving": 2,
+    "practical": 3,
+    "communication": 3
+   },
+   "reference_dims": {
+    "conceptual": 2.5,
+    "depth": 2.5,
+    "problem_solving": 2.5,
+    "practical": 3,
+    "communication": 3
+   }
+  },
+  {
+   "persona": "average",
+   "seed": 2,
+   "duration_s": 510.7,
+   "reference_total": 52.5,
+   "rule_total": 59.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 3,
+    "depth": 3,
+    "problem_solving": 2,
+    "practical": 4,
+    "communication": 3
+   },
+   "reference_dims": {
+    "conceptual": 2.5,
+    "depth": 2.5,
+    "problem_solving": 2.5,
+    "practical": 3,
+    "communication": 3
+   }
+  },
+  {
+   "persona": "average",
+   "seed": 3,
+   "duration_s": 532.9,
+   "reference_total": 52.5,
+   "rule_total": 61.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 3,
+    "depth": 3,
+    "problem_solving": 2,
+    "practical": 4,
+    "communication": 4
+   },
+   "reference_dims": {
+    "conceptual": 2.5,
+    "depth": 2.5,
+    "problem_solving": 2.5,
+    "practical": 3,
+    "communication": 3
+   }
+  },
+  {
+   "persona": "rambler",
+   "seed": 1,
+   "duration_s": 741.7,
+   "reference_total": 37.0,
+   "rule_total": 40.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 2,
+    "depth": 1,
+    "problem_solving": 4,
+    "practical": 1,
+    "communication": 2
+   },
+   "reference_dims": {
+    "conceptual": 2.5,
+    "depth": 1,
+    "problem_solving": 2,
+    "practical": 2,
+    "communication": 1.5
+   }
+  },
+  {
+   "persona": "injector",
+   "seed": 1,
+   "duration_s": 632.8,
+   "reference_total": 34.5,
+   "rule_total": 37.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 2,
+    "depth": 2,
+    "problem_solving": 2,
+    "practical": 1,
+    "communication": 2
+   },
+   "reference_dims": {
+    "conceptual": 2,
+    "depth": 1.5,
+    "problem_solving": 2,
+    "practical": 1,
+    "communication": 2
+   }
+  },
+  {
+   "persona": "silent",
+   "seed": 1,
+   "duration_s": 692.6,
+   "reference_total": 25.5,
+   "rule_total": 32.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 2,
+    "depth": 0,
+    "problem_solving": 1,
+    "practical": 4,
+    "communication": 2
+   },
+   "reference_dims": {
+    "conceptual": 1,
+    "depth": 0.5,
+    "problem_solving": 1,
+    "practical": 3,
+    "communication": 2
+   }
+  },
+  {
+   "persona": "offtopic",
+   "seed": 1,
+   "duration_s": 585.0,
+   "reference_total": 18.5,
+   "rule_total": 14.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 1,
+    "depth": 0,
+    "problem_solving": 1,
+    "practical": 0,
+    "communication": 2
+   },
+   "reference_dims": {
+    "conceptual": 1,
+    "depth": 0.5,
+    "problem_solving": 1,
+    "practical": 1,
+    "communication": 1.5
+   }
+  },
+  {
+   "persona": "weak",
+   "seed": 1,
+   "duration_s": 432.0,
+   "reference_total": 19.5,
+   "rule_total": 15.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 1,
+    "depth": 0,
+    "problem_solving": 0,
+    "practical": 1,
+    "communication": 3
+   },
+   "reference_dims": {
+    "conceptual": 1,
+    "depth": 0.5,
+    "problem_solving": 1,
+    "practical": 1,
+    "communication": 2
+   }
+  },
+  {
+   "persona": "weak",
+   "seed": 2,
+   "duration_s": 474.8,
+   "reference_total": 19.5,
+   "rule_total": 15.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 1,
+    "depth": 0,
+    "problem_solving": 0,
+    "practical": 1,
+    "communication": 3
+   },
+   "reference_dims": {
+    "conceptual": 1,
+    "depth": 0.5,
+    "problem_solving": 1,
+    "practical": 1,
+    "communication": 2
+   }
+  },
+  {
+   "persona": "idk",
+   "seed": 1,
+   "duration_s": 241.6,
+   "reference_total": 5.0,
+   "rule_total": 5.0,
+   "rule_runs_sd": 0.0,
+   "rule_dims": {
+    "conceptual": 0,
+    "depth": 0,
+    "problem_solving": 0,
+    "practical": 1,
+    "communication": 1
+   },
+   "reference_dims": {
+    "conceptual": 0,
+    "depth": 0,
+    "problem_solving": 0,
+    "practical": 1,
+    "communication": 1
+   }
+  }
+ ],
+ "rule_dim_mae": {
+  "conceptual": 0.21,
+  "depth": 0.32,
+  "problem_solving": 0.43,
+  "practical": 0.43,
+  "communication": 0.39
+ },
+ "rule_consistency": {
+  "runs_per_transcript": 5,
+  "max_sd": 0.0
+ },
+ "fairness": {
+  "strong_vs_indian_english_total_gap": 3.0,
+  "strong_vs_indian_english_max_content_dim_gap": 1,
+  "hinglish_total": 91.0,
+  "hinglish_reference": 84.5
+ }
+}

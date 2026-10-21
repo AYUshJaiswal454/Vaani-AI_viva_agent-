@@ -1,0 +1,35 @@
+{
+  "_about": "Sentences volunteers read aloud in the Speech lab to measure recognition accuracy on their own accent. The reference text is exactly what they were asked to read.",
+  "en-IN": [
+    "A primary key uniquely identifies each row and it can never be null.",
+    "In third normal form, a non key attribute must not depend on another non key attribute.",
+    "Atomicity means the whole transaction happens completely or not at all.",
+    "We use a B plus tree index because it keeps the tree shallow and reduces disk reads.",
+    "A deadlock happens when two transactions keep waiting for each other's locks forever.",
+    "Round robin scheduling gives every process a fixed time quantum in a circular queue.",
+    "Virtual memory lets a program use more memory than the physical RAM by paging to disk.",
+    "The left outer join returns all rows from the left table even when there is no match.",
+    "I would first run explain on the query to check whether it is doing a full table scan.",
+    "A semaphore is an integer counter, while a mutex can be held by only one thread at a time.",
+    "Write ahead logging records every change in the log before the data page is written.",
+    "My project was a canteen ordering app built with React, Node and PostgreSQL.",
+    "Serializable isolation prevents dirty reads, non repeatable reads and phantom reads.",
+    "To avoid overselling tickets, I would lock the row using select for update inside a transaction."
+  ],
+  "hi-en": [
+    "Primary key ka matlab hai ki har row ko uniquely identify karna, aur woh null nahi ho sakta.",
+    "Deadlock tab hota hai jab do transactions ek dusre ke lock ka wait karte rehte hain.",
+    "Normalisation isliye karte hain taaki redundancy kam ho aur update anomaly na aaye.",
+    "Index se search fast hoti hai, lekin insert aur update thoda slow ho jaata hai.",
+    "Atomicity ka matlab hai ya toh poora transaction hoga ya bilkul nahi hoga.",
+    "Maine apne project mein React aur Firebase use kiya tha, aur database design maine kiya.",
+    "Agar time quantum bahut chhota ho, toh context switch ka overhead badh jaata hai.",
+    "Race condition mein dono threads ek saath same variable ko update kar dete hain.",
+    "Pehle main explain chala ke dekhunga ki query full table scan toh nahi kar rahi.",
+    "Virtual memory mein page RAM mein nahi hota toh page fault aata hai aur disk se load hota hai."
+  ],
+  "terms": ["primary key", "third normal form", "atomicity", "B plus tree", "deadlock", "round robin", "time quantum",
+            "virtual memory", "left outer join", "explain", "full table scan", "semaphore", "mutex", "write ahead logging",
+            "serializable", "phantom", "select for update", "normalisation", "redundancy", "update anomaly", "index",
+            "context switch", "race condition", "page fault", "React", "PostgreSQL", "Firebase"]
+}

@@ -1,0 +1,67 @@
+{
+  "version": "rubric-2026.1",
+  "scale": "Each dimension is scored 0-5 (whole numbers). Total /100 = sum of (score / 5 x weight).",
+  "fairness": "Accent, grammar, pronunciation and mixing Hindi with English never lower marks in any dimension except Communication, and in Communication only clarity and structure are judged, never accent or grammar. Recogniser (speech-to-text) mistakes are not the student's fault.",
+  "dimensions": [
+    {
+      "id": "conceptual", "name": "Conceptual understanding", "weight": 30,
+      "looks_at": "Answers to fundamentals and depth questions: are definitions and relationships correct and complete?",
+      "anchors": {
+        "0": "No relevant answer, or answers are fundamentally wrong.",
+        "1": "Isolated keywords with little correct meaning; most questions unanswered.",
+        "2": "Some correct ideas but major gaps or confusions on core concepts.",
+        "3": "Core concepts mostly correct; some key points missing or imprecise.",
+        "4": "Correct and fairly complete on nearly all questions, with minor gaps.",
+        "5": "Precise, complete and correct; connects concepts to each other."
+      }
+    },
+    {
+      "id": "depth", "name": "Depth and reasoning", "weight": 25,
+      "looks_at": "Follow-up ('why', 'what if') answers and the depth phase: does the student explain why, handle changed conditions, and reason about trade-offs?",
+      "anchors": {
+        "0": "No reasoning offered; cannot go beyond the first answer.",
+        "1": "Restates facts when asked why; no trade-offs.",
+        "2": "Some correct reasoning on one follow-up; struggles with 'what if'.",
+        "3": "Explains why for most follow-ups; partial handling of changed conditions.",
+        "4": "Clear causal reasoning and sensible trade-offs on several follow-ups.",
+        "5": "Deep, well-justified reasoning; anticipates edge cases and trade-offs unprompted."
+      }
+    },
+    {
+      "id": "problem_solving", "name": "Problem solving", "weight": 20,
+      "looks_at": "The applied problem: does the student diagnose the cause, propose a workable fix, and check it?",
+      "anchors": {
+        "0": "No attempt at the applied problem.",
+        "1": "Guesses without a method; does not identify the cause.",
+        "2": "Identifies part of the problem; fix missing or unworkable.",
+        "3": "Identifies the cause and a plausible fix, with gaps in reasoning or verification.",
+        "4": "Systematic diagnosis and a workable fix with some justification.",
+        "5": "Systematic, correct diagnosis; robust fix; considers trade-offs and how to verify."
+      }
+    },
+    {
+      "id": "practical", "name": "Practical / project knowledge", "weight": 15,
+      "looks_at": "The project opener and practical details: concrete technologies, design decisions and the student's own contribution.",
+      "anchors": {
+        "0": "No project or practical knowledge described.",
+        "1": "Vague project description; no concrete details or own role.",
+        "2": "Some concrete details, unclear own contribution or design reasons.",
+        "3": "Concrete project with own role; limited reasoning about design choices.",
+        "4": "Concrete, specific project; explains own contribution and some design decisions.",
+        "5": "Detailed, specific project knowledge; justifies design decisions and lessons learned."
+      }
+    },
+    {
+      "id": "communication", "name": "Communication", "weight": 10,
+      "looks_at": "Clarity and structure of answers: stays on the question, organises points, uses examples. Not accent, grammar or language mix.",
+      "anchors": {
+        "0": "Answers cannot be followed or are entirely off-topic.",
+        "1": "Mostly unclear or off-topic; ideas hard to follow.",
+        "2": "Understandable but disorganised or frequently off-topic.",
+        "3": "Generally clear and on-topic; limited structure or examples.",
+        "4": "Clear, organised answers that stay on the question.",
+        "5": "Very clear, well structured, concise answers with apt examples."
+      }
+    }
+  ]
+}

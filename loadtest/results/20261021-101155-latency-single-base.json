@@ -1,0 +1,245 @@
+{
+ "label": "latency-single-base",
+ "base": "http://127.0.0.1:8011",
+ "bots": 1,
+ "personas": [
+  "strong"
+ ],
+ "wall_s": 692.2,
+ "completed": 1,
+ "still_running_at_end": 0,
+ "dropped": 0,
+ "errors": [],
+ "replies": 30,
+ "reply_p50_ms": 2461,
+ "reply_p95_ms": 4272,
+ "reply_p99_ms": 4458,
+ "reply_max_ms": 4458,
+ "audio_fetch_p95_ms": 10,
+ "options": {
+  "code": "DBMS26",
+  "bank": "dbms",
+  "personas": "strong",
+  "bots": 0,
+  "ramp": 2.0,
+  "max_s": 960,
+  "snr": null,
+  "mute_after": null,
+  "drop_at": null,
+  "drop_for": 8.0,
+  "hints": false,
+  "no_fetch": false,
+  "roll_prefix": "24LT",
+  "seed": 21,
+  "label": "latency-single-base"
+ },
+ "sessions": [
+  {
+   "roll_no": "24LT001",
+   "persona": "strong",
+   "session_id": 6,
+   "ok": true,
+   "end": "completed",
+   "error": "",
+   "turns": 30,
+   "duration_s": 692.0,
+   "reconnects": 0,
+   "reply_p50_ms": 2461,
+   "reply_max_ms": 4458,
+   "says": [
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Hello Strong. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+     "t": 0.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-W-02",
+     "text": "Thank you. A quick note before we start: this viva has five short parts and lasts at most fifteen minutes. Answer out loud, in your own words. It's completely fine to say you don't know, or to ask me to repeat a question. To begin, briefly describe a project you have worked on, ideally one that stores or processes data, and explain your role in it.",
+     "t": 16.6
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-W-02",
+     "text": "Alright. What was the hardest problem you hit in that project, and how did you solve it?",
+     "t": 71.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-05",
+     "text": "Thank you. Let's move on to some fundamentals. Explain first, second and third normal form in simple terms.",
+     "t": 86.5
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-05",
+     "text": "Here's a hint. For each normal form, ask what a non-key column is allowed to depend on.",
+     "t": 106.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-10",
+     "text": "I see. What is a deadlock in a database, and how can it be handled?",
+     "t": 128.3
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-10",
+     "text": "Got it. If the DBMS has to abort one transaction to break a deadlock, how should it choose which one?",
+     "t": 151.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-12",
+     "text": "Okay, thanks. How does a database recover after a crash? What role does the log play?",
+     "t": 174.0
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-12",
+     "text": "Noted. Why must the log record be written to disk before the data page it describes?",
+     "t": 202.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-14",
+     "text": "Right. What is a dirty read? Which isolation level prevents it?",
+     "t": 216.2
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-14",
+     "text": "Okay. What is a phantom read, and why doesn't row locking alone prevent it?",
+     "t": 236.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-04",
+     "text": "Alright. Let's go a little deeper into concurrency. How does multiversion concurrency control (MVCC) work, and why do databases like PostgreSQL use it?",
+     "t": 257.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Thank you. What problem appears if old versions are never cleaned up?",
+     "t": 291.7
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "I see. Can two concurrent MVCC transactions still conflict? Give an example.",
+     "t": 308.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-02",
+     "text": "Got it. Compare the isolation levels read committed, repeatable read and serializable. What does each one allow, and what does it cost?",
+     "t": 328.6
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-02",
+     "text": "Okay, thanks. Why don't databases just use serializable everywhere by default?",
+     "t": 355.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-06",
+     "text": "Noted. Explain the steal and no-force policies in buffer management and why they make recovery need both undo and redo.",
+     "t": 372.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-06",
+     "text": "Right. What if a system used no-steal and force instead? What would be simpler and what would be worse?",
+     "t": 397.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-03",
+     "text": "Okay. What is a lossless-join decomposition, and how do you check that splitting a table did not lose information?",
+     "t": 411.2
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-03",
+     "text": "Alright. Why can decomposing to BCNF lose dependency preservation, while 3NF never does?",
+     "t": 435.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-05",
+     "text": "Thank you. Now let's try a practical problem. I've put some code on your screen. Please think out loud as you work through it. A payment app moves money from wallet A to wallet B with two separate UPDATE statements and no transaction. Occasionally money disappears. Reason aloud about the causes and design a fix.",
+     "t": 453.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-05",
+     "text": "I see. What if wallets A and B live in two different databases? Can one transaction still cover both?",
+     "t": 500.2
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-05",
+     "text": "Got it. Why might two transfers between the same wallets in opposite directions deadlock, and how can you prevent it?",
+     "t": 512.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-02",
+     "text": "Okay, thanks. A college fest site sells 500 tickets. During the rush, 520 tickets got sold. The code reads the remaining count, checks it is above zero, and then decrements it. Reason aloud: what went wrong, and how would you fix it?",
+     "t": 527.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-02",
+     "text": "Noted. If you lock the row with SELECT FOR UPDATE, what happens to performance during the rush, and is that acceptable here?",
+     "t": 569.2
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-02",
+     "text": "Right. How would you test that your fix actually prevents overselling?",
+     "t": 588.5
+    },
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Take your time. Would you like me to repeat the question?",
+     "t": 605.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-03",
+     "text": "Okay. Design the tables for a library system: members borrow books, a book can have many copies, and we must know who has which copy and when it is due. Talk me through your tables and keys.",
+     "t": 608.0
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-03",
+     "text": "Alright. What if the library now wants to let members reserve a book that is currently out? What changes?",
+     "t": 646.6
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-03",
+     "text": "Thank you. How would you find all overdue books with your design?",
+     "t": 659.3
+    },
+    {
+     "kind": "wrapup",
+     "code": null,
+     "text": "I see. We're nearly done. Is there anything you'd like to add or clarify about any of your answers?",
+     "t": 672.4
+    },
+    {
+     "kind": "close",
+     "code": null,
+     "text": "Thank you. That's the end of your viva. Your answers will be reviewed and your faculty will share the results. You can close this window now.",
+     "t": 684.0
+    }
+   ]
+  }
+ ]
+}

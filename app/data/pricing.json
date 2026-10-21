@@ -1,0 +1,26 @@
+{
+  "_source": "OpenAI pricing (developers.openai.com/api/docs/pricing, checked 2026-10-18; actuia.com October 2026 price survey), Groq pricing (groq.com via morphllm.com/groq-pricing, October 2026), Sarvam pricing (docs.sarvam.ai/api-reference-docs/pricing, checked 2026-10-21). USD per 1M tokens; audio per minute; Sarvam in INR. Update when prices change.",
+  "models": {
+    "gpt-6-luna": {"input": 0.10, "cached_input": 0.01, "output": 0.50},
+    "gpt-6.1-sol": {"input": 2.00, "cached_input": 0.10, "output": 10.00},
+    "gpt-6-astra": {"input": 10.00, "cached_input": 1.00, "output": 50.00},
+    "gpt-5-mini": {"input": 0.25, "cached_input": 0.025, "output": 2.00},
+    "gpt-4o-mini": {"input": 0.15, "cached_input": 0.075, "output": 0.60},
+    "openai/gpt-oss-20b": {"input": 0.075, "output": 0.30},
+    "openai/gpt-oss-120b": {"input": 0.15, "output": 0.60}
+  },
+  "stt_per_minute_usd": {
+    "gpt-4o-mini-transcribe": 0.003,
+    "gpt-4o-transcribe": 0.006,
+    "whisper-large-v3-turbo": 0.000667,
+    "whisper-large-v3": 0.00185
+  },
+  "tts_per_minute_usd": {
+    "gpt-4o-mini-tts": 0.015
+  },
+  "sarvam_inr": {
+    "stt_per_hour": 30.0,
+    "tts_per_10k_chars": 30.0
+  },
+  "usd_to_inr": 84.0
+}

@@ -1,0 +1,1742 @@
+{
+ "name": "Operating Systems viva bank",
+ "subject": "Operating Systems",
+ "description": "Processes and threads, CPU scheduling, synchronisation, deadlocks, memory management and virtual memory, file systems. Each question carries key points, follow-ups, a non-revealing hint and misconceptions.",
+ "aliases": {
+  "os": "operating system",
+  "cpu": "cpu",
+  "rr": "round robin",
+  "fcfs": "first come first served",
+  "sjf": "shortest job first",
+  "tlb": "translation lookaside buffer",
+  "lru": "least recently used",
+  "fifo": "first in first out",
+  "pcb": "process control block",
+  "mutex": "mutex",
+  "semaphores": "semaphore",
+  "ipc": "inter process communication",
+  "i o": "i/o",
+  "io": "i/o",
+  "context-switch": "context switch",
+  "page-fault": "page fault"
+ },
+ "questions": [
+  {
+   "code": "OS-W-01",
+   "topic": "Project",
+   "phase": "warmup",
+   "type": "project",
+   "difficulty": 1,
+   "question": "To start, tell me in about a minute about a project or program you have built, and one place where it had to deal with files, processes, threads or memory.",
+   "rephrase": "Describe any project you built and your role in it.",
+   "key_points": [
+    {
+     "point": "Says what the project does",
+     "terms": [
+      "app",
+      "program",
+      "system",
+      "website",
+      "built",
+      "project",
+      "tool"
+     ]
+    },
+    {
+     "point": "Mentions an OS-level concern (threads, processes, files, memory)",
+     "terms": [
+      "thread",
+      "process",
+      "file",
+      "memory",
+      "multithread",
+      "concurrent",
+      "async",
+      "parallel",
+      "socket"
+     ]
+    },
+    {
+     "point": "Explains own contribution",
+     "terms": [
+      "i built",
+      "i wrote",
+      "i implemented",
+      "my part",
+      "my role",
+      "i designed",
+      "i made"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Did anything in that project run concurrently? How did you make sure two parts didn't interfere?",
+     "kind": "probe",
+     "key_points": [
+      {
+       "point": "Mentions locking/synchronisation or isolation",
+       "terms": [
+        "lock",
+        "mutex",
+        "synchron",
+        "queue",
+        "atomic",
+        "separate process",
+        "thread safe"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Tell me a little more: what did it do, what data did it keep, and which part did you build yourself?"
+   ],
+   "expected_seconds": 60,
+   "tags": [
+    "project",
+    "opener"
+   ]
+  },
+  {
+   "code": "OS-F-01",
+   "topic": "Processes and threads",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 1,
+   "question": "What is the difference between a process and a thread?",
+   "rephrase": "How is a thread different from a process in terms of memory and resources?",
+   "key_points": [
+    {
+     "point": "A process is a program in execution with its own address space",
+     "terms": [
+      "program in execution",
+      "own memory",
+      "own address space",
+      "separate memory",
+      "independent"
+     ]
+    },
+    {
+     "point": "Threads of a process share code, data, heap and open files",
+     "terms": [
+      "share memory",
+      "shared memory",
+      "same address space",
+      "share data",
+      "share heap",
+      "share resources"
+     ]
+    },
+    {
+     "point": "Each thread has its own stack, registers and program counter",
+     "terms": [
+      "own stack",
+      "own registers",
+      "program counter",
+      "separate stack"
+     ]
+    },
+    {
+     "point": "Threads are lighter: cheaper to create and switch",
+     "terms": [
+      "lightweight",
+      "light weight",
+      "cheaper",
+      "faster to create",
+      "less overhead",
+      "faster context switch"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "If threads are cheaper, why would you ever use multiple processes instead?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "Isolation: a crash or bug in one process doesn't corrupt others",
+       "terms": [
+        "isolation",
+        "crash",
+        "safety",
+        "security",
+        "fault",
+        "doesn't affect",
+        "independent"
+       ]
+      },
+      {
+       "point": "Avoid shared-memory bugs / language locks (e.g. Python GIL)",
+       "terms": [
+        "race",
+        "gil",
+        "shared state",
+        "synchronization bugs"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think of a browser: each tab versus the different jobs inside one tab."
+   ],
+   "expected_seconds": 50,
+   "tags": [
+    "process",
+    "thread"
+   ]
+  },
+  {
+   "code": "OS-F-02",
+   "topic": "Processes and threads",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 1,
+   "question": "What is a context switch, and why is it considered overhead?",
+   "rephrase": "What happens when the CPU switches from running one process to another?",
+   "key_points": [
+    {
+     "point": "Saving the state of the current process and loading the next one",
+     "terms": [
+      "save state",
+      "save the state",
+      "load",
+      "restore",
+      "registers",
+      "program counter",
+      "pcb"
+     ]
+    },
+    {
+     "point": "State is stored in the process control block",
+     "terms": [
+      "pcb",
+      "process control block"
+     ]
+    },
+    {
+     "point": "No useful work is done during the switch (overhead); caches/TLB get cold",
+     "terms": [
+      "no useful work",
+      "overhead",
+      "wasted",
+      "cache",
+      "tlb",
+      "flush",
+      "time"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Why is switching between threads of the same process usually cheaper than switching between processes?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "Same address space: no page-table/TLB switch",
+       "terms": [
+        "same address space",
+        "no memory switch",
+        "page table",
+        "tlb",
+        "shared memory",
+        "less state"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think of a teacher handling two classes at once: what must they note down before switching rooms?"
+   ],
+   "expected_seconds": 45,
+   "tags": [
+    "context switch"
+   ]
+  },
+  {
+   "code": "OS-F-03",
+   "topic": "CPU scheduling",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 1,
+   "question": "Explain round robin scheduling. How does the choice of time quantum affect it?",
+   "rephrase": "How does round robin decide which process runs next, and what changes if the time slice is very small or very large?",
+   "key_points": [
+    {
+     "point": "Each process gets a fixed time slice in cyclic order (preemptive)",
+     "terms": [
+      "time slice",
+      "time quantum",
+      "quantum",
+      "turn",
+      "cyclic",
+      "circular",
+      "queue",
+      "preempt"
+     ]
+    },
+    {
+     "point": "Too small quantum: too many context switches / overhead",
+     "terms": [
+      "too small",
+      "many context switches",
+      "overhead",
+      "small quantum"
+     ]
+    },
+    {
+     "point": "Too large quantum: behaves like FCFS, poor response time",
+     "terms": [
+      "too large",
+      "first come first served",
+      "fcfs",
+      "poor response",
+      "long wait"
+     ]
+    },
+    {
+     "point": "Good for time-sharing / fair response time",
+     "terms": [
+      "fair",
+      "response time",
+      "time sharing",
+      "interactive",
+      "no starvation"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "With four processes and a quantum of 4 milliseconds, what is the maximum time a process waits before it gets the CPU again?",
+     "kind": "probe",
+     "key_points": [
+      {
+       "point": "About 12 ms: (n minus 1) times the quantum, plus switch overhead",
+       "terms": [
+        "12",
+        "twelve",
+        "n minus 1",
+        "3 times 4",
+        "three quantum"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Picture a whole class sharing a single lab computer, with a teacher keeping time."
+   ],
+   "expected_seconds": 55,
+   "tags": [
+    "scheduling"
+   ]
+  },
+  {
+   "code": "OS-F-04",
+   "topic": "Synchronisation",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 2,
+   "question": "What is a race condition, and what is a critical section?",
+   "rephrase": "Why can two threads updating the same variable produce a wrong result, and how do we protect that code?",
+   "key_points": [
+    {
+     "point": "Result depends on the timing/interleaving of concurrent threads",
+     "terms": [
+      "depends on timing",
+      "order of execution",
+      "interleav",
+      "timing",
+      "unpredictable",
+      "same time",
+      "simultaneously"
+     ]
+    },
+    {
+     "point": "Critical section: code accessing shared data",
+     "terms": [
+      "shared data",
+      "shared resource",
+      "shared variable",
+      "access shared"
+     ]
+    },
+    {
+     "point": "Only one thread at a time may execute it (mutual exclusion)",
+     "terms": [
+      "only one",
+      "mutual exclusion",
+      "one at a time",
+      "one thread"
+     ]
+    },
+    {
+     "point": "Protected with locks/mutex/semaphores",
+     "terms": [
+      "lock",
+      "mutex",
+      "semaphore",
+      "monitor",
+      "synchronized",
+      "synchronised"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Why is count++ not safe across two threads even though it is a single line of code?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "It is read, modify, write: three machine steps that can interleave",
+       "terms": [
+        "read modify write",
+        "three steps",
+        "load",
+        "store",
+        "not atomic",
+        "multiple instructions"
+       ]
+      }
+     ]
+    },
+    {
+     "text": "What are the three requirements a correct critical-section solution must satisfy?",
+     "kind": "deeper",
+     "key_points": [
+      {
+       "point": "Mutual exclusion",
+       "terms": [
+        "mutual exclusion"
+       ]
+      },
+      {
+       "point": "Progress",
+       "terms": [
+        "progress"
+       ]
+      },
+      {
+       "point": "Bounded waiting",
+       "terms": [
+        "bounded waiting",
+        "no starvation",
+        "finite wait"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think of two people editing the same line of a shared document at the same moment."
+   ],
+   "expected_seconds": 55,
+   "tags": [
+    "race condition",
+    "synchronization"
+   ]
+  },
+  {
+   "code": "OS-F-05",
+   "topic": "Synchronisation",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 2,
+   "question": "What is the difference between a mutex and a semaphore?",
+   "rephrase": "When would you use a counting semaphore instead of a mutex lock?",
+   "key_points": [
+    {
+     "point": "Mutex: one owner at a time, released by the thread that locked it",
+     "terms": [
+      "one thread",
+      "ownership",
+      "owner",
+      "only one",
+      "binary",
+      "lock and unlock by same"
+     ]
+    },
+    {
+     "point": "Semaphore: integer counter allowing up to N concurrent holders",
+     "terms": [
+      "counter",
+      "count",
+      "integer",
+      "n threads",
+      "multiple",
+      "number of resources"
+     ]
+    },
+    {
+     "point": "wait/P decrements and signal/V increments (blocks at zero)",
+     "terms": [
+      "wait",
+      "signal",
+      "p and v",
+      "decrement",
+      "increment",
+      "down",
+      "up",
+      "block when zero"
+     ]
+    },
+    {
+     "point": "Semaphores also used for signalling/ordering between threads",
+     "terms": [
+      "signal",
+      "ordering",
+      "producer consumer",
+      "notify",
+      "event"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "How would you use semaphores to solve the producer-consumer problem with a bounded buffer?",
+     "kind": "deeper",
+     "key_points": [
+      {
+       "point": "empty semaphore initialised to buffer size, full to 0",
+       "terms": [
+        "empty",
+        "full",
+        "buffer size",
+        "initialised to n",
+        "initialized to 0"
+       ]
+      },
+      {
+       "point": "Mutex protects the buffer itself",
+       "terms": [
+        "mutex",
+        "lock the buffer",
+        "binary semaphore"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think of a parking lot with a fixed number of spaces versus a single-key washroom."
+   ],
+   "expected_seconds": 55,
+   "tags": [
+    "semaphore",
+    "mutex"
+   ]
+  },
+  {
+   "code": "OS-F-06",
+   "topic": "Deadlocks",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 1,
+   "question": "What are the four necessary conditions for a deadlock?",
+   "rephrase": "Which four conditions must all hold at the same time for processes to deadlock?",
+   "key_points": [
+    {
+     "point": "Mutual exclusion",
+     "terms": [
+      "mutual exclusion",
+      "non shareable",
+      "one at a time"
+     ]
+    },
+    {
+     "point": "Hold and wait",
+     "terms": [
+      "hold and wait",
+      "holding and waiting",
+      "holds one waits for another"
+     ]
+    },
+    {
+     "point": "No preemption",
+     "terms": [
+      "no preemption",
+      "cannot be taken away",
+      "non preemptive",
+      "cannot forcibly"
+     ]
+    },
+    {
+     "point": "Circular wait",
+     "terms": [
+      "circular wait",
+      "cycle",
+      "circular chain",
+      "waiting in a circle"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Which of these conditions is usually easiest to break in a real program, and how?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "Circular wait: acquire locks in a fixed global order",
+       "terms": [
+        "circular wait",
+        "order",
+        "ordering",
+        "same order",
+        "lock hierarchy"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Picture four cars at a four-way junction, each waiting for the car to its right."
+   ],
+   "expected_seconds": 45,
+   "tags": [
+    "deadlock"
+   ]
+  },
+  {
+   "code": "OS-F-07",
+   "topic": "Memory management",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 1,
+   "question": "What is paging, and what problem does it solve?",
+   "rephrase": "Why does the operating system divide memory into fixed-size pages and frames?",
+   "key_points": [
+    {
+     "point": "Logical memory split into fixed-size pages, physical memory into frames",
+     "terms": [
+      "fixed size",
+      "pages",
+      "frames",
+      "page and frame",
+      "same size blocks"
+     ]
+    },
+    {
+     "point": "Page table maps pages to frames",
+     "terms": [
+      "page table",
+      "mapping",
+      "maps",
+      "translate",
+      "logical to physical"
+     ]
+    },
+    {
+     "point": "Removes external fragmentation; process memory need not be contiguous",
+     "terms": [
+      "external fragmentation",
+      "contiguous",
+      "non contiguous",
+      "anywhere in memory",
+      "fragmentation"
+     ]
+    },
+    {
+     "point": "Can cause internal fragmentation in the last page",
+     "terms": [
+      "internal fragmentation",
+      "last page",
+      "wasted space inside"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Every memory access now needs a page-table lookup. How do systems keep this fast?",
+     "kind": "deeper",
+     "key_points": [
+      {
+       "point": "TLB caches recent translations",
+       "terms": [
+        "tlb",
+        "translation lookaside buffer",
+        "cache",
+        "associative memory"
+       ]
+      },
+      {
+       "point": "High hit ratio makes the average cost small",
+       "terms": [
+        "hit ratio",
+        "hit rate",
+        "most accesses",
+        "locality"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think of a hostel that gives rooms of exactly the same size, and a register that says which student is in which room."
+   ],
+   "expected_seconds": 55,
+   "tags": [
+    "paging"
+   ]
+  },
+  {
+   "code": "OS-F-08",
+   "topic": "Memory management",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 2,
+   "question": "What is virtual memory, and what happens on a page fault?",
+   "rephrase": "How can a program use more memory than the RAM installed, and what happens when it touches a page that is not in RAM?",
+   "key_points": [
+    {
+     "point": "Gives each process a large address space backed partly by disk",
+     "terms": [
+      "larger than ram",
+      "disk",
+      "swap",
+      "illusion",
+      "more memory than physical",
+      "secondary storage",
+      "backing store"
+     ]
+    },
+    {
+     "point": "Pages loaded on demand (demand paging)",
+     "terms": [
+      "demand paging",
+      "on demand",
+      "only when needed",
+      "lazy"
+     ]
+    },
+    {
+     "point": "Page fault: trap to OS, load page from disk into a frame, update page table, restart instruction",
+     "terms": [
+      "trap",
+      "interrupt",
+      "load from disk",
+      "bring the page",
+      "update page table",
+      "restart",
+      "valid bit",
+      "invalid"
+     ]
+    },
+    {
+     "point": "If no free frame, a page replacement algorithm picks a victim",
+     "terms": [
+      "replacement",
+      "victim",
+      "lru",
+      "fifo",
+      "evict",
+      "swap out"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "What is thrashing and why does it happen?",
+     "kind": "deeper",
+     "key_points": [
+      {
+       "point": "System spends most time paging instead of executing",
+       "terms": [
+        "most time",
+        "paging",
+        "swapping",
+        "constant page faults",
+        "cpu utilization drops",
+        "no useful work"
+       ]
+      },
+      {
+       "point": "Too many processes / working sets don't fit in memory",
+       "terms": [
+        "working set",
+        "too many processes",
+        "not enough frames",
+        "degree of multiprogramming",
+        "memory too small"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think of how you work at a small study desk with a big bookshelf nearby."
+   ],
+   "expected_seconds": 60,
+   "tags": [
+    "virtual memory"
+   ]
+  },
+  {
+   "code": "OS-F-09",
+   "topic": "CPU scheduling",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 2,
+   "question": "What is the difference between preemptive and non-preemptive scheduling? Give one algorithm of each kind.",
+   "rephrase": "Can the operating system take the CPU away from a running process? Explain both kinds of scheduling.",
+   "key_points": [
+    {
+     "point": "Preemptive: OS can interrupt a running process (timer, higher priority)",
+     "terms": [
+      "interrupt",
+      "take away",
+      "forcibly",
+      "timer",
+      "higher priority arrives",
+      "stop the running"
+     ]
+    },
+    {
+     "point": "Non-preemptive: process runs until it blocks or finishes",
+     "terms": [
+      "until it finishes",
+      "until completion",
+      "voluntarily",
+      "blocks",
+      "cannot be interrupted",
+      "runs to completion"
+     ]
+    },
+    {
+     "point": "Example preemptive: round robin, SRTF, preemptive priority",
+     "terms": [
+      "round robin",
+      "srtf",
+      "shortest remaining",
+      "preemptive priority"
+     ]
+    },
+    {
+     "point": "Example non-preemptive: FCFS, non-preemptive SJF",
+     "terms": [
+      "fcfs",
+      "first come first served",
+      "sjf",
+      "shortest job first"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Why can shortest-job-first be unfair, and how is that usually fixed?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "Long jobs can starve",
+       "terms": [
+        "starvation",
+        "starve",
+        "long jobs wait forever",
+        "never run"
+       ]
+      },
+      {
+       "point": "Aging raises priority over time",
+       "terms": [
+        "aging",
+        "ageing",
+        "increase priority",
+        "over time"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think about whether a student can be stopped halfway through their presentation."
+   ],
+   "expected_seconds": 55,
+   "tags": [
+    "scheduling"
+   ]
+  },
+  {
+   "code": "OS-F-10",
+   "topic": "File systems",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 2,
+   "question": "What is an inode, and what information does it store?",
+   "rephrase": "In a Unix file system, where is a file's metadata kept, and what is in it?",
+   "key_points": [
+    {
+     "point": "Data structure holding a file's metadata",
+     "terms": [
+      "metadata",
+      "data structure",
+      "information about the file"
+     ]
+    },
+    {
+     "point": "Stores size, owner, permissions, timestamps, link count",
+     "terms": [
+      "size",
+      "owner",
+      "permission",
+      "timestamp",
+      "modified time",
+      "link count",
+      "mode"
+     ]
+    },
+    {
+     "point": "Stores pointers to the data blocks (direct and indirect)",
+     "terms": [
+      "pointer",
+      "data blocks",
+      "block addresses",
+      "direct",
+      "indirect"
+     ]
+    },
+    {
+     "point": "Does not store the file name (names live in directories)",
+     "terms": [
+      "not the name",
+      "file name is in directory",
+      "directory entry",
+      "name not stored"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "What is the difference between a hard link and a symbolic link in terms of inodes?",
+     "kind": "deeper",
+     "key_points": [
+      {
+       "point": "Hard link: another directory entry pointing to the same inode",
+       "terms": [
+        "same inode",
+        "another name",
+        "directory entry",
+        "link count"
+       ]
+      },
+      {
+       "point": "Symbolic link: separate file containing a path; breaks if target deleted",
+       "terms": [
+        "path",
+        "separate inode",
+        "shortcut",
+        "breaks",
+        "dangling"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think of the catalogue card for a library book: what is written on the card versus on the shelf label."
+   ],
+   "expected_seconds": 50,
+   "tags": [
+    "file system"
+   ]
+  },
+  {
+   "code": "OS-F-11",
+   "topic": "Processes and threads",
+   "phase": "fundamentals",
+   "type": "concept",
+   "difficulty": 1,
+   "question": "What does the fork system call do? What are its return values?",
+   "rephrase": "How does a Unix process create a child process, and how do parent and child tell themselves apart?",
+   "key_points": [
+    {
+     "point": "Creates a child process that is a copy of the parent",
+     "terms": [
+      "copy",
+      "duplicate",
+      "child process",
+      "clone",
+      "new process"
+     ]
+    },
+    {
+     "point": "Returns 0 in the child",
+     "terms": [
+      "0 in the child",
+      "zero to the child",
+      "child gets 0",
+      "returns zero"
+     ]
+    },
+    {
+     "point": "Returns the child's PID in the parent, -1 on failure",
+     "terms": [
+      "pid of child",
+      "child's pid",
+      "process id",
+      "minus 1",
+      "-1",
+      "negative"
+     ]
+    },
+    {
+     "point": "Memory is copied lazily (copy-on-write)",
+     "terms": [
+      "copy on write",
+      "cow",
+      "lazily",
+      "shared until written"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Why is copy-on-write important for fork followed by exec?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "exec replaces the memory immediately, so copying it would be wasted work",
+       "terms": [
+        "exec replaces",
+        "wasted",
+        "no need to copy",
+        "immediately replaced",
+        "avoid copying"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "After the call, two processes run the same next line. How does each one know which it is?"
+   ],
+   "expected_seconds": 50,
+   "tags": [
+    "fork"
+   ]
+  },
+  {
+   "code": "OS-D-01",
+   "topic": "Memory management",
+   "phase": "depth",
+   "type": "concept",
+   "difficulty": 3,
+   "question": "Compare FIFO, LRU and optimal page replacement. Why is LRU used as a practical target, and how is it approximated?",
+   "rephrase": "Which page should the OS evict when memory is full, and why is true LRU expensive?",
+   "key_points": [
+    {
+     "point": "FIFO evicts the oldest page; can suffer Belady's anomaly",
+     "terms": [
+      "oldest",
+      "first in",
+      "belady",
+      "anomaly",
+      "more frames more faults"
+     ]
+    },
+    {
+     "point": "Optimal evicts the page used farthest in future: unrealisable, a benchmark",
+     "terms": [
+      "farthest in future",
+      "future",
+      "not possible",
+      "benchmark",
+      "theoretical",
+      "minimum faults"
+     ]
+    },
+    {
+     "point": "LRU evicts least recently used, exploiting temporal locality",
+     "terms": [
+      "least recently used",
+      "locality",
+      "recent past predicts",
+      "not used for longest"
+     ]
+    },
+    {
+     "point": "Exact LRU too costly; approximated by reference bits / clock (second chance)",
+     "terms": [
+      "reference bit",
+      "clock",
+      "second chance",
+      "approximate",
+      "hardware support",
+      "aging"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Why is exact LRU too expensive to implement in hardware for every memory access?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "Would need to update a timestamp/stack order on every memory reference",
+       "terms": [
+        "every access",
+        "every reference",
+        "update",
+        "timestamp",
+        "counter",
+        "stack",
+        "too slow"
+       ]
+      }
+     ]
+    },
+    {
+     "text": "What if a program scans a huge array once, larger than memory? How does LRU behave, and what could do better?",
+     "kind": "what_if",
+     "key_points": [
+      {
+       "point": "LRU evicts useful pages for pages never reused (scan pollution)",
+       "terms": [
+        "evicts useful",
+        "flush",
+        "pollution",
+        "never reused",
+        "every access faults"
+       ]
+      },
+      {
+       "point": "Scan-resistant policies: LRU-K, 2Q, ARC, MRU for scans",
+       "terms": [
+        "lru-k",
+        "2q",
+        "arc",
+        "mru",
+        "scan resistant",
+        "bypass"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think about what information each algorithm would need to make its choice."
+   ],
+   "expected_seconds": 75,
+   "tags": [
+    "page replacement"
+   ]
+  },
+  {
+   "code": "OS-D-02",
+   "topic": "Deadlocks",
+   "phase": "depth",
+   "type": "concept",
+   "difficulty": 3,
+   "question": "Explain the Banker's algorithm. What does 'safe state' mean, and why isn't the algorithm used much in real operating systems?",
+   "rephrase": "How does the Banker's algorithm decide whether to grant a resource request?",
+   "key_points": [
+    {
+     "point": "Grants a request only if the resulting state is safe",
+     "terms": [
+      "safe state",
+      "grant only if safe",
+      "pretend to allocate",
+      "check safety"
+     ]
+    },
+    {
+     "point": "Safe: some order exists in which every process can finish",
+     "terms": [
+      "safe sequence",
+      "order",
+      "every process can finish",
+      "all can complete"
+     ]
+    },
+    {
+     "point": "Needs each process's maximum demand in advance",
+     "terms": [
+      "maximum",
+      "max need",
+      "in advance",
+      "declare",
+      "need matrix"
+     ]
+    },
+    {
+     "point": "Impractical: max needs unknown, processes come and go, runtime cost",
+     "terms": [
+      "unknown",
+      "not known in advance",
+      "dynamic",
+      "overhead",
+      "expensive",
+      "impractical"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Is an unsafe state the same as a deadlock? Why or why not?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "No: unsafe means deadlock is possible, not certain",
+       "terms": [
+        "possible",
+        "may",
+        "not necessarily",
+        "might",
+        "not always",
+        "can lead"
+       ]
+      }
+     ]
+    },
+    {
+     "text": "What do real systems like Linux do about deadlocks instead?",
+     "kind": "deeper",
+     "key_points": [
+      {
+       "point": "Mostly ignore at OS level (ostrich); rely on lock ordering, timeouts, detection in DBs",
+       "terms": [
+        "ignore",
+        "ostrich",
+        "lock ordering",
+        "timeout",
+        "detection",
+        "programmer",
+        "lockdep"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think of a bank that lends money only when it is sure it can never get stuck."
+   ],
+   "expected_seconds": 75,
+   "tags": [
+    "deadlock",
+    "bankers"
+   ]
+  },
+  {
+   "code": "OS-D-03",
+   "topic": "Synchronisation",
+   "phase": "depth",
+   "type": "concept",
+   "difficulty": 3,
+   "question": "What is priority inversion? Describe how it happens and how it is solved.",
+   "rephrase": "How can a low-priority task end up blocking a high-priority task?",
+   "key_points": [
+    {
+     "point": "Low-priority task holds a lock the high-priority task needs",
+     "terms": [
+      "holds a lock",
+      "low priority holds",
+      "lock needed",
+      "resource held"
+     ]
+    },
+    {
+     "point": "Medium-priority task preempts the low one, so high waits indefinitely",
+     "terms": [
+      "medium priority",
+      "preempts",
+      "middle",
+      "indefinitely",
+      "unbounded"
+     ]
+    },
+    {
+     "point": "Solved by priority inheritance (or priority ceiling)",
+     "terms": [
+      "priority inheritance",
+      "inherit",
+      "priority ceiling",
+      "boost",
+      "temporarily raise"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Can you name a real incident where priority inversion caused a failure?",
+     "kind": "example",
+     "key_points": [
+      {
+       "point": "Mars Pathfinder (1997) resets",
+       "terms": [
+        "mars pathfinder",
+        "pathfinder",
+        "mars",
+        "nasa",
+        "rover"
+       ]
+      }
+     ]
+    },
+    {
+     "text": "Why does priority inheritance fix it?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "The lock holder runs at the waiter's high priority, so medium tasks cannot preempt it until it releases",
+       "terms": [
+        "runs at high priority",
+        "cannot be preempted",
+        "releases quickly",
+        "medium cannot",
+        "finishes critical section"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "You need three tasks of different priorities and one shared lock."
+   ],
+   "expected_seconds": 70,
+   "tags": [
+    "priority inversion"
+   ]
+  },
+  {
+   "code": "OS-D-04",
+   "topic": "CPU scheduling",
+   "phase": "depth",
+   "type": "concept",
+   "difficulty": 3,
+   "question": "How does a multilevel feedback queue scheduler work, and why is it a good fit for a general-purpose operating system?",
+   "rephrase": "How can a scheduler favour interactive programs without knowing in advance how long each job runs?",
+   "key_points": [
+    {
+     "point": "Several queues with different priorities and time quanta",
+     "terms": [
+      "multiple queues",
+      "several queues",
+      "levels",
+      "different quantum",
+      "priority levels"
+     ]
+    },
+    {
+     "point": "Jobs that use their full quantum move down; jobs that block early stay high",
+     "terms": [
+      "move down",
+      "demote",
+      "uses full quantum",
+      "cpu bound",
+      "i/o bound stays",
+      "stay high",
+      "feedback"
+     ]
+    },
+    {
+     "point": "Favours interactive/I/O-bound jobs without knowing burst lengths in advance",
+     "terms": [
+      "interactive",
+      "i/o bound",
+      "without knowing",
+      "learns",
+      "adapts",
+      "approximates sjf"
+     ]
+    },
+    {
+     "point": "Periodic priority boost / aging prevents starvation",
+     "terms": [
+      "boost",
+      "aging",
+      "ageing",
+      "starvation",
+      "reset priority",
+      "move up"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "How could a clever program game a multilevel feedback queue, and how is that prevented?",
+     "kind": "what_if",
+     "key_points": [
+      {
+       "point": "Yield just before the quantum ends to stay at high priority",
+       "terms": [
+        "yield",
+        "just before",
+        "give up cpu",
+        "fake i/o",
+        "sleep briefly"
+       ]
+      },
+      {
+       "point": "Account total CPU used at a level, not per burst",
+       "terms": [
+        "total time",
+        "accounting",
+        "allotment",
+        "cumulative",
+        "track usage"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think about what the scheduler can observe about a job each time it gives up the CPU."
+   ],
+   "expected_seconds": 75,
+   "tags": [
+    "scheduling",
+    "mlfq"
+   ]
+  },
+  {
+   "code": "OS-D-05",
+   "topic": "File systems",
+   "phase": "depth",
+   "type": "concept",
+   "difficulty": 3,
+   "question": "What is journaling in a file system, and what problem does it solve after a crash?",
+   "rephrase": "Why do file systems like ext4 keep a journal?",
+   "key_points": [
+    {
+     "point": "Changes are first written to a journal/log before applying them",
+     "terms": [
+      "log first",
+      "write to journal",
+      "before applying",
+      "write ahead",
+      "intent"
+     ]
+    },
+    {
+     "point": "After a crash, replay or discard journal entries to restore consistency",
+     "terms": [
+      "replay",
+      "recover",
+      "consistent",
+      "discard incomplete",
+      "redo"
+     ]
+    },
+    {
+     "point": "Avoids long full-disk checks (fsck)",
+     "terms": [
+      "fsck",
+      "full scan",
+      "check the whole disk",
+      "faster recovery"
+     ]
+    },
+    {
+     "point": "Metadata-only vs full data journaling trade-off",
+     "terms": [
+      "metadata",
+      "ordered mode",
+      "data mode",
+      "writeback",
+      "performance trade"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Why do many file systems journal only metadata by default, not file contents?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "Journaling data writes everything twice: big performance cost",
+       "terms": [
+        "twice",
+        "double write",
+        "performance",
+        "slower",
+        "write amplification"
+       ]
+      },
+      {
+       "point": "Metadata consistency is what keeps the structure usable",
+       "terms": [
+        "structure",
+        "metadata consistent",
+        "file system corruption",
+        "directories"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Think about appending a block to a file: which on-disk structures change, and what if power fails between them?"
+   ],
+   "expected_seconds": 70,
+   "tags": [
+    "journaling"
+   ]
+  },
+  {
+   "code": "OS-A-01",
+   "topic": "Synchronisation",
+   "phase": "applied",
+   "type": "debug",
+   "difficulty": 2,
+   "question": "Two threads each run this function one million times on a shared counter. The expected final value is two million, but it often prints less. Reason aloud: why, and how would you fix it?",
+   "rephrase": "Why does this shared counter end up lower than two million, and how would you correct it?",
+   "code_snippet": "int counter = 0;\n\nvoid* worker(void* arg) {\n    for (int i = 0; i < 1000000; i++) {\n        counter++;\n    }\n    return NULL;\n}",
+   "key_points": [
+    {
+     "point": "counter++ is not atomic: read, increment, write can interleave",
+     "terms": [
+      "not atomic",
+      "read modify write",
+      "load add store",
+      "interleave",
+      "three steps",
+      "race condition"
+     ]
+    },
+    {
+     "point": "Updates are lost when both threads read the same old value",
+     "terms": [
+      "lost update",
+      "same value",
+      "overwrite",
+      "both read",
+      "lost"
+     ]
+    },
+    {
+     "point": "Fix with a mutex around the increment, or an atomic operation",
+     "terms": [
+      "mutex",
+      "lock",
+      "pthread_mutex",
+      "atomic",
+      "atomic_fetch_add",
+      "synchronized",
+      "critical section"
+     ]
+    },
+    {
+     "point": "Better: per-thread local counters combined at the end (less contention)",
+     "terms": [
+      "local counter",
+      "per thread",
+      "combine at end",
+      "reduce contention",
+      "sum at the end",
+      "thread local"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "If you lock the mutex inside the loop, the program becomes much slower. Why, and what would you change?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "Lock/unlock a million times plus contention/cache-line bouncing",
+       "terms": [
+        "million times",
+        "overhead",
+        "contention",
+        "cache",
+        "every iteration",
+        "waiting"
+       ]
+      },
+      {
+       "point": "Accumulate locally, lock once at the end",
+       "terms": [
+        "local",
+        "once",
+        "at the end",
+        "batch",
+        "outside the loop"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Write out the machine-level steps of counter++ for each thread on paper, side by side."
+   ],
+   "expected_seconds": 110,
+   "tags": [
+    "race condition",
+    "debugging"
+   ]
+  },
+  {
+   "code": "OS-A-02",
+   "topic": "Deadlocks",
+   "phase": "applied",
+   "type": "debug",
+   "difficulty": 2,
+   "question": "This bank-transfer code hangs forever under load. Explain what is happening and how you would fix it.",
+   "rephrase": "Two transfers between the same pair of accounts run at once and both freeze. Why?",
+   "code_snippet": "void transfer(Account* from, Account* to, int amt) {\n    lock(&from->m);\n    lock(&to->m);\n    from->balance -= amt;\n    to->balance += amt;\n    unlock(&to->m);\n    unlock(&from->m);\n}\n// thread 1: transfer(A, B, 100)   thread 2: transfer(B, A, 50)",
+   "key_points": [
+    {
+     "point": "Deadlock: thread 1 holds A waits for B, thread 2 holds B waits for A",
+     "terms": [
+      "deadlock",
+      "holds a waits for b",
+      "each holds one",
+      "circular wait",
+      "waiting for each other"
+     ]
+    },
+    {
+     "point": "Fix by acquiring locks in a global order (e.g. by account id)",
+     "terms": [
+      "order",
+      "lower id first",
+      "same order",
+      "sort",
+      "fixed order",
+      "ordering"
+     ]
+    },
+    {
+     "point": "Alternatives: trylock with backoff, or a single coarse lock",
+     "terms": [
+      "trylock",
+      "try lock",
+      "timeout",
+      "backoff",
+      "global lock",
+      "single lock"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "What happens with your ordering fix if someone calls transfer(A, A, 10)?",
+     "kind": "what_if",
+     "key_points": [
+      {
+       "point": "Locks the same mutex twice: self-deadlock unless handled",
+       "terms": [
+        "same lock twice",
+        "self deadlock",
+        "lock twice",
+        "check from equals to",
+        "recursive mutex"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Trace both threads step by step, assuming each gets exactly one lock before the other runs."
+   ],
+   "expected_seconds": 110,
+   "tags": [
+    "deadlock",
+    "debugging"
+   ]
+  },
+  {
+   "code": "OS-A-03",
+   "topic": "Memory management",
+   "phase": "applied",
+   "type": "scenario",
+   "difficulty": 3,
+   "question": "A college server with 8 GB of RAM becomes extremely slow during exam results: the disk light stays on and CPU usage is low. Reason aloud about what is happening and what you would check and change.",
+   "rephrase": "The server is slow, the disk is constantly busy and the CPU is mostly idle. What is going on and how would you fix it?",
+   "key_points": [
+    {
+     "point": "Thrashing: constant paging/swapping because memory is overcommitted",
+     "terms": [
+      "thrashing",
+      "swapping",
+      "paging",
+      "page faults",
+      "swap",
+      "out of memory"
+     ]
+    },
+    {
+     "point": "Check memory and swap usage, page-fault rate (free, vmstat, top)",
+     "terms": [
+      "vmstat",
+      "free",
+      "top",
+      "htop",
+      "swap usage",
+      "page fault rate",
+      "memory usage",
+      "monitor"
+     ]
+    },
+    {
+     "point": "Reduce load: fewer worker processes, limit concurrency, kill memory hogs",
+     "terms": [
+      "fewer processes",
+      "reduce workers",
+      "limit",
+      "kill",
+      "reduce load",
+      "concurrency",
+      "queue requests"
+     ]
+    },
+    {
+     "point": "Add RAM / cache results / fix leaks long-term",
+     "terms": [
+      "add ram",
+      "more memory",
+      "cache",
+      "memory leak",
+      "static page",
+      "cdn",
+      "scale"
+     ]
+    }
+   ],
+   "follow_ups": [
+    {
+     "text": "Why does the CPU look idle when the system is actually overloaded?",
+     "kind": "why",
+     "key_points": [
+      {
+       "point": "Processes are blocked waiting for disk I/O on page faults",
+       "terms": [
+        "waiting for disk",
+        "blocked",
+        "i/o wait",
+        "iowait",
+        "waiting for pages"
+       ]
+      }
+     ]
+    },
+    {
+     "text": "What if you are not allowed to add RAM before results go live in one hour? What would you do?",
+     "kind": "what_if",
+     "key_points": [
+      {
+       "point": "Serve a precomputed/static results page; cap concurrent workers; queue requests",
+       "terms": [
+        "static",
+        "precompute",
+        "cache",
+        "cap workers",
+        "limit connections",
+        "queue",
+        "rate limit"
+       ]
+      }
+     ]
+    }
+   ],
+   "hints": [
+    "Low CPU but a constantly busy disk: what is the CPU waiting for?"
+   ],
+   "expected_seconds": 120,
+   "tags": [
+    "thrashing",
+    "performance"
+   ]
+  }
+ ]
+}

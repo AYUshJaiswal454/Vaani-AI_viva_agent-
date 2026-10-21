@@ -1,0 +1,1305 @@
+{
+ "label": "samples",
+ "base": "http://127.0.0.1:8012",
+ "bots": 5,
+ "personas": [
+  "strong",
+  "average",
+  "weak",
+  "idk",
+  "indian_english"
+ ],
+ "wall_s": 773.4,
+ "completed": 5,
+ "still_running_at_end": 0,
+ "dropped": 0,
+ "errors": [],
+ "replies": 192,
+ "reply_p50_ms": 1023,
+ "reply_p95_ms": 2206,
+ "reply_p99_ms": 2721,
+ "reply_max_ms": 2856,
+ "audio_fetch_p95_ms": 17,
+ "options": {
+  "code": "DBMS26",
+  "bank": "dbms",
+  "personas": "strong,average,weak,idk,indian_english",
+  "bots": 0,
+  "ramp": 20.0,
+  "max_s": 960,
+  "snr": null,
+  "mute_after": null,
+  "drop_at": null,
+  "drop_for": 8.0,
+  "hints": false,
+  "no_fetch": false,
+  "roll_prefix": "23CS10",
+  "seed": 41,
+  "label": "samples"
+ },
+ "sessions": [
+  {
+   "roll_no": "23CS10001",
+   "persona": "strong",
+   "session_id": 1,
+   "ok": true,
+   "end": "completed",
+   "error": "",
+   "turns": 37,
+   "duration_s": 773.2,
+   "reconnects": 0,
+   "reply_p50_ms": 1160,
+   "reply_max_ms": 2306,
+   "says": [
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Hello Ananya. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+     "t": 0.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-W-01",
+     "text": "Thank you. A quick note before we start: this viva has five short parts and lasts at most fifteen minutes. Answer out loud, in your own words. It's completely fine to say you don't know, or to ask me to repeat a question. Let's start with your work. In about a minute, tell me about a project where you stored data in a database: what it did, how the data was organised, and what your own part was.",
+     "t": 15.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-W-01",
+     "text": "Alright. Which table or collection in that project was the most important, and what were its main fields?",
+     "t": 73.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-12",
+     "text": "Thank you. Let's move on to some fundamentals. How does a database recover after a crash? What role does the log play?",
+     "t": 88.1
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-12",
+     "text": "I see. Why must the log record be written to disk before the data page it describes?",
+     "t": 114.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-10",
+     "text": "Got it. What is a deadlock in a database, and how can it be handled?",
+     "t": 126.4
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-10",
+     "text": "Okay, thanks. If the DBMS has to abort one transaction to break a deadlock, how should it choose which one?",
+     "t": 146.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-05",
+     "text": "Noted. Explain first, second and third normal form in simple terms.",
+     "t": 160.3
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-05",
+     "text": "Right. How is BCNF stricter than third normal form?",
+     "t": 180.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-07",
+     "text": "Okay. Explain the different types of joins: inner join, left outer join and full outer join.",
+     "t": 199.1
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-07",
+     "text": "Alright. How would you find students who have not enrolled in any course using a join?",
+     "t": 227.6
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-14",
+     "text": "Thank you. What is a dirty read? Which isolation level prevents it?",
+     "t": 238.8
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-14",
+     "text": "I see. What is a phantom read, and why doesn't row locking alone prevent it?",
+     "t": 257.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-05",
+     "text": "Got it. Let's go a little deeper into SQL. How does a query optimiser decide how to execute a SQL query? What information does it use?",
+     "t": 278.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-05",
+     "text": "Okay, thanks. Why might the optimiser ignore an index that exists on the filtered column?",
+     "t": 300.4
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-05",
+     "text": "Noted. What happens if the table statistics are badly out of date?",
+     "t": 317.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-06",
+     "text": "Right. Explain the steal and no-force policies in buffer management and why they make recovery need both undo and redo.",
+     "t": 330.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-06",
+     "text": "Okay. What if a system used no-steal and force instead? What would be simpler and what would be worse?",
+     "t": 357.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-03",
+     "text": "Alright. What is a lossless-join decomposition, and how do you check that splitting a table did not lose information?",
+     "t": 370.3
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-03",
+     "text": "Thank you. Why can decomposing to BCNF lose dependency preservation, while 3NF never does?",
+     "t": 394.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-02",
+     "text": "I see. Compare the isolation levels read committed, repeatable read and serializable. What does each one allow, and what does it cost?",
+     "t": 417.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-02",
+     "text": "Got it. Why don't databases just use serializable everywhere by default?",
+     "t": 437.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-04",
+     "text": "Okay, thanks. How does multiversion concurrency control (MVCC) work, and why do databases like PostgreSQL use it?",
+     "t": 447.2
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Noted. What problem appears if old versions are never cleaned up?",
+     "t": 479.1
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Right. Can two concurrent MVCC transactions still conflict? Give an example.",
+     "t": 488.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-07",
+     "text": "Okay. What is a weak entity? How is it identified and represented in tables?",
+     "t": 499.8
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-07",
+     "text": "Alright. Why does deleting the owner usually delete the weak entity rows too?",
+     "t": 522.1
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-07",
+     "text": "Thank you. Give an example of a weak entity from a college or hospital system.",
+     "t": 531.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-03",
+     "text": "I see. Now let's try a practical problem. Please think out loud as you work through it. Design the tables for a library system: members borrow books, a book can have many copies, and we must know who has which copy and when it is due. Talk me through your tables and keys.",
+     "t": 544.4
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-03",
+     "text": "Got it. What if the library now wants to let members reserve a book that is currently out? What changes?",
+     "t": 592.0
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-03",
+     "text": "Okay, thanks. How would you find all overdue books with your design?",
+     "t": 608.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-04",
+     "text": "Noted. This query is supposed to show each department with its number of employees, including departments with no employees. But departments with zero employees are missing. Explain why and how to fix it.",
+     "t": 621.7
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-04",
+     "text": "Right. After switching to LEFT JOIN but keeping COUNT(*), what number would an empty department show, and why?",
+     "t": 661.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-05",
+     "text": "Okay. A payment app moves money from wallet A to wallet B with two separate UPDATE statements and no transaction. Occasionally money disappears. Reason aloud about the causes and design a fix.",
+     "t": 674.1
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-05",
+     "text": "Alright. What if wallets A and B live in two different databases? Can one transaction still cover both?",
+     "t": 715.3
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-05",
+     "text": "Thank you. Why might two transfers between the same wallets in opposite directions deadlock, and how can you prevent it?",
+     "t": 732.0
+    },
+    {
+     "kind": "wrapup",
+     "code": null,
+     "text": "I see. We're nearly done. Is there anything you'd like to add or clarify about any of your answers?",
+     "t": 754.3
+    },
+    {
+     "kind": "close",
+     "code": null,
+     "text": "Thank you. That's the end of your viva. Your answers will be reviewed and your faculty will share the results. You can close this window now.",
+     "t": 765.3
+    }
+   ]
+  },
+  {
+   "roll_no": "23CS10002",
+   "persona": "average",
+   "session_id": 2,
+   "ok": true,
+   "end": "completed",
+   "error": "",
+   "turns": 46,
+   "duration_s": 672.7,
+   "reconnects": 0,
+   "reply_p50_ms": 1088,
+   "reply_max_ms": 2646,
+   "says": [
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Hello Rohan. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+     "t": 0.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-W-01",
+     "text": "Thank you. A quick note before we start: this viva has five short parts and lasts at most fifteen minutes. Answer out loud, in your own words. It's completely fine to say you don't know, or to ask me to repeat a question. Let's start with your work. In about a minute, tell me about a project where you stored data in a database: what it did, how the data was organised, and what your own part was.",
+     "t": 15.7
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-W-01",
+     "text": "Alright. Which table or collection in that project was the most important, and what were its main fields?",
+     "t": 52.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-10",
+     "text": "Thank you. Let's move on to some fundamentals. What is a deadlock in a database, and how can it be handled?",
+     "t": 69.4
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-10",
+     "text": "Here's a hint. Picture two cars meeting in the middle of a narrow one-lane bridge.",
+     "t": 84.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-12",
+     "text": "I see. How does a database recover after a crash? What role does the log play?",
+     "t": 96.3
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-12",
+     "text": "Got it. Why must the log record be written to disk before the data page it describes?",
+     "t": 109.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-02",
+     "text": "Okay, thanks. Explain super key, candidate key and primary key, and how they are related.",
+     "t": 123.3
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-02",
+     "text": "Here's a hint. Start from the job a key does in a table, then ask whether every column in a key set is really needed.",
+     "t": 141.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-13",
+     "text": "Noted. What is the difference between a shared lock and an exclusive lock?",
+     "t": 151.9
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-13",
+     "text": "Here's a hint. Think about a notice board in college: what is safe for many people to do at once, and what isn't?",
+     "t": 159.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-05",
+     "text": "Right. Explain first, second and third normal form in simple terms.",
+     "t": 169.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-14",
+     "text": "No problem. What is a dirty read? Which isolation level prevents it?",
+     "t": 177.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-09",
+     "text": "That's fine. Let's try a different area. What is an entity-relationship diagram, and what are entities, attributes and relationships?",
+     "t": 185.5
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-09",
+     "text": "Here's a hint. Think of a college office: what does it keep records about, and how are those records related?",
+     "t": 206.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-08",
+     "text": "Thank you. What is an index in a database and why is it used?",
+     "t": 216.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-04",
+     "text": "That's alright. What is normalisation, and why do we normalise a database?",
+     "t": 224.2
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-04",
+     "text": "Here's a hint. Think about storing a department's phone number on every employee's row, and then the phone number changes.",
+     "t": 240.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-03",
+     "text": "Got it. What do the ACID properties of a transaction mean?",
+     "t": 252.5
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-03",
+     "text": "Here's a hint. Imagine transferring 500 rupees from one bank account to another and the power goes off halfway.",
+     "t": 261.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-11",
+     "text": "Okay, thanks. Let's go a little deeper into SQL. What is the difference between DELETE, TRUNCATE and DROP?",
+     "t": 272.2
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-11",
+     "text": "Here's a hint. Think of an exam answer sheet: erasing some answers, erasing all answers, or throwing away the sheet.",
+     "t": 284.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-01",
+     "text": "Noted. What is the difference between a primary key and a foreign key?",
+     "t": 300.3
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-01",
+     "text": "Right. Can a foreign key column contain NULL values or duplicate values? Why?",
+     "t": 319.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-06",
+     "text": "Okay. Explain the steal and no-force policies in buffer management and why they make recovery need both undo and redo.",
+     "t": 330.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-06",
+     "text": "Alright. What if a system used no-steal and force instead? What would be simpler and what would be worse?",
+     "t": 349.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-05",
+     "text": "Thank you. How does a query optimiser decide how to execute a SQL query? What information does it use?",
+     "t": 360.0
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-D-05",
+     "text": "Here's a hint. Think about how you would choose a route across a city if you had a rough idea of traffic on each road.",
+     "t": 383.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-08",
+     "text": "I see. When would you choose a surrogate key, like an auto-increment ID, instead of a natural key such as a roll number or email?",
+     "t": 394.6
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-D-08",
+     "text": "Here's a hint. Think about ten related tables, four years of data, and what the key column in each of them would hold.",
+     "t": 413.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-07",
+     "text": "Got it. What is a weak entity? How is it identified and represented in tables?",
+     "t": 426.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-04",
+     "text": "That's fine. How does multiversion concurrency control (MVCC) work, and why do databases like PostgreSQL use it?",
+     "t": 434.8
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Noted. What problem appears if old versions are never cleaned up?",
+     "t": 455.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Right. Can two concurrent MVCC transactions still conflict? Give an example.",
+     "t": 465.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-03",
+     "text": "Okay. What is a lossless-join decomposition, and how do you check that splitting a table did not lose information?",
+     "t": 476.9
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-D-03",
+     "text": "Here's a hint. Think about what the columns shared by the two new tables must look like.",
+     "t": 490.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-04",
+     "text": "Alright. Now let's try a practical problem. I've put some code on your screen. Please think out loud as you work through it. This query is supposed to show each department with its number of employees, including departments with no employees. But departments with zero employees are missing. Explain why and how to fix it.",
+     "t": 500.2
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-A-04",
+     "text": "Here's a hint. Ask yourself which rows the JOIN produces for a department that has no employees at all.",
+     "t": 524.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-05",
+     "text": "Thank you. A payment app moves money from wallet A to wallet B with two separate UPDATE statements and no transaction. Occasionally money disappears. Reason aloud about the causes and design a fix.",
+     "t": 535.0
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-A-05",
+     "text": "Here's a hint. Think about exactly what state the two balances are in if the server dies at the comment line.",
+     "t": 557.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-02",
+     "text": "I see. A college fest site sells 500 tickets. During the rush, 520 tickets got sold. The code reads the remaining count, checks it is above zero, and then decrements it. Reason aloud: what went wrong, and how would you fix it?",
+     "t": 571.4
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-A-02",
+     "text": "Here's a hint. Imagine two buyers whose requests reach the server at exactly the same millisecond. Step through what each one sees.",
+     "t": 593.6
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-01",
+     "text": "Got it. Here is a slow query on an orders table with ten million rows. It takes eight seconds. Walk me through how you would find out why it is slow and how you would fix it.",
+     "t": 607.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-03",
+     "text": "That's fine. Design the tables for a library system: members borrow books, a book can have many copies, and we must know who has which copy and when it is due. Talk me through your tables and keys.",
+     "t": 619.9
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-A-03",
+     "text": "Here's a hint. Start by listing the real-world things involved. Is 'a book' the same thing as 'the copy on the shelf'?",
+     "t": 642.1
+    },
+    {
+     "kind": "wrapup",
+     "code": null,
+     "text": "Noted. We're nearly done. Is there anything you'd like to add or clarify about any of your answers?",
+     "t": 653.7
+    },
+    {
+     "kind": "close",
+     "code": null,
+     "text": "Thank you. That's the end of your viva. Your answers will be reviewed and your faculty will share the results. You can close this window now.",
+     "t": 664.7
+    }
+   ]
+  },
+  {
+   "roll_no": "23CS10003",
+   "persona": "weak",
+   "session_id": 3,
+   "ok": true,
+   "end": "completed",
+   "error": "",
+   "turns": 45,
+   "duration_s": 562.6,
+   "reconnects": 0,
+   "reply_p50_ms": 905,
+   "reply_max_ms": 2721,
+   "says": [
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Hello Sneha. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+     "t": 0.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-W-02",
+     "text": "Thank you. A quick note before we start: this viva has five short parts and lasts at most fifteen minutes. Answer out loud, in your own words. It's completely fine to say you don't know, or to ask me to repeat a question. To begin, briefly describe a project you have worked on, ideally one that stores or processes data, and explain your role in it.",
+     "t": 15.8
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-W-02",
+     "text": "Here's a hint. Tell me a little more: what did it do, what data did it keep, and which part did you build yourself?",
+     "t": 43.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-04",
+     "text": "Alright. Let's move on to some fundamentals. What is normalisation, and why do we normalise a database?",
+     "t": 56.0
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-04",
+     "text": "Here's a hint. Think about storing a department's phone number on every employee's row, and then the phone number changes.",
+     "t": 70.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-08",
+     "text": "Thank you. What is an index in a database and why is it used?",
+     "t": 81.6
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-08",
+     "text": "Here's a hint. Think of how you find a topic in a 900-page textbook without reading every page.",
+     "t": 92.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-09",
+     "text": "That's alright. What is an entity-relationship diagram, and what are entities, attributes and relationships?",
+     "t": 103.1
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-09",
+     "text": "Here's a hint. Think of a college office: what does it keep records about, and how are those records related?",
+     "t": 117.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-03",
+     "text": "Got it. What do the ACID properties of a transaction mean?",
+     "t": 130.4
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-03",
+     "text": "Here's a hint. Imagine transferring 500 rupees from one bank account to another and the power goes off halfway.",
+     "t": 141.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-11",
+     "text": "Okay, thanks. What is the difference between DELETE, TRUNCATE and DROP?",
+     "t": 152.1
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-11",
+     "text": "Here's a hint. Think of an exam answer sheet: erasing some answers, erasing all answers, or throwing away the sheet.",
+     "t": 164.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-01",
+     "text": "Noted. What is the difference between a primary key and a foreign key?",
+     "t": 177.4
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-01",
+     "text": "Here's a hint. Think of a Students table and an Enrolments table: how does each row in Enrolments know which student it belongs to?",
+     "t": 185.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-06",
+     "text": "That's alright. What is the difference between the WHERE clause and the HAVING clause in SQL?",
+     "t": 196.7
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-06",
+     "text": "Here's a hint. Think about the order in which the database processes the different clauses of a query.",
+     "t": 209.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-12",
+     "text": "Okay. How does a database recover after a crash? What role does the log play?",
+     "t": 217.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-02",
+     "text": "That's fine. Explain super key, candidate key and primary key, and how they are related.",
+     "t": 225.5
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-02",
+     "text": "Here's a hint. Start from the job a key does in a table, then ask whether every column in a key set is really needed.",
+     "t": 235.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-13",
+     "text": "Okay, no worries. What is the difference between a shared lock and an exclusive lock?",
+     "t": 245.2
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-13",
+     "text": "Here's a hint. Think about a notice board in college: what is safe for many people to do at once, and what isn't?",
+     "t": 257.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-05",
+     "text": "I see. Let's go a little deeper into normalisation. Explain first, second and third normal form in simple terms.",
+     "t": 267.3
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-05",
+     "text": "Here's a hint. For each normal form, ask what a non-key column is allowed to depend on.",
+     "t": 282.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-14",
+     "text": "Got it. What is a dirty read? Which isolation level prevents it?",
+     "t": 291.0
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-14",
+     "text": "Here's a hint. Imagine you check a friend's bank balance while their deposit is still being processed, and then the deposit fails.",
+     "t": 302.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-07",
+     "text": "That's fine. Explain the different types of joins: inner join, left outer join and full outer join.",
+     "t": 312.7
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-07",
+     "text": "Here's a hint. Picture two overlapping circles, one per table.",
+     "t": 325.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-10",
+     "text": "Okay, no worries. What is a deadlock in a database, and how can it be handled?",
+     "t": 333.8
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-10",
+     "text": "Here's a hint. Picture two cars meeting in the middle of a narrow one-lane bridge.",
+     "t": 343.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-05",
+     "text": "Right. How does a query optimiser decide how to execute a SQL query? What information does it use?",
+     "t": 354.6
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-04",
+     "text": "No problem. How does multiversion concurrency control (MVCC) work, and why do databases like PostgreSQL use it?",
+     "t": 363.6
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-D-04",
+     "text": "Here's a hint. Think about how a library could let one person read an old edition while the new edition is being printed.",
+     "t": 379.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-03",
+     "text": "That's fine. What is a lossless-join decomposition, and how do you check that splitting a table did not lose information?",
+     "t": 389.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-07",
+     "text": "Okay, no worries. Let's try a different area. What is a weak entity? How is it identified and represented in tables?",
+     "t": 399.1
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-D-07",
+     "text": "Here's a hint. Think of rooms numbered 101, 102 in several different buildings.",
+     "t": 412.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-02",
+     "text": "That's alright. Now let's try a practical problem. I've put some code on your screen. Please think out loud as you work through it. A college fest site sells 500 tickets. During the rush, 520 tickets got sold. The code reads the remaining count, checks it is above zero, and then decrements it. Reason aloud: what went wrong, and how would you fix it?",
+     "t": 421.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-03",
+     "text": "No problem. Let's try a different area. Design the tables for a library system: members borrow books, a book can have many copies, and we must know who has which copy and when it is due. Talk me through your tables and keys.",
+     "t": 445.4
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-A-03",
+     "text": "Here's a hint. Start by listing the real-world things involved. Is 'a book' the same thing as 'the copy on the shelf'?",
+     "t": 462.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-01",
+     "text": "That's fine. Here is a slow query on an orders table with ten million rows. It takes eight seconds. Walk me through how you would find out why it is slow and how you would fix it.",
+     "t": 473.2
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-A-01",
+     "text": "Here's a hint. Before changing anything, what tool would show you how the database is actually running this query?",
+     "t": 487.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-04",
+     "text": "Okay, no worries. This query is supposed to show each department with its number of employees, including departments with no employees. But departments with zero employees are missing. Explain why and how to fix it.",
+     "t": 497.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-05",
+     "text": "That's alright. Let's try a different area. A payment app moves money from wallet A to wallet B with two separate UPDATE statements and no transaction. Occasionally money disappears. Reason aloud about the causes and design a fix.",
+     "t": 512.9
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-A-05",
+     "text": "Here's a hint. Think about exactly what state the two balances are in if the server dies at the comment line.",
+     "t": 534.0
+    },
+    {
+     "kind": "wrapup",
+     "code": null,
+     "text": "No problem. We're nearly done. Is there anything you'd like to add or clarify about any of your answers?",
+     "t": 543.5
+    },
+    {
+     "kind": "close",
+     "code": null,
+     "text": "Thank you. That's the end of your viva. Your answers will be reviewed and your faculty will share the results. You can close this window now.",
+     "t": 554.7
+    }
+   ]
+  },
+  {
+   "roll_no": "23CS10004",
+   "persona": "idk",
+   "session_id": 4,
+   "ok": true,
+   "end": "completed",
+   "error": "",
+   "turns": 33,
+   "duration_s": 371.7,
+   "reconnects": 0,
+   "reply_p50_ms": 937,
+   "reply_max_ms": 2327,
+   "says": [
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Hello Vikram. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+     "t": 0.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-W-01",
+     "text": "Thank you. A quick note before we start: this viva has five short parts and lasts at most fifteen minutes. Answer out loud, in your own words. It's completely fine to say you don't know, or to ask me to repeat a question. Let's start with your work. In about a minute, tell me about a project where you stored data in a database: what it did, how the data was organised, and what your own part was.",
+     "t": 15.7
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-W-01",
+     "text": "Here's a hint. Tell me a little more: what did it do, what data did it keep, and which part did you build yourself?",
+     "t": 43.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-03",
+     "text": "That's fine. Let's move on to some fundamentals. What do the ACID properties of a transaction mean?",
+     "t": 52.6
+    },
+    {
+     "kind": "repeat",
+     "code": "DBMS-F-03",
+     "text": "Sure. What do the ACID properties of a transaction mean?",
+     "t": 63.4
+    },
+    {
+     "kind": "repeat",
+     "code": "DBMS-F-03",
+     "text": "Sure. What do the ACID properties of a transaction mean?",
+     "t": 71.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-08",
+     "text": "Okay, no worries. Let's try a different area. What is an index in a database and why is it used?",
+     "t": 77.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-06",
+     "text": "That's alright. What is the difference between the WHERE clause and the HAVING clause in SQL?",
+     "t": 86.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-09",
+     "text": "No problem. What is an entity-relationship diagram, and what are entities, attributes and relationships?",
+     "t": 94.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-01",
+     "text": "That's fine. What is the difference between a primary key and a foreign key?",
+     "t": 105.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-04",
+     "text": "Okay, no worries. What is normalisation, and why do we normalise a database?",
+     "t": 112.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-11",
+     "text": "That's alright. What is the difference between DELETE, TRUNCATE and DROP?",
+     "t": 120.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-12",
+     "text": "No problem. How does a database recover after a crash? What role does the log play?",
+     "t": 127.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-05",
+     "text": "That's fine. Explain first, second and third normal form in simple terms.",
+     "t": 135.6
+    },
+    {
+     "kind": "repeat",
+     "code": "DBMS-F-05",
+     "text": "Sure. Explain first, second and third normal form in simple terms.",
+     "t": 144.6
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-13",
+     "text": "Okay, no worries. What is the difference between a shared lock and an exclusive lock?",
+     "t": 151.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-14",
+     "text": "That's alright. Let's go a little deeper into transactions. What is a dirty read? Which isolation level prevents it?",
+     "t": 158.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-07",
+     "text": "No problem. Explain the different types of joins: inner join, left outer join and full outer join.",
+     "t": 169.2
+    },
+    {
+     "kind": "repeat",
+     "code": "DBMS-F-07",
+     "text": "Sure. Explain the different types of joins: inner join, left outer join and full outer join.",
+     "t": 180.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-10",
+     "text": "That's fine. What is a deadlock in a database, and how can it be handled?",
+     "t": 188.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-02",
+     "text": "Okay, no worries. Explain super key, candidate key and primary key, and how they are related.",
+     "t": 196.1
+    },
+    {
+     "kind": "repeat",
+     "code": "DBMS-F-02",
+     "text": "Sure. Explain super key, candidate key and primary key, and how they are related.",
+     "t": 207.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-02",
+     "text": "That's alright. Compare the isolation levels read committed, repeatable read and serializable. What does each one allow, and what does it cost?",
+     "t": 216.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-01",
+     "text": "No problem. Why do most databases use B+ trees for indexes rather than binary search trees or hash tables?",
+     "t": 227.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-07",
+     "text": "That's fine. What is a weak entity? How is it identified and represented in tables?",
+     "t": 237.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-08",
+     "text": "Okay, no worries. When would you choose a surrogate key, like an auto-increment ID, instead of a natural key such as a roll number or email?",
+     "t": 245.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-01",
+     "text": "That's alright. Now let's try a practical problem. I've put some code on your screen. Please think out loud as you work through it. Here is a slow query on an orders table with ten million rows. It takes eight seconds. Walk me through how you would find out why it is slow and how you would fix it.",
+     "t": 257.6
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-03",
+     "text": "No problem. Design the tables for a library system: members borrow books, a book can have many copies, and we must know who has which copy and when it is due. Talk me through your tables and keys.",
+     "t": 276.8
+    },
+    {
+     "kind": "repeat",
+     "code": "DBMS-A-03",
+     "text": "Sure. Design the tables for a library system: members borrow books, a book can have many copies, and we must know who has which copy and when it is due. Talk me through your tables and keys.",
+     "t": 291.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-02",
+     "text": "That's fine. A college fest site sells 500 tickets. During the rush, 520 tickets got sold. The code reads the remaining count, checks it is above zero, and then decrements it. Reason aloud: what went wrong, and how would you fix it?",
+     "t": 305.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-04",
+     "text": "Okay, no worries. This query is supposed to show each department with its number of employees, including departments with no employees. But departments with zero employees are missing. Explain why and how to fix it.",
+     "t": 322.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-05",
+     "text": "That's alright. A payment app moves money from wallet A to wallet B with two separate UPDATE statements and no transaction. Occasionally money disappears. Reason aloud about the causes and design a fix.",
+     "t": 338.4
+    },
+    {
+     "kind": "wrapup",
+     "code": null,
+     "text": "No problem. We're nearly done. Is there anything you'd like to add or clarify about any of your answers?",
+     "t": 352.2
+    },
+    {
+     "kind": "close",
+     "code": null,
+     "text": "Thank you. That's the end of your viva. Your answers will be reviewed and your faculty will share the results. You can close this window now.",
+     "t": 363.8
+    }
+   ]
+  },
+  {
+   "roll_no": "23CS10005",
+   "persona": "indian_english",
+   "session_id": 5,
+   "ok": true,
+   "end": "completed",
+   "error": "",
+   "turns": 31,
+   "duration_s": 732.1,
+   "reconnects": 0,
+   "reply_p50_ms": 1057,
+   "reply_max_ms": 2856,
+   "says": [
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Hello Farhan. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+     "t": 0.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-W-01",
+     "text": "Thank you. A quick note before we start: this viva has five short parts and lasts at most fifteen minutes. Answer out loud, in your own words. It's completely fine to say you don't know, or to ask me to repeat a question. Let's start with your work. In about a minute, tell me about a project where you stored data in a database: what it did, how the data was organised, and what your own part was.",
+     "t": 16.1
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-W-01",
+     "text": "Alright. Which table or collection in that project was the most important, and what were its main fields?",
+     "t": 68.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-10",
+     "text": "Thank you. Let's move on to some fundamentals. What is a deadlock in a database, and how can it be handled?",
+     "t": 87.7
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-10",
+     "text": "I see. If the DBMS has to abort one transaction to break a deadlock, how should it choose which one?",
+     "t": 116.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-02",
+     "text": "Got it. Explain super key, candidate key and primary key, and how they are related.",
+     "t": 133.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-02",
+     "text": "Okay, thanks. In a Students table with roll number, email and name, which of these could be candidate keys and why?",
+     "t": 157.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-05",
+     "text": "Noted. Explain first, second and third normal form in simple terms.",
+     "t": 175.7
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-05",
+     "text": "Right. How is BCNF stricter than third normal form?",
+     "t": 196.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-12",
+     "text": "Okay. How does a database recover after a crash? What role does the log play?",
+     "t": 217.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-12",
+     "text": "Alright. Why must the log record be written to disk before the data page it describes?",
+     "t": 241.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-08",
+     "text": "Thank you. Let's go a little deeper into keys and integrity. When would you choose a surrogate key, like an auto-increment ID, instead of a natural key such as a roll number or email?",
+     "t": 255.0
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-08",
+     "text": "I see. If you use an auto-increment ID, what goes wrong if you forget a unique constraint on email?",
+     "t": 289.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-06",
+     "text": "Got it. Explain the steal and no-force policies in buffer management and why they make recovery need both undo and redo.",
+     "t": 303.3
+    },
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Take your time. Would you like me to repeat the question?",
+     "t": 329.6
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-06",
+     "text": "Okay, thanks. What if a system used no-steal and force instead? What would be simpler and what would be worse?",
+     "t": 329.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-04",
+     "text": "Noted. How does multiversion concurrency control (MVCC) work, and why do databases like PostgreSQL use it?",
+     "t": 345.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Right. What problem appears if old versions are never cleaned up?",
+     "t": 379.4
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Okay. Can two concurrent MVCC transactions still conflict? Give an example.",
+     "t": 389.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-03",
+     "text": "Alright. What is a lossless-join decomposition, and how do you check that splitting a table did not lose information?",
+     "t": 407.4
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-03",
+     "text": "Thank you. Why can decomposing to BCNF lose dependency preservation, while 3NF never does?",
+     "t": 433.1
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-01",
+     "text": "I see. Why do most databases use B+ trees for indexes rather than binary search trees or hash tables?",
+     "t": 453.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-01",
+     "text": "Got it. Why does the height of the tree matter so much more on disk than in memory?",
+     "t": 482.2
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-01",
+     "text": "Okay, thanks. What if your workload were only exact-match lookups on a key, never ranges? Would you still choose a B+ tree?",
+     "t": 501.2
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-01",
+     "text": "Noted. What happens inside a B+ tree when you insert into a full leaf node?",
+     "t": 525.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-01",
+     "text": "Right. Now let's try a practical problem. I've put some code on your screen. Please think out loud as you work through it. Here is a slow query on an orders table with ten million rows. It takes eight seconds. Walk me through how you would find out why it is slow and how you would fix it.",
+     "t": 542.0
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-01",
+     "text": "Okay. Why does wrapping created_at inside YEAR() stop the database from using an index on created_at?",
+     "t": 587.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-01",
+     "text": "Alright. What if this query is fast now, but inserts into orders have become slower. What trade-off did you make?",
+     "t": 610.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-02",
+     "text": "Thank you. A college fest site sells 500 tickets. During the rush, 520 tickets got sold. The code reads the remaining count, checks it is above zero, and then decrements it. Reason aloud: what went wrong, and how would you fix it?",
+     "t": 631.0
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-02",
+     "text": "I see. If you lock the row with SELECT FOR UPDATE, what happens to performance during the rush, and is that acceptable here?",
+     "t": 674.7
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-02",
+     "text": "Got it. How would you test that your fix actually prevents overselling?",
+     "t": 694.9
+    },
+    {
+     "kind": "wrapup",
+     "code": null,
+     "text": "Okay, thanks. We're nearly done. Is there anything you'd like to add or clarify about any of your answers?",
+     "t": 713.0
+    },
+    {
+     "kind": "close",
+     "code": null,
+     "text": "Thank you. That's the end of your viva. Your answers will be reviewed and your faculty will share the results. You can close this window now.",
+     "t": 724.2
+    }
+   ]
+  }
+ ]
+}

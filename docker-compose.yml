@@ -1,0 +1,64 @@
+# Quick start:                    docker compose up --build             -> http://localhost:8000
+# Separate background worker:     docker compose --profile scale up --build
+# Fully local AI scorer (Ollama): LLM_PROVIDER=ollama docker compose --profile local-ai up --build
+# PostgreSQL instead of SQLite:   DATABASE_URL=postgresql://vaani:vaani@postgres:5432/vaani docker compose --profile postgres up --build
+services:
+  app:
+    build: .
+    image: vaani:latest
+    ports: ["8000:8000"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATA_DIR: /data
+      LLM_PROVIDER: ${LLM_PROVIDER:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      SARVAM_API_KEY: ${SARVAM_API_KEY:-}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://ollama:11434/v1}
+      DATABASE_URL: ${DATABASE_URL:-}
+      STT_ENGINE: ${STT_ENGINE:-}
+      TTS_ENGINE: ${TTS_ENGINE:-browser}
+      EMBEDDED_WORKER: ${EMBEDDED_WORKER:-true}
+    volumes: ["vaani-data:/data"]
+    restart: unless-stopped
+
+  worker:                       # recording mix-down and scoring off the web process (set EMBEDDED_WORKER=false on app)
+    image: vaani:latest
+    profiles: ["scale"]
+    command: ["python", "-m", "app.worker"]
+    environment:
+      DATA_DIR: /data
+      LLM_PROVIDER: ${LLM_PROVIDER:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://ollama:11434/v1}
+      DATABASE_URL: ${DATABASE_URL:-}
+    volumes: ["vaani-data:/data"]
+    depends_on: [app]
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama
+    profiles: ["local-ai"]
+    volumes: ["ollama-models:/root/.ollama"]
+    restart: unless-stopped
+
+  ollama-pull:                  # downloads the scorer model once, then exits
+    image: ollama/ollama
+    profiles: ["local-ai"]
+    depends_on: [ollama]
+    environment: { OLLAMA_HOST: "http://ollama:11434" }
+    entrypoint: ["sh", "-c", "sleep 3 && ollama pull ${OLLAMA_MODEL_SCORER:-qwen2.5:7b-instruct} && ollama pull ${OLLAMA_MODEL_LIVE:-qwen2.5:3b-instruct}"]
+
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    environment: { POSTGRES_USER: vaani, POSTGRES_PASSWORD: vaani, POSTGRES_DB: vaani }
+    volumes: ["pg-data:/var/lib/postgresql/data"]
+
+volumes:
+  vaani-data:
+  ollama-models:
+  pg-data:

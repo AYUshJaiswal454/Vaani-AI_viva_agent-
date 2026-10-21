@@ -1,0 +1,27 @@
+# secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# runtime data (recordings, database, keys) and downloaded models
+/data/
+/models/
+loadtest/.audio_cache/
+loadtest/results/*.tmp
+
+# python / node
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+frontend/node_modules
+node_modules/
+.pytest_cache/
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# local type-check helper (points at a machine-specific typings folder)
+frontend/tsconfig.check.json

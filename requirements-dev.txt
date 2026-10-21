@@ -1,0 +1,2 @@
+# Tests, evaluation scripts and the load test (the suite itself uses only the standard library's unittest)
+-r requirements.txt
