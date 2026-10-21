@@ -131,6 +131,22 @@ class AIScorerPath(unittest.TestCase):
             self.assertEqual(res["dims"][k]["spread"], 0)
             self.assertTrue(res["dims"][k]["evidence"])
 
+    def test_groq_free_plan_mode_runs_one_at_a_time_within_the_token_budget(self):
+        """On Groq the three runs go one after another, each request sized for a free plan's ~8K tokens a minute."""
+        from app.scoring.llm_scorer import llm_score
+
+        fresh_environment(llm_provider="groq", groq_api_key="test-key", groq_base_url=self.base,
+                          groq_model_scorer="stub-scorer", groq_model_live="stub-scorer")
+        r = run_viva(QS, PERSONAS["strong"](seed=1), aliases=ALIASES, seed="llm:groq")
+        llm_stub.CALLS.clear()
+        res = asyncio.run(llm_score(r["turns"], QMAP, RUBRIC, "DBMS", runs=3))
+        self.assertEqual(res["n_runs"], 3)
+        calls = [c for c in llm_stub.CALLS if c.get("system", "").startswith("You are an impartial")]
+        self.assertEqual(len(calls), 3)
+        for c in calls:
+            prompt_tokens = (c["user_len"] + c["system_len"]) / 3.6
+            self.assertLess(prompt_tokens + c["max_tokens"], 7800)
+
     def test_temperature_zero_and_json_mode_are_requested(self):
         llm_stub.CALLS.clear()
         self.run_llm("stub-scorer")

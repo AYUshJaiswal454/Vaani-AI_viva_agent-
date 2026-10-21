@@ -57,10 +57,13 @@ def prompt_version(rubric: dict) -> str:
     return f"{PROMPT_VERSION}#{h}|{rubric.get('version', 'rubric')}#{rubric_hash(rubric)}"
 
 
-def _rubric_text(rubric: dict) -> str:
+def _rubric_text(rubric: dict, lean: bool = False) -> str:
     out = []
     for d in rubric["dimensions"]:
-        anchors = "; ".join(f"{k}: {v}" for k, v in sorted(d["anchors"].items()))
+        items = sorted(d["anchors"].items())
+        if lean:                                   # anchors 1, 3 and 5 only; the model interpolates 0, 2 and 4
+            items = [(k, v) for k, v in items if str(k) in ("1", "3", "5")]
+        anchors = "; ".join(f"{k}: {v}" for k, v in items)
         out.append(f"- {d['id']} ({d['name']}) [{d['weight']:g}]: {d.get('looks_at', '')} Anchors -> {anchors}")
     out.append(f"Fairness: {rubric.get('fairness', '')}")
     return "\n".join(out)
@@ -75,16 +78,18 @@ def _reference_text(turns: list[dict], questions: dict[str, dict]) -> str:
         seen.add(code)
         q = questions[code]
         pts = "; ".join(kp["point"] for kp in q.get("key_points", []))
-        fus = " | ".join(f"{f['text']} -> {'; '.join(k['point'] for k in f.get('key_points', []))}"
-                         for f in q.get("follow_ups", []) if f.get("key_points"))
+        sources = " ".join(str(x.get("source") or "") for x in turns if x.get("question_code") == code)
+        fus = " | ".join(f"f{i}: {'; '.join(k['point'] for k in f.get('key_points', []))}"   # the question is in the transcript
+                         for i, f in enumerate(q.get("follow_ups", []), 1)
+                         if f.get("key_points") and f"{code}/f{i}" in sources)      # only follow-ups actually asked
         out.append(f"{code} ({q['phase']}, {q['topic']}): {pts}" + (f"\n   follow-ups: {fus}" if fus else ""))
     return "\n".join(out) or "(none)"
 
 
-def build_messages(turns: list[dict], questions: dict[str, dict], rubric: dict, subject: str) -> list[dict]:
-    text = transcript_text(turns)
+def build_messages(turns: list[dict], questions: dict[str, dict], rubric: dict, subject: str, lean: bool = False) -> list[dict]:
+    text = transcript_text(turns, compact=True)
     text = re.sub(r"(STUDENT(?: \[[^\]]*\])?: )(.*)", lambda m: f"{m.group(1)}<student>{m.group(2)}</student>", text)
-    user = USER_TEMPLATE.format(subject=subject, rubric=_rubric_text(rubric), reference=_reference_text(turns, questions),
+    user = USER_TEMPLATE.format(subject=subject, rubric=_rubric_text(rubric, lean), reference=_reference_text(turns, questions),
                                 transcript=text)
     return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
 
@@ -140,17 +145,30 @@ async def llm_score(turns: list[dict], questions: dict[str, dict], rubric: dict,
         return None
     messages = build_messages(turns, questions, rubric, subject)
 
+    # Groq's free plan allows about 8K tokens per minute: one run fits, so the runs go one after another and wait out
+    # rate limits; paid plans and other providers run them in parallel.
+    sequential = cfg.name == "groq"
+
+    budget = 7700                                                          # tokens per request on Groq's free plan
+    lean = False
+    if sequential and sum(len(m["content"]) for m in messages) / 3.6 + 1400 > budget:
+        messages, lean = build_messages(turns, questions, rubric, subject, lean=True), True
+    max_out = max(900, min(1400, int(budget - sum(len(m["content"]) for m in messages) / 3.6))) if sequential else 1800
+
     async def one(i: int):
         try:
             res = await chat(messages, feature="scorer", role="scorer", session_id=session_id, json_mode=True, temperature=0,
-                             max_tokens=1800, cache=False, retries=3, seed=7)
+                             max_tokens=max_out, cache=False, retries=6 if sequential else 3, seed=7)
         except LLMUnavailable as exc:
             return None, str(exc)
         if res.provider == "mock" or not isinstance(res.data, dict):
             return None, f"unparseable reply: {res.text[:200]}"
         return res, ""
 
-    results = await asyncio.gather(*(one(i) for i in range(max(1, runs))))
+    if sequential:
+        results = [await one(i) for i in range(max(1, runs))]
+    else:
+        results = await asyncio.gather(*(one(i) for i in range(max(1, runs))))
     parsed = []
     errors = []
     for res, err in results:
@@ -183,7 +201,7 @@ async def llm_score(turns: list[dict], questions: dict[str, dict], rubric: dict,
     closest = min(range(len(parsed)), key=lambda i: abs(totals[i] - total))
     problems = sorted({pr for p in parsed for pr in p["problems"]})
     return {"dims": final, "total": total, "feedback": parsed[closest]["feedback"], "model": parsed[0]["model"],
-            "prompt_version": prompt_version(rubric), "runs": [{"scores": {k: p["dims"][k]["score"] for k in DIMENSIONS},
+            "prompt_version": prompt_version(rubric) + ("+lean" if lean else ""), "runs": [{"scores": {k: p["dims"][k]["score"] for k in DIMENSIONS},
                                                                  "total": totals[i], "confidence": p["confidence"],
                                                                  "latency_ms": p["latency_ms"]} for i, p in enumerate(parsed)],
             "problems": problems, "model_confidence": "low" if any(p["confidence"] == "low" for p in parsed) else "high",

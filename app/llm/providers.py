@@ -75,7 +75,7 @@ def resolve(provider: str | None = None) -> ProviderConfig:
         return ProviderConfig("openai", s.openai_base_url, s.openai_api_key, s.openai_model_live, s.openai_model_scorer,
                               s.openai_reasoning_live, s.openai_reasoning_scorer)
     if name == "groq" and s.groq_api_key:
-        return ProviderConfig("groq", s.groq_base_url, s.groq_api_key, s.groq_model_live, s.groq_model_scorer, "low", "medium")
+        return ProviderConfig("groq", s.groq_base_url, s.groq_api_key, s.groq_model_live, s.groq_model_scorer, "low", "low")
     if name == "ollama":
         return ProviderConfig("ollama", s.ollama_base_url, "ollama", s.ollama_model_live, s.ollama_model_scorer)
     return ProviderConfig("mock")
@@ -255,12 +255,14 @@ async def chat(messages: list[dict], *, feature: str, role: str = "live", sessio
                 last_error = f"400: {body}"
                 break
             if resp.status_code in (429, 500, 502, 503, 504):
-                _breaker.failure(cfg.name)
+                if resp.status_code != 429:       # a rate limit is not an outage: it must not open the circuit breaker
+                    _breaker.failure(cfg.name)
                 retry_after = resp.headers.get("retry-after")
                 delay = float(retry_after) if retry_after and retry_after.replace(".", "").isdigit() else 0.6 * 2 ** attempt
                 last_error = f"{resp.status_code}: {resp.text[:200]}"
                 if attempt < retries:
-                    await asyncio.sleep(min(20, delay) + random.random() * 0.4)
+                    # free plans limit tokens per minute: wait as long as the provider asks (up to a minute)
+                    await asyncio.sleep(min(60 if resp.status_code == 429 else 20, delay) + random.random() * 0.4)
                 continue
             if resp.status_code >= 400:
                 last_error = f"{resp.status_code}: {resp.text[:300]}"

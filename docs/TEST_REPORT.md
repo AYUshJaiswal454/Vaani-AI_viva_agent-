@@ -6,7 +6,7 @@ Generated 2026-10-21 by `scripts/test_report.py` from the result files in `docs/
 
 | What | Result | How |
 |---|---|---|
-| Automated tests | 106 tests, all passing | `python -m unittest discover -s tests -t .` |
+| Automated tests | 108 tests, all passing | `python -m unittest discover -s tests -t .` |
 | Reply latency, 1 viva, local Whisper base.en (2 vCPU) | p50 1146 ms, p95 1651 ms (target p95 < 2500 ms) | `loadtest/run_bots.py --personas strong` |
 | Reply latency, 5 concurrent vivas, local Whisper (2 vCPU) | p50 1023 ms, p95 2206 ms | `loadtest/run_bots.py` (the five sample recordings) |
 | Speech recognition, Indian-accented English | WER 14.7% (whisper-onnx:base.en, 99 clips) | `scripts/eval_stt.py` |
@@ -18,16 +18,16 @@ Generated 2026-10-21 by `scripts/test_report.py` from the result files in `docs/
 
 ## 1. Automated tests
 
-106 tests ran in 26 s on 2026-10-21 16:46: all passed. They use the standard library's `unittest` (also runnable with pytest) and need no network or API key: speech recognition and the LLM are replaced by deterministic stubs where needed, and the live tests drive the real WebSocket with synthesised speech.
+108 tests ran in 30 s on 2026-10-21 17:59: all passed. They use the standard library's `unittest` (also runnable with pytest) and need no network or API key: speech recognition and the LLM are replaced by deterministic stubs where needed, and the live tests drive the real WebSocket with synthesised speech.
 
 | File | Tests | Covers |
 |---|---|---|
 | `tests/test_api.py` | 21 | auth, CSRF, roles, one attempt, consent, bank upload/approval, exports, permissions, retention, erasure, no secrets in repo |
 | `tests/test_engine.py` | 26 | examiner state machine: phases, quotas, hard stop, 90 s cap, follow-up rules, hints, silence ladder, no answer leaks, traceable sources |
 | `tests/test_live.py` | 6 | real WebSocket: audio in, examiner out, recording, drop and rejoin, barge-in, mic warning, consent, streaming recognition |
-| `tests/test_scoring.py` | 20 | rubric maths, evidence citations, consistency, fairness, AI scorer path (stub LLM), review flags, overrides, audit, calibration |
+| `tests/test_scoring.py` | 21 | rubric maths, evidence citations, consistency, fairness, AI scorer path (stub LLM), review flags, overrides, audit, calibration |
 | `tests/test_text_bank.py` | 19 | text matching (stems, aliases, Hinglish, Devanagari), answer assessment, bank validation, CSV/JSON round trip |
-| `tests/test_voice.py` | 14 | Whisper front end and decoding, VAD, WER maths, audio encryption, TTS cache |
+| `tests/test_voice.py` | 15 | Whisper front end and decoding, VAD, WER maths, audio encryption, TTS cache |
 
 ## 2. Interview quality: recorded sample vivas
 

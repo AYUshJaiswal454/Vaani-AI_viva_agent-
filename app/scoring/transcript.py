@@ -61,8 +61,18 @@ def group_items(turns: list[dict], questions: dict[str, dict]) -> list[Item]:
     return [items[c] for c in order]
 
 
-def transcript_text(turns: list[dict], include_examiner_meta: bool = True) -> str:
-    """Numbered transcript for the scorer prompt and for exports."""
+def _examiner_content(t: dict) -> str:
+    """Only what was asked (bank questions, follow-ups, hints, logged rewordings), without acknowledgements, the rules
+    or other fixed system lines: keeps the scorer prompt small enough for free-plan rate limits."""
+    segs = (t.get("meta") or {}).get("segments") or []
+    asked = [s["text"] for s in segs if str(s.get("source", "")).startswith(("bank:", "variant:"))]
+    if asked:
+        return " ".join(asked)
+    return f"({t['kind']})" if segs else t["text"]
+
+
+def transcript_text(turns: list[dict], include_examiner_meta: bool = True, compact: bool = False) -> str:
+    """Numbered transcript for the scorer prompt and for exports. `compact` drops fixed examiner phrasing."""
     out = []
     for t in turns:
         if t["speaker"] == "system":
@@ -74,7 +84,7 @@ def transcript_text(turns: list[dict], include_examiner_meta: bool = True) -> st
                 tag += f" {t['question_code']}"
             if t.get("phase"):
                 tag += f", {t['phase']}"
-            out.append(f"{line_id(t['seq'])} [{span}] EXAMINER ({tag}): {t['text']}")
+            out.append(f"{line_id(t['seq'])} [{span}] EXAMINER ({tag}): {_examiner_content(t) if compact else t['text']}")
         else:
             extra = ""
             a = answer_of(t)

@@ -28,6 +28,8 @@ services:
         sync: false
       - key: ADMIN_PASSWORD           # the administrator account (admin@vaani.local); set your own
         sync: false
+      - key: DEMO_FACULTY_PASSWORD    # the demo faculty account (faculty@vaani.local); blank = faculty123
+        sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: TRUST_PROXY

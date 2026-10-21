@@ -56,10 +56,48 @@ _pool: ThreadPoolExecutor | None = None
 _pool_sem: dict[int, asyncio.Semaphore] = {}
 
 
+def container_limits() -> tuple[float, int | None]:
+    """(CPUs, memory bytes) this process may really use. In a container os.cpu_count() reports the host's cores,
+    so the cgroup quota is read when there is one (cgroup v2, then v1)."""
+    cpus = float(len(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else (os.cpu_count() or 1))
+    mem = None
+    try:
+        quota, period = open("/sys/fs/cgroup/cpu.max").read().split()[:2]
+        if quota != "max":
+            cpus = min(cpus, int(quota) / int(period))
+    except (OSError, ValueError):
+        try:
+            q = int(open("/sys/fs/cgroup/cpu/cpu.cfs_quota_us").read())
+            if q > 0:
+                cpus = min(cpus, q / int(open("/sys/fs/cgroup/cpu/cpu.cfs_period_us").read()))
+        except (OSError, ValueError):
+            pass
+    for path in ("/sys/fs/cgroup/memory.max", "/sys/fs/cgroup/memory/memory.limit_in_bytes"):
+        try:
+            raw = open(path).read().strip()
+            if raw != "max" and int(raw) < 1 << 50:
+                mem = int(raw)
+                break
+        except (OSError, ValueError):
+            continue
+    return cpus, mem
+
+
+MODEL_MEMORY = {"tiny": 300 << 20, "base": 700 << 20, "small": 1500 << 20}   # per recognition worker, approximate
+
+
 def workers() -> int:
-    """Recognition workers on this server (STT_CONCURRENCY, default: CPU cores / WHISPER_THREADS)."""
+    """Recognition workers on this server: STT_CONCURRENCY, or one per CPU core the container may use (divided by
+    WHISPER_THREADS), but never more model instances than the memory limit allows."""
     s = get_settings()
-    return s.stt_concurrency or max(1, (os.cpu_count() or 2) // max(1, s.whisper_threads))
+    if s.stt_concurrency:
+        return s.stt_concurrency
+    cpus, mem = container_limits()
+    n = max(1, int(cpus) // max(1, s.whisper_threads))
+    if mem:
+        per = next((v for k, v in MODEL_MEMORY.items() if s.whisper_model.startswith(k)), 700 << 20)
+        n = min(n, max(1, (mem - (400 << 20)) // per))       # leave ~400 MB for the app itself
+    return n
 
 
 def _local_available() -> bool:
@@ -191,9 +229,16 @@ async def _openai_compat(pcm: bytes, engine: str, language: str, prompt: str) ->
         data["language"] = language
     if prompt:
         data["prompt"] = prompt[:800]
-    files = {"file": ("answer.wav", wav_bytes(pcm), "audio/wav")}
-    resp = await client().post(base.rstrip("/") + "/audio/transcriptions", data=data, files=files,
-                               headers={"authorization": f"Bearer {key}"}, timeout=30)
+    audio = wav_bytes(pcm)
+    for attempt in range(3):
+        resp = await client().post(base.rstrip("/") + "/audio/transcriptions", data=data,
+                                   files={"file": ("answer.wav", audio, "audio/wav")},
+                                   headers={"authorization": f"Bearer {key}"}, timeout=30)
+        if resp.status_code != 429 or attempt == 2:
+            break
+        # free plans allow ~20 requests a minute: wait briefly as asked rather than lose the answer
+        ra = resp.headers.get("retry-after") or ""
+        await asyncio.sleep(min(4.0, float(ra)) if ra.replace(".", "").isdigit() else 1.0 + attempt)
     if resp.status_code >= 400:
         raise RuntimeError(f"{resp.status_code}: {resp.text[:200]}")
     body = resp.json()

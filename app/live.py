@@ -47,6 +47,10 @@ log = logging.getLogger("vaani.live")
 FRAME_AUDIO = 1
 PREROLL_S = 0.3
 SPECULATE_MS = 350        # start recognising the tail after this much silence (the endpoint is at 900 ms)
+API_ENGINES = ("groq", "openai", "sarvam")
+# Hosted recognisers are fast whatever the length, but free plans limit requests per minute: speculate later and
+# only cut very long answers, so a typical answer costs one or two requests instead of several.
+SPECULATE_MS_API, CHUNK_SPAN_S, CHUNK_SPAN_S_API = 600, 5.5, 25.0
 RING_S = 110
 ACTIVE: dict[int, "LiveSession"] = {}
 
@@ -529,7 +533,7 @@ class LiveSession:
         if self.vad.silence_ms >= 200 or u.spec is not None:
             return                                          # paused: the speculative tail covers this audio
         span = self.vad.pos - u.committed
-        if span < int(5.5 * SR):
+        if span < int((CHUNK_SPAN_S_API if self.stt_engine in API_ENGINES else CHUNK_SPAN_S) * SR):
             return
         lo = max(u.committed + int(3.5 * SR), self.vad.pos - int(2 * SR))
         hi = self.vad.pos - int(0.1 * SR)
@@ -595,7 +599,7 @@ class LiveSession:
         # The VAD stays "in speech" until the endpoint fires, so the pause is measured with silence_ms.
         if u is None or u.flow is not None or not self.vad.in_speech or not self._chunkable():
             return
-        if self.vad.silence_ms < SPECULATE_MS:
+        if self.vad.silence_ms < (SPECULATE_MS_API if self.stt_engine in API_ENGINES else SPECULATE_MS):
             return
         end = self.vad.last_voice
         start = u.chunk_end if u.chunk_task is not None and u.chunk_end else u.committed

@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
+import os
 import time
 from pathlib import Path
 
@@ -65,7 +66,8 @@ class HeadersAndMetricsMiddleware:
                                 status_holder["status"], time.perf_counter() - start)
 
 
-DEMO_FACULTY = {"email": "faculty@vaani.local", "password": "faculty123", "name": "Dr. Meera Iyer", "department": "Computer Science"}
+DEMO_FACULTY = {"email": "faculty@vaani.local", "password": os.environ.get("DEMO_FACULTY_PASSWORD") or "faculty123",
+                "name": "Dr. Meera Iyer", "department": "Computer Science"}
 DEMO_VIVAS = [("dbms.json", "DBMS26", "DBMS mid-semester viva"), ("os.json", "OSYS26", "Operating Systems viva")]
 
 

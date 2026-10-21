@@ -95,7 +95,8 @@ async def chat(request: Request) -> Response:
     msgs = body.get("messages", [])
     system = next((m["content"] for m in msgs if m["role"] == "system"), "")
     user = next((m["content"] for m in reversed(msgs) if m["role"] == "user"), "")
-    CALLS.append({"model": model, "system": system[:80], "user_len": len(user), "params": sorted(body.keys())})
+    CALLS.append({"model": model, "system": system[:80], "system_len": len(system), "user_len": len(user), "params": sorted(body.keys()),
+                  "max_tokens": body.get("max_tokens") or body.get("max_completion_tokens") or 0})
     if model.endswith("slow") or model == "stub-slow":
         await asyncio.sleep(1.5)
     if "impartial university examiner" in system:
@@ -114,6 +115,9 @@ async def chat(request: Request) -> Response:
                          "usage": {"prompt_tokens": pt, "completion_tokens": ct, "total_tokens": pt + ct}})
 
 
+STT_RATE_LIMIT_ONCE = False
+
+
 async def transcriptions(request: Request) -> Response:
     form = await request.form()
     f = form.get("file")
@@ -124,6 +128,9 @@ async def transcriptions(request: Request) -> Response:
     except Exception:
         secs = 0.0
     CALLS.append({"model": form.get("model"), "kind": "stt", "prompt": (form.get("prompt") or "")[:80]})
+    if STT_RATE_LIMIT_ONCE and not any(c.get("kind") == "stt_429" for c in CALLS):
+        CALLS.append({"kind": "stt_429"})          # a free plan's per-minute limit, once
+        return JSONResponse({"error": {"message": "rate limit"}}, status_code=429, headers={"retry-after": "0.2"})
     text = "atomicity means all or nothing" if secs > 0.5 else ""
     out = {"text": text}
     if form.get("response_format") == "verbose_json":

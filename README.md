@@ -36,6 +36,9 @@ or without Docker (Python 3.11+, ffmpeg recommended):
 The first start downloads nothing if you used Docker (the speech models are in the image); `run.sh` downloads
 Whisper base.en and the voice detector once (about 200 MB). No API key is needed for anything.
 
+**Deploy your own copy** (fork, then Render or your own server, with every feature on): step-by-step guide in
+[`docs/DEPLOY_GUIDE.pdf`](docs/DEPLOY_GUIDE.pdf) ([`docs/DEPLOY.md`](docs/DEPLOY.md)).
+
 ## What it does
 
 | The brief asks for | In Vaani | Where |
@@ -65,8 +68,8 @@ All measured; the full method and data are in [`docs/TEST_REPORT.md`](docs/TEST_
 | Load test (hosted speech recognition) | **150 concurrent vivas** on one 2-vCPU machine, reply p95 1.9 s, nothing dropped; breaking point about 200 |
 | Capacity with local Whisper | 6 concurrent vivas on 2 vCPU (3 per core) within the latency target |
 | Robustness | network drop + rejoin, noisy room, muted microphone, silent student: all recovered (`docs/TEST_REPORT.md` §6) |
-| Cost for 350 students | ₹135 of server time with no API at all; ₹247 with hosted open-weight models; ₹2,590 with OpenAI's premium models ([`docs/COST.md`](docs/COST.md)) |
-| Automated tests | 106, all passing (under a minute, no network) |
+| Cost for 350 students | ₹135 of server time with no API at all; ₹227 with hosted open-weight models; ₹2,317 with OpenAI's premium models ([`docs/COST.md`](docs/COST.md)) |
+| Automated tests | 108, all passing (under a minute, no network) |
 
 ## Screenshots
 
@@ -114,7 +117,7 @@ app/            server: live sessions, examiner engine, speech, scoring, API, ta
   scoring/      rubric, rule scorer, AI scorer, review flags, overrides, calibration
   data/         sample question banks, default rubric, prices
 frontend/       React + TypeScript (built into app/static, no build needed to run)
-tests/          106 unittest tests: engine, text, scoring, live WebSocket, API, voice
+tests/          108 unittest tests: engine, text, scoring, live WebSocket, API, voice
 loadtest/       audio bots, load test, results
 scripts/        model download, speech and scoring evaluations, cost sheet, sample export, report builder
 samples/        five recorded vivas (audio, transcript, scores), question banks (JSON + CSV), rubric
@@ -138,7 +141,7 @@ docs/           design, test report, scalability, cost sheet, privacy note, ques
 ## Running the tests and evaluations
 
 ```bash
-python -m unittest discover -s tests -t .                     # 106 tests, under a minute, no network
+python -m unittest discover -s tests -t .                     # 108 tests, under a minute, no network
 python scripts/eval_scoring.py                                # scoring accuracy, consistency, fairness
 python scripts/eval_scoring.py --llm --runs 5                 # the same for the AI scorer (needs an API key)
 python scripts/eval_stt.py --n 100                            # WER on Indian-accented English (NPTEL2020)

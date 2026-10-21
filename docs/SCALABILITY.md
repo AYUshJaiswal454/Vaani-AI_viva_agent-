@@ -87,7 +87,7 @@ Assumptions and other resources:
 - **Storage.** About 3.5 MB of encrypted audio per viva (both tracks), so 1.2 GB for 350 students, deleted
   automatically after the retention period.
 - **Cost.** See `docs/COST.md`: about ₹135 of server time for all 350 students on a campus server with no API at
-  all, about ₹250 with hosted open-weight models, about ₹2,600 with OpenAI's premium models.
+  all, about ₹230 with hosted open-weight models, about ₹2,300 with OpenAI's premium models.
 
 ## Scaling out
 

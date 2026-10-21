@@ -1,15 +1,15 @@
 {
- "ran": 106,
- "seconds": 25.833,
+ "ran": 108,
+ "seconds": 30.32,
  "ok": true,
  "failures": "",
  "per_file": {
   "test_api": 21,
   "test_engine": 26,
   "test_live": 6,
-  "test_scoring": 20,
+  "test_scoring": 21,
   "test_text_bank": 19,
-  "test_voice": 14
+  "test_voice": 15
  },
- "when": "2026-10-21 16:46"
+ "when": "2026-10-21 17:59"
 }

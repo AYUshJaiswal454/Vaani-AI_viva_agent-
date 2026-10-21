@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-21 16:11",
+ "generated": "2026-10-21 17:59",
  "students": 350,
  "usage": {
   "per_sample": [
@@ -11,7 +11,7 @@
     "followups": 20,
     "examiner_chars": 4282,
     "unique_examiner_chars": 142,
-    "scorer_prompt_tokens": 7354,
+    "scorer_prompt_tokens": 6492,
     "audio_mb": 4.77
    },
    {
@@ -22,7 +22,7 @@
     "followups": 6,
     "examiner_chars": 5601,
     "unique_examiner_chars": 141,
-    "scorer_prompt_tokens": 8230,
+    "scorer_prompt_tokens": 6286,
     "audio_mb": 3.7
    },
    {
@@ -33,7 +33,7 @@
     "followups": 0,
     "examiner_chars": 5581,
     "unique_examiner_chars": 141,
-    "scorer_prompt_tokens": 7724,
+    "scorer_prompt_tokens": 5662,
     "audio_mb": 2.77
    },
    {
@@ -44,7 +44,7 @@
     "followups": 0,
     "examiner_chars": 4294,
     "unique_examiner_chars": 142,
-    "scorer_prompt_tokens": 6825,
+    "scorer_prompt_tokens": 4729,
     "audio_mb": 1.64
    },
    {
@@ -55,7 +55,7 @@
     "followups": 17,
     "examiner_chars": 3910,
     "unique_examiner_chars": 142,
-    "scorer_prompt_tokens": 6738,
+    "scorer_prompt_tokens": 5954,
     "audio_mb": 4.65
    }
   ],
@@ -66,7 +66,7 @@
    "followups": 8.6,
    "examiner_chars": 4733.6,
    "unique_examiner_chars": 141.6,
-   "scorer_prompt_tokens": 7374.2,
+   "scorer_prompt_tokens": 5824.6,
    "audio_mb": 3.51
   }
  },
@@ -129,7 +129,7 @@
    "per_viva_usd": {
     "stt": 0.00287,
     "tts": 0.0,
-    "llm": 0.00531
+    "llm": 0.00462
    },
    "compute": {
     "server": "c7i.large",
@@ -139,9 +139,9 @@
     "usd": 0.08
    },
    "notes": "Best price for quality. Answer audio and transcripts go to Groq's servers.",
-   "total_350_usd": 2.94,
-   "total_350_inr": 247,
-   "per_student_inr": 0.71
+   "total_350_usd": 2.7,
+   "total_350_inr": 227,
+   "per_student_inr": 0.65
   },
   {
    "name": "Hosted APIs, premium",
@@ -151,7 +151,7 @@
    "per_viva_usd": {
     "stt": 0.01289,
     "tts": 0.00244,
-    "llm": 0.07178
+    "llm": 0.06248
    },
    "compute": {
     "server": "c7i.large",
@@ -164,9 +164,9 @@
     "tts_bank": 0.27
    },
    "notes": "Most natural voice and strongest scorer.",
-   "total_350_usd": 30.84,
-   "total_350_inr": 2590,
-   "per_student_inr": 7.4
+   "total_350_usd": 27.58,
+   "total_350_inr": 2317,
+   "per_student_inr": 6.62
   },
   {
    "name": "Indian-language speech",
@@ -176,7 +176,7 @@
    "per_viva_usd": {
     "stt": 0.02558,
     "tts": 0.00506,
-    "llm": 0.00494
+    "llm": 0.00424
    },
    "compute": {
     "server": "c7i.large",
@@ -189,9 +189,9 @@
     "tts_bank": 0.56
    },
    "notes": "An Indian provider built for Indian languages; the best option for Hinglish answers.",
-   "total_350_usd": 13.09,
-   "total_350_inr": 1100,
-   "per_student_inr": 3.14
+   "total_350_usd": 12.85,
+   "total_350_inr": 1079,
+   "per_student_inr": 3.08
   }
  ]
 }

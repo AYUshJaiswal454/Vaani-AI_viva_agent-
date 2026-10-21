@@ -130,6 +130,19 @@ class HostedAdapters(unittest.TestCase):
         clip = asyncio.run(tts.get_clip("Hello student.", "openai"))
         self.assertTrue(clip and clip["duration_s"] > 0)
 
+    def test_hosted_recognition_waits_out_a_rate_limit(self):
+        fresh_environment(groq_api_key="test", groq_base_url=self.base, whisper_model="not-downloaded")
+        from app.voice import stt
+
+        llm_stub.STT_RATE_LIMIT_ONCE = True
+        try:
+            pcm = (synth("atomicity", "kal16") * 32767).astype("<i2").tobytes()
+            r = asyncio.run(stt.transcribe(pcm, engine="groq"))
+        finally:
+            llm_stub.STT_RATE_LIMIT_ONCE = False
+        self.assertEqual(r.error, "")
+        self.assertEqual(r.text, "atomicity means all or nothing")
+
     def test_failed_recognition_never_raises(self):
         fresh_environment(openai_api_key="test", openai_base_url="http://127.0.0.1:9/v1", whisper_model="not-downloaded")
         from app.voice import stt
