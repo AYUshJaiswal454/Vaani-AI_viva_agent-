@@ -1,8 +1,9 @@
 """Word error rate with a transparent text normaliser (used by the STT evaluation and the clip lab).
 
-Normalisation follows common practice for ASR benchmarks (lower-case, strip punctuation, spell out nothing, unify
-British/American spellings, drop hesitation sounds such as "um" and "uh") so that formatting differences are not counted as errors.
-Both raw and normalised WER are reported.
+Normalisation follows common practice for ASR benchmarks (as in Whisper's English normaliser): lower-case, strip
+punctuation, expand contractions ("I'll" -> "i will"), write numbers as words ("0.015" -> "zero point zero one five",
+"150" -> "one hundred and fifty"), unify British/American spellings and drop hesitation sounds such as "um" and "uh",
+so that formatting differences are not counted as errors. Both raw and normalised WER are reported.
 """
 from __future__ import annotations
 
@@ -14,10 +15,54 @@ SPELL = {"normalisation": "normalization", "normalise": "normalize", "serialisab
          "freshwater": "fresh water", "e-mail": "email", "data base": "database", "per cent": "percent"}
 
 
+SPELL.update({"behaviours": "behaviors", "colours": "colors", "favour": "favor", "honour": "honor", "labour": "labor",
+              "neighbour": "neighbor", "metre": "meter", "litre": "liter", "fibre": "fiber", "modelling": "modeling",
+              "travelling": "traveling", "programme": "program", "analysed": "analyzed", "catalogue": "catalog",
+              "organise": "organize", "recognise": "recognize", "realise": "realize", "utilise": "utilize",
+              "minimise": "minimize", "maximise": "maximize", "summarise": "summarize", "categorise": "categorize"})
+CONTRACTIONS = {
+    "i'll": "i will", "we'll": "we will", "you'll": "you will", "they'll": "they will", "it'll": "it will", "i'm": "i am",
+    "we're": "we are", "you're": "you are", "they're": "they are", "i've": "i have", "we've": "we have", "you've": "you have",
+    "they've": "they have", "it's": "it is", "that's": "that is", "there's": "there is", "what's": "what is", "he's": "he is",
+    "she's": "she is", "let's": "let us", "don't": "do not", "doesn't": "does not", "didn't": "did not", "can't": "cannot",
+    "won't": "will not", "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not", "i'd": "i would",
+    "couldn't": "could not", "shouldn't": "should not", "wouldn't": "would not", "hasn't": "has not", "haven't": "have not",
+}
+_ONES = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split()
+_TENS = "_ _ twenty thirty forty fifty sixty seventy eighty ninety".split()
+
+
+def number_words(n: int) -> str:
+    """0..999999 as words, British style ("one hundred and fifty")."""
+    if n < 20:
+        return _ONES[n]
+    if n < 100:
+        return _TENS[n // 10] + ("" if n % 10 == 0 else " " + _ONES[n % 10])
+    if n < 1000:
+        return _ONES[n // 100] + " hundred" + ("" if n % 100 == 0 else " and " + number_words(n % 100))
+    if n < 1_000_000:
+        return number_words(n // 1000) + " thousand" + ("" if n % 1000 == 0 else (" and " if n % 1000 < 100 else " ") + number_words(n % 1000))
+    return " ".join(_ONES[int(d)] for d in str(n))
+
+
+def _spell_number(m: re.Match) -> str:
+    whole, _, frac = m.group(0).partition(".")
+    out = number_words(int(whole)) if len(whole) <= 6 else " ".join(_ONES[int(d)] for d in whole)
+    if frac:
+        out += " point " + " ".join(_ONES[int(d)] for d in frac)
+    return f" {out} "
+
+
 def normalise(text: str, drop_fillers: bool = True) -> list[str]:
     t = (text or "").lower().replace("’", "'")
+    for a, b in CONTRACTIONS.items():
+        t = re.sub(rf"\b{re.escape(a)}\b", b, t)
     for a, b in SPELL.items():
         t = t.replace(a, b)
+    t = re.sub(r"(\w)isation", r"\1ization", t)
+    t = t.replace("%", " percent ")
+    t = re.sub(r"(?<=\d),(?=\d{3}\b)", "", t)                     # 2,500 -> 2500
+    t = re.sub(r"(?<![\w.])\d+(?:\.\d+)?(?![\w])", _spell_number, t)
     t = re.sub(r"[^a-z0-9'ऀ-ॿ ]+", " ", t)
     words = [w.strip("'") for w in t.split() if w.strip("'")]
     if drop_fillers:

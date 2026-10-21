@@ -36,6 +36,28 @@ LIVE_IN_TOKENS, LIVE_OUT_TOKENS = 420, 40   # one follow-up rephrasing call (sys
 EXAMINER_CHARS_PER_S = 14.5                 # speaking rate used to turn characters into TTS minutes
 
 
+def capacity_from_runs(target_ms: float = 2500) -> dict:
+    """Concurrent vivas per server from the load-test result files named in docs/data/runs.json."""
+    runs = json.loads((ROOT / "docs" / "data" / "runs.json").read_text())
+    res = ROOT / "loadtest" / "results"
+    cap = {"source": {k: runs.get(k) for k in ("stt_capacity", "load")}}
+    if runs.get("stt_capacity"):
+        r = json.loads((res / runs["stt_capacity"]).read_text())
+        cores = r.get("cores") or 2
+        cap["whisper_base_concurrent"] = r["capacity"]
+        cap["whisper_test_vcpu"] = cores
+        cap["whisper_base_concurrent_per_vcpu"] = round(r["capacity"] / cores, 2)
+    if runs.get("load"):
+        r = json.loads((res / runs["load"]).read_text())
+        ok = [st["bots"] for st in r["stages"] if not st["dropped"] and st["reply_p95_ms"] is not None and st["reply_p95_ms"] <= target_ms]
+        cap["stub_concurrent_ok"] = max(ok) if ok else 0
+        cap["stub_test_vcpu"] = r.get("cores")
+    cap.setdefault("whisper_base_concurrent_per_vcpu", 1.0)
+    cap.setdefault("stub_concurrent_ok", 100)
+    (ROOT / "docs" / "data" / "capacity.json").write_text(json.dumps(cap, indent=1), encoding="utf-8")
+    return cap
+
+
 def measure() -> dict:
     os.environ.setdefault("SEED_DEMO", "false")
     from app.scoring.llm_scorer import build_messages
@@ -118,7 +140,7 @@ def scenarios(m: dict, cap: dict) -> list[dict]:
     out.append({"name": "Hosted APIs, lowest cost", "stt": "Groq whisper-large-v3-turbo", "tts": "browser voice (free)",
                 "scoring": "gpt-oss-120b x3 runs (median) on Groq; gpt-oss-20b for live follow-up wording",
                 "per_viva_usd": {"stt": stt2, "tts": 0.0, "llm": llm2}, "compute": hosted,
-                "notes": "Best price/quality. Audio is sent to Groq (US)."})
+                "notes": "Best price for quality. Answer audio and transcripts go to Groq's servers."})
 
     # 3. Premium: OpenAI end to end, natural examiner voice.
     stt3 = stt_min * p["stt_per_minute_usd"]["gpt-4o-mini-transcribe"]
@@ -136,7 +158,7 @@ def scenarios(m: dict, cap: dict) -> list[dict]:
     out.append({"name": "Indian-language speech", "stt": "Sarvam saaras:v4 (Hinglish, Indian English)", "tts": "Sarvam bulbul:v2",
                 "scoring": "gpt-oss-120b x3 runs on Groq", "per_viva_usd": {"stt": stt4, "tts": tts4, "llm": 3 * llm("openai/gpt-oss-120b", scorer_in, SCORER_OUT_TOKENS)},
                 "compute": hosted, "one_time_usd": {"tts_bank": round(bank_chars() / 10000 * p["sarvam_inr"]["tts_per_10k_chars"] / inr, 2)},
-                "notes": "Indian data residency; best for Hinglish answers."})
+                "notes": "An Indian provider built for Indian languages; the best option for Hinglish answers."})
 
     for s in out:
         pv = s["per_viva_usd"]
@@ -186,10 +208,8 @@ def write_md(m: dict, cap: dict, sc: list[dict], path: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--capacity", default=str(ROOT / "docs" / "data" / "capacity.json"))
-    args = ap.parse_args()
-    cap_path = Path(args.capacity)
-    cap = json.loads(cap_path.read_text()) if cap_path.exists() else {"stub_concurrent_ok": 100, "whisper_base_concurrent_per_vcpu": 1.0}
+    ap.parse_args()
+    cap = capacity_from_runs()
     m = measure()
     sc = scenarios(m, cap)
     out = {"generated": time.strftime("%Y-%m-%d %H:%M"), "students": STUDENTS, "usage": m, "capacity": cap, "servers": SERVERS, "scenarios": sc}

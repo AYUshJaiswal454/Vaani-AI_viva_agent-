@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-21 11:44",
+ "generated": "2026-10-21 16:11",
  "students": 350,
  "usage": {
   "per_sample": [
@@ -71,8 +71,15 @@
   }
  },
  "capacity": {
-  "stub_concurrent_ok": 100,
-  "whisper_base_concurrent_per_vcpu": 1.0
+  "source": {
+   "stt_capacity": "20261021-142206-stt-capacity.json",
+   "load": "20261021-155545-load-2proc.json"
+  },
+  "whisper_base_concurrent": 6,
+  "whisper_test_vcpu": 2,
+  "whisper_base_concurrent_per_vcpu": 3.0,
+  "stub_concurrent_ok": 150,
+  "stub_test_vcpu": 2
  },
  "servers": {
   "c7i.large": {
@@ -104,15 +111,15 @@
    },
    "compute": {
     "server": "c7i.2xlarge",
-    "concurrent_vivas": 8,
-    "rounds": 44,
-    "hours": 13.2,
-    "usd": 4.71
+    "concurrent_vivas": 24,
+    "rounds": 15,
+    "hours": 4.5,
+    "usd": 1.61
    },
    "notes": "Audio never leaves the campus. Throughput limited by CPU speech recognition.",
-   "total_350_usd": 4.71,
-   "total_350_inr": 396,
-   "per_student_inr": 1.13
+   "total_350_usd": 1.61,
+   "total_350_inr": 135,
+   "per_student_inr": 0.39
   },
   {
    "name": "Hosted APIs, lowest cost",
@@ -126,14 +133,14 @@
    },
    "compute": {
     "server": "c7i.large",
-    "concurrent_vivas": 100,
-    "rounds": 4,
-    "hours": 1.2,
-    "usd": 0.11
+    "concurrent_vivas": 150,
+    "rounds": 3,
+    "hours": 0.9,
+    "usd": 0.08
    },
-   "notes": "Best price/quality. Audio is sent to Groq (US).",
-   "total_350_usd": 2.97,
-   "total_350_inr": 250,
+   "notes": "Best price for quality. Answer audio and transcripts go to Groq's servers.",
+   "total_350_usd": 2.94,
+   "total_350_inr": 247,
    "per_student_inr": 0.71
   },
   {
@@ -148,18 +155,18 @@
    },
    "compute": {
     "server": "c7i.large",
-    "concurrent_vivas": 100,
-    "rounds": 4,
-    "hours": 1.2,
-    "usd": 0.11
+    "concurrent_vivas": 150,
+    "rounds": 3,
+    "hours": 0.9,
+    "usd": 0.08
    },
    "one_time_usd": {
     "tts_bank": 0.27
    },
    "notes": "Most natural voice and strongest scorer.",
-   "total_350_usd": 30.87,
-   "total_350_inr": 2593,
-   "per_student_inr": 7.41
+   "total_350_usd": 30.84,
+   "total_350_inr": 2590,
+   "per_student_inr": 7.4
   },
   {
    "name": "Indian-language speech",
@@ -173,18 +180,18 @@
    },
    "compute": {
     "server": "c7i.large",
-    "concurrent_vivas": 100,
-    "rounds": 4,
-    "hours": 1.2,
-    "usd": 0.11
+    "concurrent_vivas": 150,
+    "rounds": 3,
+    "hours": 0.9,
+    "usd": 0.08
    },
    "one_time_usd": {
     "tts_bank": 0.56
    },
-   "notes": "Indian data residency; best for Hinglish answers.",
-   "total_350_usd": 13.12,
-   "total_350_inr": 1102,
-   "per_student_inr": 3.15
+   "notes": "An Indian provider built for Indian languages; the best option for Hinglish answers.",
+   "total_350_usd": 13.09,
+   "total_350_inr": 1100,
+   "per_student_inr": 3.14
   }
  ]
 }

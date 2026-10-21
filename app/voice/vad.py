@@ -83,6 +83,7 @@ class StreamVAD:
         self.last_voice = self.origin
         m = _load_model(self.models_dir)
         self.model = m if m else None
+        self.win = WIN
         self.reset_state()
 
     def reset_state(self) -> None:
@@ -109,8 +110,9 @@ class StreamVAD:
         ep = int((endpoint_ms or self.endpoint_ms) * SR / 1000)
         self._buf = np.concatenate([self._buf, pcm_f32.astype(np.float32)])
         events: list[VadEvent] = []
-        while self._buf.size >= WIN:
-            x, self._buf = self._buf[:WIN], self._buf[WIN:]
+        win = self.win
+        while self._buf.size >= win:
+            x, self._buf = self._buf[:win], self._buf[win:]
             self.frames += 1
             rms = float(np.sqrt(np.mean(x.astype(np.float64) ** 2)) + 1e-9)
             db = 20 * np.log10(rms)
@@ -122,13 +124,13 @@ class StreamVAD:
                 # adaptive noise floor: follows quiet frames quickly, loud frames slowly
                 self.noise_db = 0.95 * self.noise_db + 0.05 * db if db < self.noise_db + 3 else self.noise_db + 0.02
                 self.noise_db = min(max(self.noise_db, -90.0), -25.0)
-            end_of_frame = self.pos + WIN
+            end_of_frame = self.pos + win
             if prob >= self.threshold:
                 self._voiced_run += 1
                 self.last_voice = end_of_frame
-                if not self.in_speech and self._voiced_run * WIN >= self.min_speech_ms * SR / 1000 * 0.5:
+                if not self.in_speech and self._voiced_run * win >= self.min_speech_ms * SR / 1000 * 0.5:
                     self.in_speech = True
-                    self.speech_start = max(self.origin, self.pos - (self._voiced_run - 1) * WIN)
+                    self.speech_start = max(self.origin, self.pos - (self._voiced_run - 1) * win)
                     events.append(VadEvent("speech_start", self.speech_start, prob))
             else:
                 self._voiced_run = 0 if prob < self.threshold - 0.15 else self._voiced_run

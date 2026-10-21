@@ -34,15 +34,23 @@ class Monitor(threading.Thread):
         self.samples: list[dict] = []
         self.stop_flag = False
 
+    def _procs(self) -> list:
+        # keep one psutil.Process per pid: cpu_percent() measures since the previous call on the same object
+        for c in self.proc.children(recursive=True):
+            if c.pid not in self.known:
+                self.known[c.pid] = c
+                c.cpu_percent(None)
+        return [self.proc] + [p for p in self.known.values() if p.is_running()]
+
     def run(self) -> None:
-        procs = [self.proc] + self.proc.children(recursive=True)
-        for p in procs:
-            p.cpu_percent(None)
+        self.known: dict[int, psutil.Process] = {}
+        self.proc.cpu_percent(None)
+        self._procs()
         psutil.cpu_percent(None)
         while not self.stop_flag:
             time.sleep(1.0)
             try:
-                procs = [self.proc] + self.proc.children(recursive=True)
+                procs = self._procs()
                 cpu = sum(p.cpu_percent(None) for p in procs)
                 rss = sum(p.memory_info().rss for p in procs)
                 self.samples.append({"t": time.time(), "server_cpu_pct": cpu, "server_rss_mb": rss / 1e6,

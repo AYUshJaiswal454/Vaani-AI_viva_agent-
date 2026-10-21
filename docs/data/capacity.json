@@ -1,0 +1,11 @@
+{
+ "source": {
+  "stt_capacity": "20261021-142206-stt-capacity.json",
+  "load": "20261021-155545-load-2proc.json"
+ },
+ "whisper_base_concurrent": 6,
+ "whisper_test_vcpu": 2,
+ "whisper_base_concurrent_per_vcpu": 3.0,
+ "stub_concurrent_ok": 150,
+ "stub_test_vcpu": 2
+}

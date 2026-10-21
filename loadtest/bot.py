@@ -216,6 +216,8 @@ class AudioBot:
             self.res.started = time.monotonic()
             await self.loop(http)
             self.res.ok = self.ended
+            if not self.ended and self.ws:
+                await self.finish_early()          # time limit of the test: leave the way a student would
         except Exception as exc:  # noqa: BLE001
             self.res.error = f"{type(exc).__name__}: {exc}"[:300]
         finally:
@@ -223,6 +225,25 @@ class AudioBot:
             if self.ws:
                 await self.ws.close()
         return self.res
+
+    async def finish_early(self) -> None:
+        """Press "end viva" (end_early) and play the closing line, so the server records a normal ending."""
+        await self.ws.send_json({"type": "end_early"})
+        deadline = time.monotonic() + 15
+        while time.monotonic() < deadline and not self.ended:
+            try:
+                raw = await self.ws.recv(timeout=1.0)
+            except asyncio.TimeoutError:
+                continue
+            if isinstance(raw, bytes):
+                continue
+            msg = json.loads(raw)
+            if msg.get("type") == "say":
+                for ev in ("start", "end"):
+                    await self.ws.send_json({"type": "playback", "event": ev, "utt": msg["utt"], "t": time.time() * 1000})
+            elif msg.get("type") == "end":
+                self.ended = True
+                self.res.end_reason = msg.get("reason", "")
 
     async def loop(self, http: httpx.AsyncClient) -> None:
         tick = 0.1 / self.speed

@@ -53,10 +53,17 @@ All measured; the full method and data are in [`docs/TEST_REPORT.md`](docs/TEST_
 
 | What | Result |
 |---|---|
-| Reply time, 5 vivas at once, local Whisper base.en on 2 vCPU | **p50 1.0 s, p95 2.2 s**, max 2.9 s over 192 replies (target p95 < 2.5 s) |
+| Reply time, one viva, local Whisper base.en on 2 vCPU | **p50 1.15 s, p95 1.65 s** over a full viva (target p95 < 2.5 s); it was 2.5 / 4.3 s before streaming recognition |
+| Reply time, 5 vivas at once on the same 2 vCPU | p50 1.0 s, p95 2.2 s, max 2.9 s over 192 replies |
 | Examiner behaviour in the 5 recorded vivas | 198 of 198 lines traceable to the bank or a named system line; 0 evaluative lines; a hint after 23 of 23 partial answers, never a second; 43 of 43 "I don't know" answers moved on without pressure; a deeper follow-up after 29 of 31 strong answers |
 | Scores of the 5 recorded vivas | strong 89, Indian-English phrasing 91, average 50, weak 19, "I don't know" 7 |
-| Automated tests | 104, all passing (about a minute, no network) |
+| Speech recognition, Indian-accented English (NPTEL2020, 99 clips) | WER 14.7% with Whisper base.en on the server's CPU (16.4% with tiny.en) |
+| Scoring vs reference marks (14 simulated vivas) | MAE 4.75 / 100, Pearson 0.98; identical marks over 5 runs; standard vs Indian-English phrasing within 3 points |
+| Load test (hosted speech recognition) | **150 concurrent vivas** on one 2-vCPU machine, reply p95 1.9 s, nothing dropped; breaking point about 200 |
+| Capacity with local Whisper | 6 concurrent vivas on 2 vCPU (3 per core) within the latency target |
+| Robustness | network drop + rejoin, noisy room, muted microphone, silent student: all recovered (`docs/TEST_REPORT.md` §6) |
+| Cost for 350 students | ₹135 of server time with no API at all; ₹247 with hosted open-weight models; ₹2,590 with OpenAI's premium models ([`docs/COST.md`](docs/COST.md)) |
+| Automated tests | 105, all passing (under a minute, no network) |
 
 ## How it works
 
@@ -96,7 +103,7 @@ app/            server: live sessions, examiner engine, speech, scoring, API, ta
   scoring/      rubric, rule scorer, AI scorer, review flags, overrides, calibration
   data/         sample question banks, default rubric, prices
 frontend/       React + TypeScript (built into app/static, no build needed to run)
-tests/          102 unittest tests: engine, text, scoring, live WebSocket, API, voice
+tests/          105 unittest tests: engine, text, scoring, live WebSocket, API, voice
 loadtest/       audio bots, load test, results
 scripts/        model download, speech and scoring evaluations, cost sheet, sample export, report builder
 samples/        five recorded vivas (audio, transcript, scores), question banks (JSON + CSV), rubric
@@ -120,7 +127,7 @@ docs/           design, test report, scalability, cost sheet, privacy note, ques
 ## Running the tests and evaluations
 
 ```bash
-python -m unittest discover -s tests -t .                     # 102 tests, about a minute, no network
+python -m unittest discover -s tests -t .                     # 105 tests, under a minute, no network
 python scripts/eval_scoring.py                                # scoring accuracy, consistency, fairness
 python scripts/eval_scoring.py --llm --runs 5                 # the same for the AI scorer (needs an API key)
 python scripts/eval_stt.py --n 100                            # WER on Indian-accented English (NPTEL2020)

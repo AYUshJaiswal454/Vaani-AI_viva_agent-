@@ -202,6 +202,19 @@ class Policy(unittest.TestCase):
         self.assertEqual(a[0]["segments"][0]["source"], "system:silence_move_on")
         self.assertEqual(a[0]["kind"], "question")       # moved on to the next question
 
+    def test_silence_ladder_moves_on_when_no_rephrasing_is_left(self):
+        """Found by the muted-microphone robustness run: repeating verbatim must not restart the ladder forever."""
+        ex = examiner()
+        self.start(ex)
+        ex.st["cur"]["rephrased"] = True
+        says(ex.tick(40.5))
+        ex.playback_done(44)
+        a = says(ex.tick(44 + 12.5))
+        self.assertEqual(a[0]["kind"], "repeat")
+        ex.playback_done(62)
+        a = says(ex.tick(62 + 13.5))
+        self.assertEqual(a[0]["segments"][0]["source"], "system:silence_move_on")
+
     def test_cut_at_answer_cap(self):
         ex = examiner()
         self.start(ex)

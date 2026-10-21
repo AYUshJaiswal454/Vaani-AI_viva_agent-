@@ -309,8 +309,9 @@ class Examiner:
             act["log_integrity"] = {"kind": "long_silence", "severity": "info", "detail": {"seconds": SILENCE_PROMPT_S}}
             return [act]
         if stage == 1 and quiet >= SILENCE_REPHRASE_S - SILENCE_PROMPT_S:
-            st["silence_stage"] = 2
-            return self._rephrase(now, reason=f"Still silent after {SILENCE_REPHRASE_S} s", lead=[self._line("silence_rephrase")])
+            acts = self._rephrase(now, reason=f"Still silent after {SILENCE_REPHRASE_S} s", lead=[self._line("silence_rephrase")])
+            st["silence_stage"] = 2          # also when it had to repeat the question verbatim (a "repeat" resets the ladder)
+            return acts
         if stage == 2 and quiet >= SILENCE_MOVE_ON_S - SILENCE_REPHRASE_S:
             st["silence_stage"] = 3
             st["flags"]["no_answers"] += 1

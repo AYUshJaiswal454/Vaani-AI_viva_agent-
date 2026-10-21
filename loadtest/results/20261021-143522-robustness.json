@@ -2,17 +2,17 @@
  "drop": {
   "ok": false,
   "error": "",
-  "end": "",
-  "turns": 14,
+  "end": "ended_by_student",
+  "turns": 15,
   "reconnects": 1,
   "duration_s": 300.1,
-  "reply_p50_ms": 1372,
-  "reply_p95_ms": 2161,
-  "session_id": 3,
+  "reply_p50_ms": 1191,
+  "reply_p95_ms": 1953,
+  "session_id": 1,
   "server": {
-   "status": "live",
-   "end_reason": null,
-   "paused_s": 10.126850843429565,
+   "status": "ended",
+   "end_reason": "ended_by_student",
+   "paused_s": 10.1556396484375,
    "integrity": [
     "audio_gap",
     "network_drop",
@@ -20,93 +20,10 @@
    ],
    "student_turns": 13,
    "examiner_kinds": [
+    "close",
     "followup",
-    "hint",
     "prompt",
     "question"
-   ]
-  },
-  "says": [
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Hello Robust. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
-    "t": 0.5
-   },
-   {
-    "kind": "repeat",
-    "code": "DBMS-F-12",
-    "text": "Thank you. Let's move on to some fundamentals. How does a database recover after a crash? What role does the log play?",
-    "t": 105.2
-   }
-  ]
- },
- "noise": {
-  "ok": false,
-  "error": "",
-  "end": "",
-  "turns": 19,
-  "reconnects": 0,
-  "duration_s": 300.0,
-  "reply_p50_ms": 1344,
-  "reply_p95_ms": 2836,
-  "session_id": 5,
-  "server": {
-   "status": "live",
-   "end_reason": null,
-   "paused_s": 0.0,
-   "integrity": [
-    "barge_in",
-    "network_drop"
-   ],
-   "student_turns": 19,
-   "examiner_kinds": [
-    "followup",
-    "hint",
-    "prompt",
-    "question"
-   ]
-  },
-  "says": [
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Hello Robust. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
-    "t": 0.1
-   },
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Sorry, I didn't catch that. Could you say it again?",
-    "t": 293.8
-   }
-  ]
- },
- "mute": {
-  "ok": false,
-  "error": "",
-  "end": "",
-  "turns": 9,
-  "reconnects": 0,
-  "duration_s": 300.0,
-  "reply_p50_ms": 11804,
-  "reply_p95_ms": 13874,
-  "session_id": 2,
-  "server": {
-   "status": "live",
-   "end_reason": null,
-   "paused_s": 0.0,
-   "integrity": [
-    "long_silence",
-    "mic_muted",
-    "network_drop"
-   ],
-   "student_turns": 2,
-   "examiner_kinds": [
-    "followup",
-    "prompt",
-    "question",
-    "repeat"
    ]
   },
   "says": [
@@ -117,94 +34,33 @@
     "t": 0.3
    },
    {
-    "kind": "prompt",
-    "code": null,
-    "text": "Take your time. Would you like me to repeat the question?",
-    "t": 76.9
-   },
-   {
     "kind": "repeat",
-    "code": "DBMS-W-02",
-    "text": "Let me put that another way. To begin, briefly describe a project you have worked on, ideally one that stores or processes data, and explain your role in it.",
-    "t": 92.3
-   },
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Take your time. Would you like me to repeat the question?",
-    "t": 112.1
-   },
-   {
-    "kind": "repeat",
-    "code": "DBMS-W-02",
-    "text": "Let me put that another way. To begin, briefly describe a project you have worked on, ideally one that stores or processes data, and explain your role in it.",
-    "t": 127.5
-   },
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Take your time. Would you like me to repeat the question?",
-    "t": 147.3
-   },
-   {
-    "kind": "repeat",
-    "code": "DBMS-W-02",
-    "text": "Let me put that another way. To begin, briefly describe a project you have worked on, ideally one that stores or processes data, and explain your role in it.",
-    "t": 162.6
-   },
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Take your time. Would you like me to repeat the question?",
-    "t": 182.5
-   },
-   {
-    "kind": "repeat",
-    "code": "DBMS-W-02",
-    "text": "Let me put that another way. To begin, briefly describe a project you have worked on, ideally one that stores or processes data, and explain your role in it.",
-    "t": 197.8
-   },
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Take your time. Would you like me to repeat the question?",
-    "t": 217.6
-   },
-   {
-    "kind": "repeat",
-    "code": "DBMS-W-02",
-    "text": "Let me put that another way. To begin, briefly describe a project you have worked on, ideally one that stores or processes data, and explain your role in it.",
-    "t": 233.0
-   },
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Take your time. Would you like me to repeat the question?",
-    "t": 252.9
+    "code": "DBMS-F-12",
+    "text": "Thank you. Let's move on to some fundamentals. How does a database recover after a crash? What role does the log play?",
+    "t": 106.6
    }
   ]
  },
- "silence": {
+ "noise": {
   "ok": false,
   "error": "",
-  "end": "",
-  "turns": 6,
+  "end": "ended_by_student",
+  "turns": 16,
   "reconnects": 0,
   "duration_s": 300.0,
-  "reply_p50_ms": 1311,
-  "reply_p95_ms": 1880,
-  "session_id": 4,
+  "reply_p50_ms": 1551,
+  "reply_p95_ms": 8766,
+  "session_id": 2,
   "server": {
-   "status": "live",
-   "end_reason": null,
+   "status": "ended",
+   "end_reason": "ended_by_student",
    "paused_s": 0.0,
    "integrity": [
-    "long_silence",
-    "mic_muted",
-    "network_drop"
+    "long_silence"
    ],
-   "student_turns": 6,
+   "student_turns": 15,
    "examiner_kinds": [
+    "close",
     "followup",
     "hint",
     "prompt",
@@ -217,55 +73,195 @@
     "kind": "prompt",
     "code": null,
     "text": "Hello Robust. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
-    "t": 0.2
+    "t": 0.6
    },
    {
     "kind": "prompt",
     "code": null,
     "text": "Take your time. Would you like me to repeat the question?",
-    "t": 77.1
+    "t": 220.2
    },
    {
     "kind": "rephrase",
-    "code": "DBMS-F-02",
-    "text": "Let me put that another way. What are super keys and candidate keys, and where does the primary key fit in?",
-    "t": 92.4
+    "code": "DBMS-F-03",
+    "text": "Let me put that another way. A database transaction is said to be ACID. What are those four properties?",
+    "t": 235.5
+   }
+  ]
+ },
+ "mute": {
+  "ok": false,
+  "error": "",
+  "end": "ended_by_student",
+  "turns": 11,
+  "reconnects": 0,
+  "duration_s": 300.0,
+  "reply_p50_ms": 9061,
+  "reply_p95_ms": 19975,
+  "session_id": 4,
+  "server": {
+   "status": "ended",
+   "end_reason": "ended_by_student",
+   "paused_s": 0.0,
+   "integrity": [
+    "long_silence",
+    "mic_muted"
+   ],
+   "student_turns": 2,
+   "examiner_kinds": [
+    "close",
+    "followup",
+    "prompt",
+    "question",
+    "repeat",
+    "rephrase"
+   ]
+  },
+  "says": [
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Hello Robust. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+    "t": 0.4
    },
    {
     "kind": "prompt",
     "code": null,
     "text": "Take your time. Would you like me to repeat the question?",
-    "t": 138.1
+    "t": 76.9
    },
    {
-    "kind": "rephrase",
-    "code": "DBMS-F-13",
-    "text": "Let me put that another way. Why do databases have both read locks and write locks?",
-    "t": 153.5
-   },
-   {
-    "kind": "prompt",
-    "code": null,
-    "text": "Take your time. Would you like me to repeat the question?",
-    "t": 198.2
-   },
-   {
-    "kind": "rephrase",
-    "code": "DBMS-F-12",
-    "text": "Let me put that another way. After a sudden power failure, how does the DBMS bring the data back to a correct state?",
-    "t": 213.5
+    "kind": "repeat",
+    "code": "DBMS-W-02",
+    "text": "Let me put that another way. To begin, briefly describe a project you have worked on, ideally one that stores or processes data, and explain your role in it.",
+    "t": 92.2
    },
    {
     "kind": "prompt",
     "code": null,
     "text": "Take your time. Would you like me to repeat the question?",
-    "t": 259.1
+    "t": 133.8
    },
    {
     "kind": "rephrase",
     "code": "DBMS-F-05",
     "text": "Let me put that another way. What conditions does a table need to meet to be in 1NF, 2NF and 3NF?",
-    "t": 274.4
+    "t": 149.1
+   },
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Take your time. Would you like me to repeat the question?",
+    "t": 185.3
+   },
+   {
+    "kind": "rephrase",
+    "code": "DBMS-F-14",
+    "text": "Let me put that another way. What happens when one transaction reads data that another transaction has not yet committed?",
+    "t": 200.6
+   },
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Take your time. Would you like me to repeat the question?",
+    "t": 237.0
+   },
+   {
+    "kind": "rephrase",
+    "code": "DBMS-F-10",
+    "text": "Let me put that another way. Two transactions are each waiting for the other to release a lock. What is this called and what can the DBMS do about it?",
+    "t": 252.4
+   },
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Take your time. Would you like me to repeat the question?",
+    "t": 296.4
+   }
+  ]
+ },
+ "silence": {
+  "ok": false,
+  "error": "",
+  "end": "ended_by_student",
+  "turns": 6,
+  "reconnects": 0,
+  "duration_s": 300.0,
+  "reply_p50_ms": 1525,
+  "reply_p95_ms": 2105,
+  "session_id": 3,
+  "server": {
+   "status": "ended",
+   "end_reason": "ended_by_student",
+   "paused_s": 0.0,
+   "integrity": [
+    "long_silence",
+    "mic_muted"
+   ],
+   "student_turns": 6,
+   "examiner_kinds": [
+    "close",
+    "followup",
+    "hint",
+    "prompt",
+    "question",
+    "rephrase"
+   ]
+  },
+  "says": [
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Hello Robust. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+    "t": 0.5
+   },
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Take your time. Would you like me to repeat the question?",
+    "t": 77.7
+   },
+   {
+    "kind": "rephrase",
+    "code": "DBMS-F-02",
+    "text": "Let me put that another way. What are super keys and candidate keys, and where does the primary key fit in?",
+    "t": 93.1
+   },
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Take your time. Would you like me to repeat the question?",
+    "t": 138.7
+   },
+   {
+    "kind": "rephrase",
+    "code": "DBMS-F-13",
+    "text": "Let me put that another way. Why do databases have both read locks and write locks?",
+    "t": 154.0
+   },
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Take your time. Would you like me to repeat the question?",
+    "t": 198.7
+   },
+   {
+    "kind": "rephrase",
+    "code": "DBMS-F-12",
+    "text": "Let me put that another way. After a sudden power failure, how does the DBMS bring the data back to a correct state?",
+    "t": 214.0
+   },
+   {
+    "kind": "prompt",
+    "code": null,
+    "text": "Take your time. Would you like me to repeat the question?",
+    "t": 259.8
+   },
+   {
+    "kind": "rephrase",
+    "code": "DBMS-F-05",
+    "text": "Let me put that another way. What conditions does a table need to meet to be in 1NF, 2NF and 3NF?",
+    "t": 275.1
    }
   ]
  }

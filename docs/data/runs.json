@@ -1,5 +1,22 @@
 {
  "latency_before": "20261021-101155-latency-single-base.json",
  "latency_single": "20261021-115702-latency-single.json",
- "samples": "20261021-113130-samples.json"
+ "samples": "20261021-113130-samples.json",
+ "stt_capacity": "20261021-142206-stt-capacity.json",
+ "robustness": "20261021-143522-robustness.json",
+ "load": "20261021-155545-load-2proc.json",
+ "load_runs": [
+  {
+   "label": "1 process, before optimisation",
+   "file": "20261021-150417-load.json"
+  },
+  {
+   "label": "1 process, optimised",
+   "file": "20261021-152945-load-opt1.json"
+  },
+  {
+   "label": "2 processes, optimised",
+   "file": "20261021-155545-load-2proc.json"
+  }
+ ]
 }

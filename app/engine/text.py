@@ -71,14 +71,48 @@ def romanize_devanagari(text: str) -> str:
     return "".join(out)
 
 
+def _alternation(keys) -> str:
+    return "|".join(re.escape(k) for k in sorted(keys, key=len, reverse=True))
+
+
+_GENERIC_RX = re.compile(rf"(?<![\w'])({_alternation(_GENERIC_ALIASES)})(?![\w'])")
+_alias_keys: dict[int, tuple[dict, tuple]] = {}
+_alias_rx: dict[tuple, tuple[re.Pattern, dict]] = {}
+
+
+def _alias_key(aliases: dict[str, str] | None) -> tuple:
+    """A hashable, cached form of a bank's alias table (the same dict object is reused for a whole viva)."""
+    if not aliases:
+        return ()
+    hit = _alias_keys.get(id(aliases))
+    if hit is not None and hit[0] is aliases:
+        return hit[1]
+    key = tuple(sorted((k.lower(), v.lower()) for k, v in aliases.items() if k.strip()))
+    if len(_alias_keys) > 512:
+        _alias_keys.clear()
+    _alias_keys[id(aliases)] = (aliases, key)
+    return key
+
+
 def normalize(text: str, aliases: dict[str, str] | None = None) -> str:
-    """Lower-case, romanise Devanagari, expand contractions and subject aliases (e.g. "3nf" -> "third normal form")."""
-    t = unicodedata.normalize("NFKC", romanize_devanagari(text or "")).lower()
+    """Lower-case, romanise Devanagari, expand contractions and subject aliases (e.g. "3nf" -> "third normal form").
+
+    Called hundreds of times per answer (every key-point term too), so results are cached and each alias table is
+    compiled into one regular expression once (measured: this was 20% of server CPU under load before)."""
+    return _normalize(text or "", _alias_key(aliases))
+
+
+@lru_cache(maxsize=100_000)
+def _normalize(text: str, key: tuple) -> str:
+    t = unicodedata.normalize("NFKC", romanize_devanagari(text)).lower()
     t = t.replace("’", "'").replace("‘", "'").replace("–", "-").replace("—", "-")
-    for k, v in _GENERIC_ALIASES.items():
-        t = re.sub(rf"(?<![\w']){re.escape(k)}(?![\w'])", v, t)
-    for k, v in (aliases or {}).items():
-        t = re.sub(rf"(?<![\w]){re.escape(k.lower())}(?![\w])", v.lower(), t)
+    t = _GENERIC_RX.sub(lambda m: _GENERIC_ALIASES[m.group(1)], t)
+    if key:
+        rx = _alias_rx.get(key)
+        if rx is None:
+            table = dict(key)
+            rx = _alias_rx[key] = (re.compile(rf"(?<![\w])({_alternation(table)})(?![\w])"), table)
+        t = rx[0].sub(lambda m: rx[1][m.group(1)], t)
     t = re.sub(r"[^\w\s'+#().-]", " ", t)
     return re.sub(r"\s+", " ", t).strip()
 

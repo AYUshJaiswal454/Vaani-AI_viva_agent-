@@ -1,0 +1,6 @@
+{
+ "drop": "The connection was cut for 10 s mid-viva. The browser-side client reconnected and resent the audio it had captured while offline (logged as an audio gap), the viva clock paused for 10.2 s, and the examiner repeated the last question before carrying on. Faculty see network_drop and rejoin in the integrity panel.",
+ "noise": "Fan hum and clatter mixed in at 10 dB SNR. 15 answers were recognised and assessed as usual (reply p50 1.6 s). One short answer was not detected under the noise; the silence ladder recovered it (a prompt after 10 s, then the question rephrased), and the student answered again.",
+ "mute": "The microphone went silent after 60 s. For each question the examiner prompted after 10 s, rephrased or repeated it at 22 s and moved on at 35 s; mic_muted and long_silence were logged for faculty. This run found a bug (a verbatim repeat restarted the silence ladder, so the examiner looped on one question); it is fixed and covered by a unit test.",
+ "silence": "A student who says nothing to some questions: prompt at 10 s, rephrase at 22 s, move on at 35 s with no penalty in the conversation; the questions they did answer were assessed normally."
+}

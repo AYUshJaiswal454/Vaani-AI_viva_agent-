@@ -1,0 +1,103 @@
+{
+ "stages": [
+  {
+   "label": "load-opt1-100",
+   "base": "http://127.0.0.1:8013",
+   "bots": 100,
+   "personas": [
+    "strong",
+    "average",
+    "weak",
+    "idk",
+    "indian_english",
+    "rambler"
+   ],
+   "wall_s": 299.6,
+   "completed": 0,
+   "still_running_at_end": 100,
+   "dropped": 0,
+   "errors": [],
+   "replies": 1272,
+   "reply_p50_ms": 1248,
+   "reply_p95_ms": 1470,
+   "reply_p99_ms": 2604,
+   "reply_max_ms": 2713,
+   "audio_fetch_p95_ms": 265,
+   "options": {
+    "code": "DBMS26",
+    "bank": "dbms",
+    "personas": "strong,average,weak,idk,indian_english,rambler",
+    "bots": 100,
+    "ramp": 60.0,
+    "max_s": 240.0,
+    "snr": null,
+    "mute_after": null,
+    "drop_at": null,
+    "drop_for": 8.0,
+    "hints": true,
+    "no_fetch": false,
+    "roll_prefix": "L100S0X",
+    "seed": 100,
+    "label": "load-opt1-100"
+   },
+   "resources": {
+    "server_cpu_avg_pct": 72,
+    "server_cpu_p95_pct": 96,
+    "server_rss_peak_mb": 585,
+    "machine_cpu_avg_pct": 49,
+    "cores": 2
+   }
+  },
+  {
+   "label": "load-opt1-150",
+   "base": "http://127.0.0.1:8013",
+   "bots": 150,
+   "personas": [
+    "strong",
+    "average",
+    "weak",
+    "idk",
+    "indian_english",
+    "rambler"
+   ],
+   "wall_s": 303.4,
+   "completed": 0,
+   "still_running_at_end": 149,
+   "dropped": 1,
+   "errors": [
+    "TimeoutError: "
+   ],
+   "replies": 1406,
+   "reply_p50_ms": 2069,
+   "reply_p95_ms": 3586,
+   "reply_p99_ms": 4438,
+   "reply_max_ms": 7169,
+   "audio_fetch_p95_ms": 3725,
+   "options": {
+    "code": "DBMS26",
+    "bank": "dbms",
+    "personas": "strong,average,weak,idk,indian_english,rambler",
+    "bots": 150,
+    "ramp": 60.0,
+    "max_s": 240.0,
+    "snr": null,
+    "mute_after": null,
+    "drop_at": null,
+    "drop_for": 8.0,
+    "hints": true,
+    "no_fetch": false,
+    "roll_prefix": "L150S1X",
+    "seed": 101,
+    "label": "load-opt1-150"
+   },
+   "resources": {
+    "server_cpu_avg_pct": 82,
+    "server_cpu_p95_pct": 100,
+    "server_rss_peak_mb": 1032,
+    "machine_cpu_avg_pct": 58,
+    "cores": 2
+   }
+  }
+ ],
+ "cores": 2
+}

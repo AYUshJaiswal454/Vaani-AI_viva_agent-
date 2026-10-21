@@ -41,8 +41,9 @@ The target is a reply within about 2 seconds of the student finishing. The budge
 | Decide | < 10 ms | Rule-based examiner (no LLM on the critical path) |
 | Speak | ~0 ms | The reply is a pre-synthesised clip; an optional LLM rewording has a 1.4 s budget and falls back to the bank text |
 
-Measured with an audio bot on 2 vCPU and local Whisper base.en: reply p50 1.2 s, p95 1.5 s (was 2.5 / 4.3 s before
-streaming recognition). Details in `docs/TEST_REPORT.md`.
+Measured with an audio bot over a full viva on 2 vCPU with local Whisper base.en: reply p50 1.15 s, p95 1.65 s (2.46 /
+4.27 s before streaming recognition); five vivas at once on the same machine: p50 1.0 s, p95 2.2 s. These times
+include the 900 ms end-of-answer silence. Details in `docs/TEST_REPORT.md`.
 
 ## 3. The examiner
 
@@ -91,11 +92,12 @@ one setting away. Examiner voice: the browser, flite or Piper offline, or OpenAI
 ## 6. Scaling to 350 students
 
 Live work per viva is light: VAD on 100 ms frames, encrypted appends, a state-machine step per answer, cached clips.
-With hosted speech recognition one 2-vCPU server ran **150 concurrent vivas** in the load test; the limit with local
-Whisper is CPU (see `docs/SCALABILITY.md`), so a college server either uses a hosted recogniser or adds recognition
-capacity per concurrent student. Horizontal scaling: several web processes share Postgres (sticky WebSockets are not
-required because state is persisted per turn) and workers scale independently. Cost for 350 students:
-`docs/COST.md`.
+With hosted speech recognition one 2-vCPU machine ran **150 concurrent vivas** (two web processes, p95 reply 1.9 s,
+nothing dropped; breaking point about 200). With local Whisper the limit is recognition CPU: 6 concurrent vivas on 2
+vCPU, about 3 per core. So 350 students take 3 rounds (under an hour) with hosted recognition, or 15 rounds on one
+8-vCPU campus server with no API at all. Horizontal scaling: several web processes share Postgres (sticky WebSockets
+are not required because state is persisted per turn) and workers scale independently. Details:
+`docs/SCALABILITY.md`; cost for 350 students: `docs/COST.md`.
 
 ## 7. Privacy and fairness
 

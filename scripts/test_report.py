@@ -102,11 +102,20 @@ def main() -> None:
                         + (f"; AI scorer mean SD {sc['ai_consistency']['mean_sd_total']}" if sc.get("ai_consistency") else ""), "same"])
     load_ = result(runs.get("load"))
     if load_:
-        best = [s for s in load_["stages"] if s["completed"] + s["still_running_at_end"] == s["bots"] and not s["dropped"]]
-        top = max(best, key=lambda s: s["bots"]) if best else None
+        ok = [st for st in load_["stages"] if not st["dropped"] and st["reply_p95_ms"] is not None and st["reply_p95_ms"] <= 2500]
+        top = max(ok, key=lambda st: st["bots"]) if ok else None
         if top:
-            summary.append(["Load test (hosted-speech mode)", f"{top['bots']} concurrent vivas on {load_['cores']} vCPU, reply p95 {top['reply_p95_ms']} ms, 0 dropped",
-                            "`loadtest/load.py`"])
+            summary.append(["Load test, hosted speech recognition", f"{top['bots']} concurrent vivas on {load_['cores']} vCPU with reply p95 "
+                            f"{top['reply_p95_ms']} ms and nothing dropped (bots on the same machine)", "`loadtest/load.py`"])
+    cap = result(runs.get("stt_capacity"))
+    if cap:
+        summary.append(["Concurrent vivas with local Whisper", f"{cap['capacity']} on {cap.get('cores')} vCPU within p95 2.5 s",
+                        "`loadtest/stt_capacity.py`"])
+    rob = result(runs.get("robustness"))
+    if rob:
+        summary.append(["Robustness: network drop, noisy room, muted mic, silent student",
+                        ", ".join(f"{k}: {'recovered' if (v.get('server') or {}).get('status') in ('ended', 'scored') else v.get('end')}" for k, v in rob.items()),
+                        "`loadtest/robustness.py`"])
     L += md_table(["What", "Result", "How"], summary) + [""]
 
     # ------------------------------------------------------------------ unit tests
@@ -176,7 +185,11 @@ def main() -> None:
     # ------------------------------------------------------------------ scoring
     L += ["## 5. Scoring accuracy, consistency and fairness", ""]
     if sc:
-        L += [f"Reference: {sc['reference']}. {len(sc['rows'])} simulated vivas (14 personas and seeds).", ""]
+        L += [f"Reference: {sc['reference']}. {len(sc['rows'])} simulated vivas (14 personas and seeds). The reference marks were "
+              "written for each scripted persona before any scoring was run; they are not faculty marks. Agreement with real "
+              "examiners is measured in the app: faculty enter blind marks on the review page before the AI score is shown, and "
+              "the Calibration page reports MAE, Pearson and Spearman correlation and bias per dimension "
+              "(`python scripts/eval_scoring.py --from-db` prints the same numbers).", ""]
         L += md_table(["Persona", "Reference /100", "Rule scorer /100", "SD over runs"],
                       [[r["persona"], r["reference_total"], r["rule_total"], r["rule_runs_sd"]] for r in sc["rows"]]) + [""]
         r = sc["rule_scorer"]
@@ -208,24 +221,37 @@ def main() -> None:
         rows = []
         for label, v in rob.items():
             srv = v.get("server") or {}
-            rows.append([label, "completed" if v.get("ok") else (v.get("end") or v.get("error") or "still running at the time limit"),
-                         v.get("reconnects"), srv.get("student_turns"), ", ".join(srv.get("integrity") or []) or "none",
+            outcome = ("completed" if v.get("ok") else "ran to the 5-minute test limit, then ended normally"
+                       if v.get("end") == "ended_by_student" else (v.get("end") or v.get("error") or "running at the limit"))
+            lat = "n/a (no speech)" if label == "mute" else f"{v.get('reply_p50_ms')} / {v.get('reply_p95_ms')}"
+            rows.append([label, outcome, v.get("reconnects"), srv.get("student_turns"), ", ".join(srv.get("integrity") or []) or "none",
                          ", ".join(k for k in srv.get("examiner_kinds", []) if k in ("prompt", "rephrase", "redirect", "repeat")) or "-",
-                         f"{v.get('reply_p50_ms')} / {v.get('reply_p95_ms')}"])
+                         lat])
         L += md_table(["Scenario", "Outcome", "Reconnects", "Answers recorded", "Integrity signals", "Recovery lines used", "Reply p50 / p95 ms"], rows) + [""]
         notes = load("robustness_notes.json") or {}
         L += [f"- **{k}**: {v}" for k, v in notes.items()] + [""]
 
     # ------------------------------------------------------------------ load
-    if load_:
+    load_runs = [(x["label"], result(x["file"])) for x in runs.get("load_runs", [])]
+    load_runs = [(a, b) for a, b in load_runs if b]
+    if load_runs:
         L += ["## 7. Load test", "",
-              f"`loadtest/load.py` on {load_['cores']} vCPU: every bot joins, consents and streams real-time audio while the "
-              "server runs VAD, encrypted recording, the examiner and cached voice for each; speech recognition is the stub engine "
-              "with a realistic delay (as with a hosted recogniser), and the bots run on the same machine as the server.", ""]
-        L += md_table(["Concurrent vivas", "Replies", "Reply p50", "p95", "p99", "Dropped", "Server CPU avg", "Server RAM peak"],
-                      [[s["bots"], s["replies"], s["reply_p50_ms"], s["reply_p95_ms"], s["reply_p99_ms"], s["dropped"],
-                        f"{s['resources'].get('server_cpu_avg_pct')}%", f"{s['resources'].get('server_rss_peak_mb')} MB"] for s in load_["stages"]]) + [""]
-        L += ["Capacity planning and the local-Whisper limit: `docs/SCALABILITY.md`.", ""]
+              "`loadtest/load.py`: each audio bot joins, consents and streams real-time audio for 4 minutes while the server runs voice "
+              "detection, encrypted recording, the examiner and cached voice for every viva. Speech recognition is the stub engine "
+              "with a 250 ms delay, standing in for a hosted recogniser, so the test measures Vaani itself. The bots run on the "
+              "same 2-vCPU machine as the server and use part of its CPU.", ""]
+        rows = []
+        for label, r in load_runs:
+            for st in r["stages"]:
+                res = st["resources"]
+                srv_cpu = f"{res.get('server_cpu_avg_pct')}%" if res.get("server_cpu_avg_pct") else "not captured"
+                rows.append([label, st["bots"], st["replies"], st["reply_p50_ms"], st["reply_p95_ms"], st["reply_p99_ms"], st["dropped"],
+                             srv_cpu, f"{res.get('machine_cpu_avg_pct')}%", f"{res.get('server_rss_peak_mb')} MB"])
+        L += md_table(["Server", "Concurrent vivas", "Replies", "Reply p50 ms", "p95 ms", "p99 ms", "Dropped", "Server CPU avg (100% = 1 core)",
+                       "Machine CPU avg (server + bots)", "Server RAM peak"], rows) + [""]
+        L += ["Server CPU for the two-process run was not captured (the monitor then measured only the parent process; fixed "
+              "since); the machine CPU column covers it.", ""]
+        L += ["Capacity planning, the breaking point and the local-Whisper limit: `docs/SCALABILITY.md`.", ""]
 
     (ROOT / "docs" / "TEST_REPORT.md").write_text("\n".join(L), encoding="utf-8")
     print("written docs/TEST_REPORT.md")

@@ -1,0 +1,148 @@
+{
+ "stages": [
+  {
+   "label": "stt-capacity-4",
+   "base": "http://127.0.0.1:8011",
+   "bots": 4,
+   "personas": [
+    "strong",
+    "average",
+    "indian_english",
+    "weak"
+   ],
+   "wall_s": 252.2,
+   "completed": 0,
+   "still_running_at_end": 4,
+   "dropped": 0,
+   "errors": [],
+   "replies": 52,
+   "reply_p50_ms": 1250,
+   "reply_p95_ms": 2206,
+   "reply_p99_ms": 3096,
+   "reply_max_ms": 3096,
+   "audio_fetch_p95_ms": 9,
+   "options": {
+    "code": "DBMS26",
+    "bank": "dbms",
+    "personas": "strong,average,indian_english,weak",
+    "bots": 4,
+    "ramp": 16.0,
+    "max_s": 240.0,
+    "snr": null,
+    "mute_after": null,
+    "drop_at": null,
+    "drop_for": 8.0,
+    "hints": false,
+    "no_fetch": false,
+    "roll_prefix": "C4S0X",
+    "seed": 300,
+    "label": "stt-capacity-4"
+   },
+   "resources": {
+    "server_cpu_avg_pct": 60,
+    "server_cpu_p95_pct": 172,
+    "server_rss_peak_mb": 1262,
+    "machine_cpu_avg_pct": 42,
+    "cores": 2
+   },
+   "meets_target": true
+  },
+  {
+   "label": "stt-capacity-6",
+   "base": "http://127.0.0.1:8011",
+   "bots": 6,
+   "personas": [
+    "strong",
+    "average",
+    "indian_english",
+    "weak"
+   ],
+   "wall_s": 257.4,
+   "completed": 0,
+   "still_running_at_end": 6,
+   "dropped": 0,
+   "errors": [],
+   "replies": 80,
+   "reply_p50_ms": 1269,
+   "reply_p95_ms": 2315,
+   "reply_p99_ms": 2884,
+   "reply_max_ms": 2884,
+   "audio_fetch_p95_ms": 16,
+   "options": {
+    "code": "DBMS26",
+    "bank": "dbms",
+    "personas": "strong,average,indian_english,weak",
+    "bots": 6,
+    "ramp": 20.0,
+    "max_s": 240.0,
+    "snr": null,
+    "mute_after": null,
+    "drop_at": null,
+    "drop_for": 8.0,
+    "hints": false,
+    "no_fetch": false,
+    "roll_prefix": "C6S1X",
+    "seed": 301,
+    "label": "stt-capacity-6"
+   },
+   "resources": {
+    "server_cpu_avg_pct": 84,
+    "server_cpu_p95_pct": 183,
+    "server_rss_peak_mb": 1367,
+    "machine_cpu_avg_pct": 53,
+    "cores": 2
+   },
+   "meets_target": true
+  },
+  {
+   "label": "stt-capacity-8",
+   "base": "http://127.0.0.1:8011",
+   "bots": 8,
+   "personas": [
+    "strong",
+    "average",
+    "indian_english",
+    "weak"
+   ],
+   "wall_s": 257.8,
+   "completed": 0,
+   "still_running_at_end": 8,
+   "dropped": 0,
+   "errors": [],
+   "replies": 109,
+   "reply_p50_ms": 1305,
+   "reply_p95_ms": 2646,
+   "reply_p99_ms": 3048,
+   "reply_max_ms": 3564,
+   "audio_fetch_p95_ms": 24,
+   "options": {
+    "code": "DBMS26",
+    "bank": "dbms",
+    "personas": "strong,average,indian_english,weak",
+    "bots": 8,
+    "ramp": 20.0,
+    "max_s": 240.0,
+    "snr": null,
+    "mute_after": null,
+    "drop_at": null,
+    "drop_for": 8.0,
+    "hints": false,
+    "no_fetch": false,
+    "roll_prefix": "C8S2X",
+    "seed": 302,
+    "label": "stt-capacity-8"
+   },
+   "resources": {
+    "server_cpu_avg_pct": 107,
+    "server_cpu_p95_pct": 191,
+    "server_rss_peak_mb": 1380,
+    "machine_cpu_avg_pct": 64,
+    "cores": 2
+   },
+   "meets_target": false
+  }
+ ],
+ "target_p95_ms": 2500,
+ "capacity": 6,
+ "cores": 2
+}

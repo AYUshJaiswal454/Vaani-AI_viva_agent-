@@ -1,0 +1,156 @@
+{
+ "stages": [
+  {
+   "label": "load-2proc-150",
+   "base": "http://127.0.0.1:8013",
+   "bots": 150,
+   "personas": [
+    "strong",
+    "average",
+    "weak",
+    "idk",
+    "indian_english",
+    "rambler"
+   ],
+   "wall_s": 299.9,
+   "completed": 0,
+   "still_running_at_end": 150,
+   "dropped": 0,
+   "errors": [],
+   "replies": 1850,
+   "reply_p50_ms": 1284,
+   "reply_p95_ms": 1866,
+   "reply_p99_ms": 2691,
+   "reply_max_ms": 3374,
+   "audio_fetch_p95_ms": 361,
+   "options": {
+    "code": "DBMS26",
+    "bank": "dbms",
+    "personas": "strong,average,weak,idk,indian_english,rambler",
+    "bots": 150,
+    "ramp": 60.0,
+    "max_s": 240.0,
+    "snr": null,
+    "mute_after": null,
+    "drop_at": null,
+    "drop_for": 8.0,
+    "hints": true,
+    "no_fetch": false,
+    "roll_prefix": "L150S0X",
+    "seed": 100,
+    "label": "load-2proc-150"
+   },
+   "resources": {
+    "server_cpu_avg_pct": 0,
+    "server_cpu_p95_pct": 1,
+    "server_rss_peak_mb": 987,
+    "machine_cpu_avg_pct": 73,
+    "cores": 2
+   }
+  },
+  {
+   "label": "load-2proc-200",
+   "base": "http://127.0.0.1:8013",
+   "bots": 200,
+   "personas": [
+    "strong",
+    "average",
+    "weak",
+    "idk",
+    "indian_english",
+    "rambler"
+   ],
+   "wall_s": 300.2,
+   "completed": 0,
+   "still_running_at_end": 200,
+   "dropped": 0,
+   "errors": [],
+   "replies": 2126,
+   "reply_p50_ms": 1583,
+   "reply_p95_ms": 5422,
+   "reply_p99_ms": 7216,
+   "reply_max_ms": 11182,
+   "audio_fetch_p95_ms": 2613,
+   "options": {
+    "code": "DBMS26",
+    "bank": "dbms",
+    "personas": "strong,average,weak,idk,indian_english,rambler",
+    "bots": 200,
+    "ramp": 60.0,
+    "max_s": 240.0,
+    "snr": null,
+    "mute_after": null,
+    "drop_at": null,
+    "drop_for": 8.0,
+    "hints": true,
+    "no_fetch": false,
+    "roll_prefix": "L200S1X",
+    "seed": 101,
+    "label": "load-2proc-200"
+   },
+   "resources": {
+    "server_cpu_avg_pct": 0,
+    "server_cpu_p95_pct": 1,
+    "server_rss_peak_mb": 1493,
+    "machine_cpu_avg_pct": 83,
+    "cores": 2
+   }
+  },
+  {
+   "label": "load-2proc-250",
+   "base": "http://127.0.0.1:8013",
+   "bots": 250,
+   "personas": [
+    "strong",
+    "average",
+    "weak",
+    "idk",
+    "indian_english",
+    "rambler"
+   ],
+   "wall_s": 305.6,
+   "completed": 0,
+   "still_running_at_end": 244,
+   "dropped": 6,
+   "errors": [
+    "ConnectionError: closed",
+    "ConnectionError: closed",
+    "ConnectionError: closed",
+    "ConnectionError: closed",
+    "ConnectionError: closed",
+    "TimeoutError: "
+   ],
+   "replies": 2278,
+   "reply_p50_ms": 2020,
+   "reply_p95_ms": 7432,
+   "reply_p99_ms": 17089,
+   "reply_max_ms": 19725,
+   "audio_fetch_p95_ms": 4620,
+   "options": {
+    "code": "DBMS26",
+    "bank": "dbms",
+    "personas": "strong,average,weak,idk,indian_english,rambler",
+    "bots": 250,
+    "ramp": 60.0,
+    "max_s": 240.0,
+    "snr": null,
+    "mute_after": null,
+    "drop_at": null,
+    "drop_for": 8.0,
+    "hints": true,
+    "no_fetch": false,
+    "roll_prefix": "L250S2X",
+    "seed": 102,
+    "label": "load-2proc-250"
+   },
+   "resources": {
+    "server_cpu_avg_pct": 0,
+    "server_cpu_p95_pct": 1,
+    "server_rss_peak_mb": 1787,
+    "machine_cpu_avg_pct": 85,
+    "cores": 2
+   }
+  }
+ ],
+ "cores": 2
+}

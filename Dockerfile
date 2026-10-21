@@ -26,4 +26,7 @@ USER vaani
 ENV PORT=8000 WHISPER_MODEL=${WHISPER_MODEL}
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s CMD python -c "import os, urllib.request; urllib.request.urlopen('http://127.0.0.1:%s/api/health' % os.environ.get('PORT', '8000'), timeout=4)"
-CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT} --ws wsproto --proxy-headers --forwarded-allow-ips='*'"]
+# WEB_WORKERS: web processes (one per CPU core suits hosted speech recognition; with local Whisper keep 1 and let
+# STT_CONCURRENCY use the cores). Live vivas survive moving between processes because state is saved every answer.
+ENV WEB_WORKERS=1
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT} --ws wsproto --workers ${WEB_WORKERS} --proxy-headers --forwarded-allow-ips='*'"]

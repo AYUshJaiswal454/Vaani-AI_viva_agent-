@@ -116,7 +116,22 @@ def main() -> None:
     ap.add_argument("--lab", action="store_true", help="use clips recorded in the Speech lab")
     ap.add_argument("--prompt", default="", help="vocabulary prompt passed to every engine")
     ap.add_argument("--out", default=str(ROOT / "docs" / "data" / "stt_eval.json"))
+    ap.add_argument("--rescore", action="store_true", help="recompute WER from the saved transcripts (after a normaliser change)")
     args = ap.parse_args()
+    if args.rescore:
+        from app.voice.wer import corpus_wer, wer
+
+        data = json.loads(Path(args.out).read_text(encoding="utf-8"))
+        for r in data["results"]:
+            for row in r["rows"]:
+                row["wer"] = round(wer(row["reference"], row["hypothesis"])["wer"], 3)
+            pairs = [(row["reference"], row["hypothesis"]) for row in r["rows"]]
+            agg, raw = corpus_wer(pairs), corpus_wer(pairs, normalised=False)
+            r.update({"wer": round(agg["wer"], 4), "wer_raw": round(raw["wer"], 4), "sub": agg["sub"], "del": agg["del"],
+                      "ins": agg["ins"], "ref_words": agg["ref_words"]})
+            print(f"{r['engine']}: WER {r['wer']:.1%} (raw {r['wer_raw']:.1%})")
+        Path(args.out).write_text(json.dumps(data, indent=1, ensure_ascii=False), encoding="utf-8")
+        return
     os.environ.setdefault("SEED_DEMO", "false")
     clips = clips_from(args)
     print(f"{len(clips)} clips")

@@ -149,13 +149,16 @@ class Recording:
     """Append-only student track for one session: data/sessions/<id>/student.pcm (framed + encrypted if enabled)."""
 
     _locks: dict[str, threading.Lock] = {}
+    _pending: dict[str, bytearray] = {}      # audio not yet written, shared by every instance for the same file
+    FLUSH_BYTES = SR                          # write (and encrypt) in half-second blocks: 5x fewer writes than per frame
 
     def __init__(self, session_id: int) -> None:
         self.dir = get_settings().sessions_dir / str(session_id)
         self.dir.mkdir(parents=True, exist_ok=True)
         self.path = self.dir / "student.pcm"
+        self.key = str(self.path)
         self.encrypted = get_settings().encrypt_audio
-        self.lock = Recording._locks.setdefault(str(self.path), threading.Lock())
+        self.lock = Recording._locks.setdefault(self.key, threading.Lock())
         self._samples: int | None = None
 
     def _frame(self, pcm: bytes) -> bytes:
@@ -164,14 +167,31 @@ class Recording:
         token = encrypt_bytes(pcm)
         return struct.pack(">I", len(token)) + token
 
-    def append(self, pcm: bytes) -> int:
-        """Append PCM16 and return the total number of samples now stored."""
+    def _flush_unlocked(self) -> None:
+        buf = Recording._pending.get(self.key)
+        if not buf:
+            return
+        with open(self.path, "ab") as fh:
+            if fh.tell() == 0 and self.encrypted:
+                fh.write(ENC_MAGIC)
+            fh.write(self._frame(bytes(buf)))
+        buf.clear()
+
+    def flush(self) -> None:
+        """Write any buffered audio now (end of the viva, disconnect, before reading)."""
         with self.lock:
-            with open(self.path, "ab") as fh:
-                if fh.tell() == 0 and self.encrypted:
-                    fh.write(ENC_MAGIC)
-                fh.write(self._frame(pcm))
-            self._samples = (self.samples_unlocked() if self._samples is None else self._samples) + len(pcm) // 2
+            self._flush_unlocked()
+
+    def append(self, pcm: bytes) -> int:
+        """Append PCM16 and return the total number of samples now stored (written or buffered)."""
+        with self.lock:
+            if self._samples is None:
+                self._samples = self.samples_unlocked()
+            buf = Recording._pending.setdefault(self.key, bytearray())
+            buf += pcm
+            if len(buf) >= self.FLUSH_BYTES:
+                self._flush_unlocked()
+            self._samples += len(pcm) // 2
             return self._samples
 
     def pad_to(self, samples: int) -> int:
@@ -187,10 +207,11 @@ class Recording:
         return self.samples()
 
     def samples_unlocked(self) -> int:
+        pending = len(Recording._pending.get(self.key, b"")) // 2
         if not self.path.exists():
-            return 0
+            return pending
         if not self.encrypted:
-            return self.path.stat().st_size // 2
+            return self.path.stat().st_size // 2 + pending
         return len(self.read_unlocked()) // 2
 
     def samples(self) -> int:
@@ -201,6 +222,7 @@ class Recording:
             return self._samples
 
     def read_unlocked(self) -> bytes:
+        self._flush_unlocked()
         if not self.path.exists():
             return b""
         raw = self.path.read_bytes()

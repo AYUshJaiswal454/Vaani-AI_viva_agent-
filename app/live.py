@@ -247,6 +247,8 @@ class LiveSession:
 
     async def on_disconnect(self) -> None:
         self.closed = True
+        if getattr(self, "rec", None) is not None:
+            self.rec.flush()
         self.save_trace()
         for t in self.tasks:
             t.cancel()
@@ -794,6 +796,7 @@ class LiveSession:
         db = get_db()
         st = self.examiner.st
         st["mode"] = "ended"
+        self.rec.flush()
         db.update("sessions", self.sid, {"status": "ended", "ended_at": now_iso(), "end_reason": reason, "state": st,
                                          "audio_samples": self.rec.samples(), "updated_at": now_iso()})
         self.save_trace()

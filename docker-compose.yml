@@ -21,6 +21,7 @@ services:
       STT_ENGINE: ${STT_ENGINE:-}
       TTS_ENGINE: ${TTS_ENGINE:-browser}
       EMBEDDED_WORKER: ${EMBEDDED_WORKER:-true}
+      WEB_WORKERS: ${WEB_WORKERS:-1}
     volumes: ["vaani-data:/data"]
     restart: unless-stopped
 
