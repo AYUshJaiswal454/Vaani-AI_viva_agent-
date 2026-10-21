@@ -60,7 +60,10 @@ def main() -> None:
         with tarfile.open(arc) as t:
             members = [m for m in t.getmembers() if m.isfile() and (args.keep_fp32 or ".int8." in m.name or m.name.endswith("tokens.txt"))
                        and "test_wavs" not in m.name]
-            t.extractall(tmp, members=members)
+            if hasattr(tarfile, "data_filter"):
+                t.extractall(tmp, members=members, filter="data")
+            else:
+                t.extractall(tmp, members=members)
         src = Path(tmp) / f"sherpa-onnx-whisper-{args.whisper}"
         if target.exists():
             shutil.rmtree(target)

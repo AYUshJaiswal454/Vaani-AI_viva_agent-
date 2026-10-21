@@ -126,7 +126,7 @@ docs/           design, test report, scalability, cost sheet, privacy note, ques
 | Deliverable | File |
 |---|---|
 | Repository with README and Docker Compose | this file, `docker-compose.yml`, `Dockerfile` |
-| Design document (3 pages) | [`docs/DESIGN.md`](docs/DESIGN.md) |
+| Design document (2 pages; limit 3) | [`docs/DESIGN.md`](docs/DESIGN.md), printable [`docs/DESIGN.pdf`](docs/DESIGN.pdf) |
 | Sample question bank and rubric | [`samples/question_banks/`](samples/question_banks/), [`samples/rubric.json`](samples/rubric.json), [`docs/QUESTION_BANK.md`](docs/QUESTION_BANK.md) |
 | Five recorded vivas | [`samples/vivas/`](samples/vivas/) (also loaded into the demo dashboard) |
 | Test report | [`docs/TEST_REPORT.md`](docs/TEST_REPORT.md) |

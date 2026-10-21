@@ -639,14 +639,15 @@ class LiveSession:
             return
         parts = [*u.texts, tail.text] if tail.text else list(u.texts)
         text = " ".join(p.strip() for p in parts if p and p.strip())
-        u.confs.append((tail.confidence, max(0.01, (end - u.committed) / SR)))
-        u.stt_ms.append(tail.compute_ms)
+        tail_conf = (tail.confidence, max(0.01, (end - u.committed) / SR))
         if not cut and text and looks_incomplete(text):
             # The student stopped mid-sentence ("... because"): give them a little longer before replying.
             await asyncio.sleep(max(0.0, (self.settings.endpoint_incomplete_ms - self.settings.endpoint_silence_ms) / 1000))
             if u.flow is not token:
-                self.note("flow_abort", "incomplete wait")
+                self.note("flow_abort", "incomplete wait")   # they carried on: the tail becomes a chunk (resume/adopt)
                 return
+        u.confs.append(tail_conf)                           # only now: an aborted flow must leave no trace
+        u.stt_ms.append(tail.compute_ms)
         self.note("finalize", len(text))
         await self.finalize(u, text, tail, voice_end_wall, detected, cut)
 
