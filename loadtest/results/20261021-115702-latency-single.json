@@ -1,0 +1,281 @@
+{
+ "label": "latency-single",
+ "base": "http://127.0.0.1:8011",
+ "bots": 1,
+ "personas": [
+  "strong"
+ ],
+ "wall_s": 768.0,
+ "completed": 1,
+ "still_running_at_end": 0,
+ "dropped": 0,
+ "errors": [],
+ "replies": 37,
+ "reply_p50_ms": 1146,
+ "reply_p95_ms": 1651,
+ "reply_p99_ms": 1766,
+ "reply_max_ms": 1766,
+ "audio_fetch_p95_ms": 8,
+ "options": {
+  "code": "DBMS26",
+  "bank": "dbms",
+  "personas": "strong",
+  "bots": 0,
+  "ramp": 2.0,
+  "max_s": 960,
+  "snr": null,
+  "mute_after": null,
+  "drop_at": null,
+  "drop_for": 8.0,
+  "hints": false,
+  "no_fetch": false,
+  "roll_prefix": "23LT",
+  "seed": 21,
+  "label": "latency-single"
+ },
+ "sessions": [
+  {
+   "roll_no": "23LT001",
+   "persona": "strong",
+   "session_id": 1,
+   "ok": true,
+   "end": "completed",
+   "error": "",
+   "turns": 37,
+   "duration_s": 767.8,
+   "reconnects": 0,
+   "reply_p50_ms": 1146,
+   "reply_max_ms": 1766,
+   "says": [
+    {
+     "kind": "prompt",
+     "code": null,
+     "text": "Hello Ananya. I'm Vaani, your examiner for Database Management Systems today. Before we begin, please say your full name and your roll number.",
+     "t": 0.3
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-W-01",
+     "text": "Thank you. A quick note before we start: this viva has five short parts and lasts at most fifteen minutes. Answer out loud, in your own words. It's completely fine to say you don't know, or to ask me to repeat a question. Let's start with your work. In about a minute, tell me about a project where you stored data in a database: what it did, how the data was organised, and what your own part was.",
+     "t": 15.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-W-01",
+     "text": "Alright. Which table or collection in that project was the most important, and what were its main fields?",
+     "t": 71.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-13",
+     "text": "Thank you. Let's move on to some fundamentals. What is the difference between a shared lock and an exclusive lock?",
+     "t": 86.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-13",
+     "text": "I see. What is two-phase locking, and what does it guarantee?",
+     "t": 103.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-12",
+     "text": "Got it. How does a database recover after a crash? What role does the log play?",
+     "t": 122.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-12",
+     "text": "Okay, thanks. Why must the log record be written to disk before the data page it describes?",
+     "t": 145.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-05",
+     "text": "Noted. Explain first, second and third normal form in simple terms.",
+     "t": 157.7
+    },
+    {
+     "kind": "hint",
+     "code": "DBMS-F-05",
+     "text": "Here's a hint. For each normal form, ask what a non-key column is allowed to depend on.",
+     "t": 177.7
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-14",
+     "text": "Right. What is a dirty read? Which isolation level prevents it?",
+     "t": 195.8
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-14",
+     "text": "Okay. What is a phantom read, and why doesn't row locking alone prevent it?",
+     "t": 216.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-F-10",
+     "text": "Alright. What is a deadlock in a database, and how can it be handled?",
+     "t": 235.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-F-10",
+     "text": "Thank you. If the DBMS has to abort one transaction to break a deadlock, how should it choose which one?",
+     "t": 257.0
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-06",
+     "text": "I see. Let's go a little deeper into recovery. Explain the steal and no-force policies in buffer management and why they make recovery need both undo and redo.",
+     "t": 270.6
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-06",
+     "text": "Got it. What if a system used no-steal and force instead? What would be simpler and what would be worse?",
+     "t": 294.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-04",
+     "text": "Okay, thanks. How does multiversion concurrency control (MVCC) work, and why do databases like PostgreSQL use it?",
+     "t": 307.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Noted. What problem appears if old versions are never cleaned up?",
+     "t": 339.7
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-04",
+     "text": "Right. Can two concurrent MVCC transactions still conflict? Give an example.",
+     "t": 355.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-02",
+     "text": "Okay. Compare the isolation levels read committed, repeatable read and serializable. What does each one allow, and what does it cost?",
+     "t": 373.2
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-02",
+     "text": "Alright. Why don't databases just use serializable everywhere by default?",
+     "t": 393.8
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-02",
+     "text": "Thank you. What if an application must be correct for a ticket booking system that may oversell seats? Which level would you choose and why?",
+     "t": 403.4
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-03",
+     "text": "I see. What is a lossless-join decomposition, and how do you check that splitting a table did not lose information?",
+     "t": 419.7
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-03",
+     "text": "Got it. Why can decomposing to BCNF lose dependency preservation, while 3NF never does?",
+     "t": 442.2
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-05",
+     "text": "Okay, thanks. How does a query optimiser decide how to execute a SQL query? What information does it use?",
+     "t": 458.9
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-05",
+     "text": "Noted. Why might the optimiser ignore an index that exists on the filtered column?",
+     "t": 483.0
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-05",
+     "text": "Right. What happens if the table statistics are badly out of date?",
+     "t": 498.8
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-D-08",
+     "text": "Okay. When would you choose a surrogate key, like an auto-increment ID, instead of a natural key such as a roll number or email?",
+     "t": 515.3
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-D-08",
+     "text": "Alright. If you use an auto-increment ID, what goes wrong if you forget a unique constraint on email?",
+     "t": 543.9
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-05",
+     "text": "Thank you. Now let's try a practical problem. I've put some code on your screen. Please think out loud as you work through it. A payment app moves money from wallet A to wallet B with two separate UPDATE statements and no transaction. Occasionally money disappears. Reason aloud about the causes and design a fix.",
+     "t": 556.3
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-05",
+     "text": "I see. What if wallets A and B live in two different databases? Can one transaction still cover both?",
+     "t": 603.5
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-05",
+     "text": "Got it. Why might two transfers between the same wallets in opposite directions deadlock, and how can you prevent it?",
+     "t": 614.6
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-04",
+     "text": "Okay, thanks. This query is supposed to show each department with its number of employees, including departments with no employees. But departments with zero employees are missing. Explain why and how to fix it.",
+     "t": 628.6
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-04",
+     "text": "Noted. After switching to LEFT JOIN but keeping COUNT(*), what number would an empty department show, and why?",
+     "t": 662.5
+    },
+    {
+     "kind": "question",
+     "code": "DBMS-A-01",
+     "text": "Right. Here is a slow query on an orders table with ten million rows. It takes eight seconds. Walk me through how you would find out why it is slow and how you would fix it.",
+     "t": 675.1
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-01",
+     "text": "Okay. Why does wrapping created_at inside YEAR() stop the database from using an index on created_at?",
+     "t": 709.6
+    },
+    {
+     "kind": "followup",
+     "code": "DBMS-A-01",
+     "text": "Alright. What if this query is fast now, but inserts into orders have become slower. What trade-off did you make?",
+     "t": 724.4
+    },
+    {
+     "kind": "wrapup",
+     "code": null,
+     "text": "Thank you. We're nearly done. Is there anything you'd like to add or clarify about any of your answers?",
+     "t": 748.7
+    },
+    {
+     "kind": "close",
+     "code": null,
+     "text": "Thank you. That's the end of your viva. Your answers will be reviewed and your faculty will share the results. You can close this window now.",
+     "t": 759.9
+    }
+   ]
+  }
+ ]
+}
