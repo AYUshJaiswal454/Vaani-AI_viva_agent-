@@ -253,6 +253,15 @@ def main() -> None:
               "since); the machine CPU column covers it.", ""]
         L += ["Capacity planning, the breaking point and the local-Whisper limit: `docs/SCALABILITY.md`.", ""]
 
+    if (ROOT / "docs" / "images" / "review_audit.png").exists():
+        L += ["## 8. Audit", "",
+              "Every score stores its prompt and rubric version with hashes, the model and all runs; every override stores who, when, "
+              "the reason and the before/after marks; opening a recording, viewing an AI score, exporting and erasing are logged. "
+              "Screenshots from the demo server after a faculty override (tests: `test_override_wins_and_is_logged`, "
+              "`test_admin_can_erase_a_recording_or_the_attempt`):", "",
+              "![Review page: override, score history and audit trail](images/review_audit.png)", "",
+              "![Administrator audit log](images/system_audit.png)", ""]
+
     (ROOT / "docs" / "TEST_REPORT.md").write_text("\n".join(L), encoding="utf-8")
     print("written docs/TEST_REPORT.md")
 

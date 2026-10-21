@@ -6,7 +6,7 @@ Generated 2026-10-21 by `scripts/test_report.py` from the result files in `docs/
 
 | What | Result | How |
 |---|---|---|
-| Automated tests | 105 tests, all passing | `python -m unittest discover -s tests -t .` |
+| Automated tests | 106 tests, all passing | `python -m unittest discover -s tests -t .` |
 | Reply latency, 1 viva, local Whisper base.en (2 vCPU) | p50 1146 ms, p95 1651 ms (target p95 < 2500 ms) | `loadtest/run_bots.py --personas strong` |
 | Reply latency, 5 concurrent vivas, local Whisper (2 vCPU) | p50 1023 ms, p95 2206 ms | `loadtest/run_bots.py` (the five sample recordings) |
 | Speech recognition, Indian-accented English | WER 14.7% (whisper-onnx:base.en, 99 clips) | `scripts/eval_stt.py` |
@@ -18,11 +18,11 @@ Generated 2026-10-21 by `scripts/test_report.py` from the result files in `docs/
 
 ## 1. Automated tests
 
-105 tests ran in 28 s on 2026-10-21 16:12: all passed. They use the standard library's `unittest` (also runnable with pytest) and need no network or API key: speech recognition and the LLM are replaced by deterministic stubs where needed, and the live tests drive the real WebSocket with synthesised speech.
+106 tests ran in 26 s on 2026-10-21 16:46: all passed. They use the standard library's `unittest` (also runnable with pytest) and need no network or API key: speech recognition and the LLM are replaced by deterministic stubs where needed, and the live tests drive the real WebSocket with synthesised speech.
 
 | File | Tests | Covers |
 |---|---|---|
-| `tests/test_api.py` | 20 | auth, CSRF, roles, one attempt, consent, bank upload/approval, exports, permissions, retention, erasure, no secrets in repo |
+| `tests/test_api.py` | 21 | auth, CSRF, roles, one attempt, consent, bank upload/approval, exports, permissions, retention, erasure, no secrets in repo |
 | `tests/test_engine.py` | 26 | examiner state machine: phases, quotas, hard stop, 90 s cap, follow-up rules, hints, silence ladder, no answer leaks, traceable sources |
 | `tests/test_live.py` | 6 | real WebSocket: audio in, examiner out, recording, drop and rejoin, barge-in, mic warning, consent, streaming recognition |
 | `tests/test_scoring.py` | 20 | rubric maths, evidence citations, consistency, fairness, AI scorer path (stub LLM), review flags, overrides, audit, calibration |
@@ -141,3 +141,11 @@ Fairness: the same content in standard English and in Indian-English phrasing di
 Server CPU for the two-process run was not captured (the monitor then measured only the parent process; fixed since); the machine CPU column covers it.
 
 Capacity planning, the breaking point and the local-Whisper limit: `docs/SCALABILITY.md`.
+
+## 8. Audit
+
+Every score stores its prompt and rubric version with hashes, the model and all runs; every override stores who, when, the reason and the before/after marks; opening a recording, viewing an AI score, exporting and erasing are logged. Screenshots from the demo server after a faculty override (tests: `test_override_wins_and_is_logged`, `test_admin_can_erase_a_recording_or_the_attempt`):
+
+![Review page: override, score history and audit trail](images/review_audit.png)
+
+![Administrator audit log](images/system_audit.png)

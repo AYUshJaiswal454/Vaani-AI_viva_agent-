@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from collections import OrderedDict
 
 from starlette.responses import JSONResponse, Response
@@ -15,6 +16,7 @@ from ..web import ApiError, Ctx, Router, not_found
 
 router = Router("/api")
 _audio_cache: "OrderedDict[str, bytes]" = OrderedDict()
+_opened: dict[tuple, float] = {}
 
 
 @router.get("/tts/{key}", auth="user")
@@ -65,7 +67,12 @@ def session_audio(ctx: Ctx):
     data = _load(sid, track)
     rng = (ctx.request.headers.get("range") or "").strip()
     if not rng or rng == "bytes=0-":
-        audit(ctx.user, "audio_played", "session", sid, data={"track": track})     # who listened, for the audit trail
+        # who opened the recording, for the audit trail (once per person, attempt and track every 15 minutes, since a
+        # browser fetches the file again on every seek and page view)
+        key = ((ctx.user or {}).get("id"), sid, track)
+        if time.time() - _opened.get(key, 0) > 900:
+            _opened[key] = time.time()
+            audit(ctx.user, "audio_opened", "session", sid, data={"track": track})
     if not rng:
         return Response(data, media_type="audio/ogg", headers={"accept-ranges": "bytes", "content-length": str(len(data)),
                                                                "cache-control": "private, no-store"})

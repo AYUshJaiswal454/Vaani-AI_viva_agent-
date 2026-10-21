@@ -204,6 +204,18 @@ class Privacy(AppTestCase):
         self.assertFalse(d.exists())
 
 
+    def test_attempt_list_works_while_a_viva_is_live(self):
+        """Regression: a live attempt (examiner state with no end yet) used to break the faculty's attempt list."""
+        from app.db import get_db
+
+        fac = self.faculty()
+        v = self.make_viva(fac, self.make_bank(fac))
+        st = self.student(v["access_code"], roll="22CS8004")
+        get_db().update("sessions", st.session_id, {"status": "live", "state": {"mode": "listening", "ended": None, "phase": "warmup"}})
+        r = fac.get(f"/api/vivas/{v['id']}/sessions", headers=H)
+        self.assertEqual(r.status_code, 200, r.text)
+        self.assertEqual(r.json()["sessions"][0]["status"], "live")
+
     def test_admin_can_erase_a_recording_or_the_attempt(self):
         from app.config import get_settings
         from app.db import get_db

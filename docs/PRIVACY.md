@@ -51,7 +51,7 @@ stored in the database or the repository (a test scans the repository for key pa
   once and stored in the data folder with owner-only permissions. Back up the key separately from the data.
 - **Access control.** Students can reach only their own attempt and only during it. Faculty see only the vivas they
   created; administrators see all. Links to recordings are signed and expire after an hour.
-- **Audit trail.** Every playback, score view, override, acceptance, export, re-score and erasure is written to an
+- **Audit trail.** Every opening of a recording, score view, override, acceptance, export, re-score and erasure is written to an
   append-only audit log with who, when and (for overrides) the reason and the before/after values.
 - **Web hardening.** HttpOnly, SameSite session cookies (Secure on HTTPS), a CSRF header on every write, a strict
   Content-Security-Policy, microphone permission limited to the site itself, rate limits on login and joining.

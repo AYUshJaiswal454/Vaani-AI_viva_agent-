@@ -268,8 +268,9 @@ main.page { padding: 28px clamp(16px, 3vw, 40px) 64px; min-width: 0; }
 .kv dd { margin: 0; word-break: break-word; }
 .timeline { display: grid; gap: 6px; font-size: 14px; }
 .timeline .ev { display: grid; grid-template-columns: 56px 1fr; gap: 8px; }
-.bank-q { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--rule-2); align-items: start; }
-.bank-q .code { font-weight: 700; font-size: 14px; color: var(--ink-2); }
+.bank-q { display: grid; grid-template-columns: 128px minmax(0, 1fr) auto; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--rule-2); align-items: start; }
+.bank-q .code { font-weight: 700; font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+.bank-q label.row { flex-wrap: nowrap; gap: 8px; }
 .bank-q .q { font-weight: 500; }
 .bank-q .meta { color: var(--ink-3); font-size: 13px; margin-top: 2px; }
 .drawer-bg { position: fixed; inset: 0; background: #1e2a2555; z-index: 20; }

@@ -103,7 +103,7 @@ async def card(page, html: str, seconds: float) -> None:
 async def main_async(args) -> None:
     from playwright.async_api import async_playwright
 
-    import httpx
+    from loadtest.bot import httpx
 
     bank = {q["code"]: q for q in json.loads((ROOT / "app" / "data" / "banks" / "dbms.json").read_text())["questions"]}
     persona = PERSONAS["strong"](seed=5)
@@ -116,8 +116,7 @@ async def main_async(args) -> None:
     async with httpx.AsyncClient(base_url=args.base, timeout=30) as http:
         async with async_playwright() as p:
             browser = await p.chromium.launch(args=["--autoplay-policy=no-user-gesture-required"])
-            ctx = await browser.new_context(viewport={"width": W, "height": H}, record_video_dir=str(tmp),
-                                            record_video_size={"width": W, "height": H})
+            ctx = await browser.new_context(viewport={"width": W, "height": H})
             await ctx.add_init_script(MIC_SHIM)
 
             async def serve_answer(route):
@@ -126,6 +125,27 @@ async def main_async(args) -> None:
             await ctx.route("**/__demo/*.wav", serve_answer)
             page = await ctx.new_page()
             rec.t0 = time.monotonic()
+            # Frames are captured with their wall-clock time (Playwright's own video drifts against the clock, which
+            # would put the sound out of sync), then assembled with exact durations.
+            frames: list[tuple[float, Path]] = []
+            stop_capture = asyncio.Event()
+
+            async def capture() -> None:
+                i = 0
+                while not stop_capture.is_set():
+                    t = rec.now()
+                    try:
+                        data = await page.screenshot(type="jpeg", quality=82)
+                    except Exception:  # noqa: BLE001 - mid-navigation
+                        await asyncio.sleep(0.05)
+                        continue
+                    f = tmp / f"f{i:05d}.jpg"
+                    f.write_bytes(data)
+                    frames.append((t, f))
+                    i += 1
+                    await asyncio.sleep(max(0.0, 1 / args.fps - (rec.now() - t)))
+
+            capture_task = asyncio.create_task(capture())
 
             # ---- examiner audio and turn-taking, read from the real WebSocket traffic
             pending: list[dict] = []
@@ -182,13 +202,20 @@ async def main_async(args) -> None:
                     seen += 1
                     m = item["msg"]
                     t_say = item["t"]
+                    utt = m.get("utt")
+                    for _ in range(100):                       # the sound starts when the browser starts playing it
+                        st = next((e["t"] for e in events if e.get("utt") == utt and e.get("playback") == "start"), None)
+                        if st is not None:
+                            t_say = st
+                            break
+                        await page.wait_for_timeout(100)
                     for seg in m.get("segments", []):          # place the examiner's clips on the sound track
                         if seg.get("audio"):
                             r = await http.get(seg["audio"], cookies=dict((c["name"], c["value"]) for c in await ctx.cookies()))
                             if r.status_code == 200:
                                 x = decode(r.content)
-                                rec.add(t_say + 0.15, x, 0.9)
-                                t_say += len(x) / SR + 0.15
+                                rec.add(t_say + 0.05, x, 0.9)
+                                t_say += len(x) / SR
                     if not m.get("expect"):
                         continue
                     # wait for the browser to report the end of playback for this utterance
@@ -266,13 +293,19 @@ async def main_async(args) -> None:
                 await aud.scroll_into_view_if_needed()
                 await aud.click()
                 await page.wait_for_timeout(3000)
-            for path, secs in (("/faculty/banks", 4), ("/faculty/calibration", 4), ("/faculty/system", 4)):
-                await page.goto(args.base + path)
-                await page.wait_for_timeout(int(secs * 1000))
+            await page.goto(args.base + "/faculty/banks")
+            await page.wait_for_timeout(1500)
+            bank = page.locator("text=DBMS core viva bank").first
+            if await bank.count():
+                await bank.click()
+                await page.wait_for_timeout(3500)
+            await page.goto(args.base + "/faculty/system")
+            await page.wait_for_timeout(4000)
             await card(page, "<h1>Vaani</h1><p>Open source, runs on a college server without paid APIs, or with hosted speech "
                              "and AI when keys are added.</p><small>README, design, test report, load test and cost sheet in the repository.</small>", 5)
             total = rec.now()
-            video_path = await page.video.path()
+            stop_capture.set()
+            await capture_task
             await ctx.close()
             await browser.close()
 
@@ -280,9 +313,16 @@ async def main_async(args) -> None:
     wav_file(audio, rec.track(total))
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(video_path), "-i", str(audio),
-                    "-map", "0:v", "-map", "1:a", "-c:v", "libx264", "-preset", "medium", "-crf", "30", "-pix_fmt", "yuv420p",
-                    "-c:a", "aac", "-b:a", "64k", "-shortest", "-movflags", "+faststart", str(out)], check=True)
+    lst = tmp / "frames.txt"
+    with open(lst, "w") as fh:
+        for (t, f), nxt in zip(frames, [x[0] for x in frames[1:]] + [total]):
+            fh.write(f"file '{f}'\nduration {max(0.01, nxt - t):.3f}\n")
+        fh.write(f"file '{frames[-1][1]}'\n")
+    first = frames[0][0]
+    subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(lst),
+                    "-itsoffset", f"{-first:.3f}", "-i", str(audio), "-map", "0:v", "-map", "1:a", "-vf", "fps=25,format=yuv420p",
+                    "-c:v", "libx264", "-preset", "medium", "-crf", "28", "-c:a", "aac", "-b:a", "64k", "-shortest",
+                    "-movflags", "+faststart", str(out)], check=True)
     (tmp / "events.json").write_text(json.dumps(events, indent=1))
     print("video:", out, f"{out.stat().st_size / 1e6:.1f} MB, {total:.0f} s; working files in {tmp}")
     if not args.keep:
@@ -306,6 +346,7 @@ def main() -> None:
     ap.add_argument("--listen-seconds", type=float, default=22)
     ap.add_argument("--out", default=str(ROOT / "docs" / "demo" / "vaani-demo.mp4"))
     ap.add_argument("--keep", action="store_true")
+    ap.add_argument("--fps", type=float, default=8)
     asyncio.run(main_async(ap.parse_args()))
 
 

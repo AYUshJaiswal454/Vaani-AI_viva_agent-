@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import time
 
 from pydantic import BaseModel, Field
 from starlette.responses import Response
@@ -21,6 +22,7 @@ from ..vivas import DEFAULT_SETTINGS, create_viva, get_viva, set_status, update_
 from ..web import ApiError, Ctx, Router, not_found
 
 router = Router("/api")
+_viewed: dict[tuple, float] = {}
 
 
 def _viva(ctx: Ctx, key: str = "viva_id") -> dict:
@@ -103,7 +105,7 @@ def _session_row(s: dict) -> dict:
     return {"id": s["id"], "student": s["student_name"], "roll_no": s["roll_no"], "status": s["status"],
             "started_at": s.get("started_at"), "ended_at": s.get("ended_at"), "end_reason": s.get("end_reason"),
             "final_total": s.get("final_total"), "needs_review": bool(s.get("needs_review")), "integrity": integ,
-            "duration_s": round((s.get("state") or {}).get("ended", {}).get("t", 0) or 0, 1) if s.get("state") else None}
+            "duration_s": round(((s.get("state") or {}).get("ended") or {}).get("t", 0) or 0, 1) if s.get("state") else None}
 
 
 @router.get("/vivas/{viva_id:int}/sessions", auth="staff")
@@ -149,7 +151,8 @@ def session_detail(ctx: Ctx):
     scores = scoring.latest_scores(s["id"])
     blind = ctx.query.get("blind") == "1" and not db.fetchone(
         "SELECT id FROM faculty_marks WHERE session_id = ? AND faculty_id = ?", (s["id"], ctx.uid))
-    if not blind and scores.get("ai"):
+    if not blind and scores.get("ai") and time.time() - _viewed.get((ctx.uid, s["id"]), 0) > 900:
+        _viewed[(ctx.uid, s["id"])] = time.time()           # once per 15 minutes per person and attempt
         audit(ctx.user, "ai_score_viewed", "session", s["id"])
     events = db.fetchall("SELECT * FROM integrity_events WHERE session_id = ? ORDER BY t", (s["id"],))
     marks = db.fetchone("SELECT * FROM faculty_marks WHERE session_id = ? AND faculty_id = ?", (s["id"], ctx.uid))
@@ -260,7 +263,7 @@ def rescore(ctx: Ctx):
 
 
 AUDIT_TEXT = {
-    "student_join": "Student joined", "audio_played": "Recording played", "ai_score_viewed": "AI score viewed",
+    "student_join": "Student joined", "audio_played": "Recording played", "audio_opened": "Recording opened", "ai_score_viewed": "AI score viewed",
     "score_override": "Score overridden", "score_accepted": "AI score accepted", "faculty_marks": "Blind faculty marks entered",
     "rescore": "Re-scoring requested", "erase_recording": "Recording erased", "erase_everything": "Attempt erased",
     "export_csv": "Marks exported (CSV)", "sheets_link": "Google Sheets link created",

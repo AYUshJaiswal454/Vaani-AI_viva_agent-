@@ -10,7 +10,10 @@ override any mark with a reason.
 It runs fully offline on a college server (speech recognition included), or with hosted speech and AI models when
 an API key is added.
 
-![The viva room](docs/images/viva_room.png)
+![The viva room: the examiner's question, the student's live caption, the 15-minute clock and the phase strip](docs/images/viva_room.png)
+
+**Demo video (2:48, with sound):** [`docs/demo/vaani-demo.mp4`](docs/demo/vaani-demo.mp4): a student takes a viva by voice
+(local Whisper, server voice), then faculty review a recorded viva, change a mark with a reason, and open the audit trail.
 
 ## Try it
 
@@ -63,7 +66,15 @@ All measured; the full method and data are in [`docs/TEST_REPORT.md`](docs/TEST_
 | Capacity with local Whisper | 6 concurrent vivas on 2 vCPU (3 per core) within the latency target |
 | Robustness | network drop + rejoin, noisy room, muted microphone, silent student: all recovered (`docs/TEST_REPORT.md` §6) |
 | Cost for 350 students | ₹135 of server time with no API at all; ₹247 with hosted open-weight models; ₹2,590 with OpenAI's premium models ([`docs/COST.md`](docs/COST.md)) |
-| Automated tests | 105, all passing (under a minute, no network) |
+| Automated tests | 106, all passing (under a minute, no network) |
+
+## Screenshots
+
+| Faculty review: audio with waveform, synced transcript, evidence-linked rubric scores | Override in red pen, score history and audit trail |
+|---|---|
+| ![Review](docs/images/review.png) | ![Audit trail](docs/images/review_audit.png) |
+| **Question bank** (upload, syllabus drafts, versions, readiness check) | **Administrator audit log** and system status |
+| ![Bank](docs/images/bank.png) | ![System and audit log](docs/images/system_audit.png) |
 
 ## How it works
 
@@ -103,7 +114,7 @@ app/            server: live sessions, examiner engine, speech, scoring, API, ta
   scoring/      rubric, rule scorer, AI scorer, review flags, overrides, calibration
   data/         sample question banks, default rubric, prices
 frontend/       React + TypeScript (built into app/static, no build needed to run)
-tests/          105 unittest tests: engine, text, scoring, live WebSocket, API, voice
+tests/          106 unittest tests: engine, text, scoring, live WebSocket, API, voice
 loadtest/       audio bots, load test, results
 scripts/        model download, speech and scoring evaluations, cost sheet, sample export, report builder
 samples/        five recorded vivas (audio, transcript, scores), question banks (JSON + CSV), rubric
@@ -127,7 +138,7 @@ docs/           design, test report, scalability, cost sheet, privacy note, ques
 ## Running the tests and evaluations
 
 ```bash
-python -m unittest discover -s tests -t .                     # 105 tests, under a minute, no network
+python -m unittest discover -s tests -t .                     # 106 tests, under a minute, no network
 python scripts/eval_scoring.py                                # scoring accuracy, consistency, fairness
 python scripts/eval_scoring.py --llm --runs 5                 # the same for the AI scorer (needs an API key)
 python scripts/eval_stt.py --n 100                            # WER on Indian-accented English (NPTEL2020)
